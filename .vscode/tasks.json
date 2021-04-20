@@ -1,0 +1,48 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build client",
+            "type": "shell",
+            "command": "g++", 
+            "args": [
+                "-std=c++11", 
+                "-pthread", 
+                "-I", 
+                "client/lib/asio-1.18.1/include",
+                "-I", 
+                "client/include",
+                "-g", 
+                "${workspaceFolder}/client/src/Networking.cpp",
+                "-g", 
+                "${workspaceFolder}/client/src/main.cpp",
+                "-o", 
+                "${workspaceFolder}/client/client", 
+                "-lws2_32",
+            ]
+        }, 
+        {
+            "label": "build server",
+            "type": "shell",
+            "command": "g++", 
+            "args": [
+                "-std=c++11", 
+                "-pthread", 
+                "-I", 
+                "server/lib/asio-1.18.1/include",
+                "-I", 
+                "server/include",
+                "-g",
+                "${workspaceFolder}/server/src/Networking.cpp",
+                "-g",
+                "${workspaceFolder}/server/src/main.cpp",
+                "-o",
+                "${workspaceFolder}/server/server", 
+                "-lws2_32",
+                "-lwsock32",
+            ]
+        }
+    ]
+}
