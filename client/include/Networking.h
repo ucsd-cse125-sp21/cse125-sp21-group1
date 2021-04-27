@@ -1,9 +1,9 @@
+#ifndef __NETWORKING__
+#define __NETWORKING__
+
 #include <asio.hpp>
 #include <iostream>
 #include <vector>
-
-#ifndef __NETWORKING__
-#define __NETWORKING__
 
 #define TCP_PAYLOAD_MAX_LEN 1460  // According to Google.
 

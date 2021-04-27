@@ -10,6 +10,7 @@ void Networking::initClientNetworking(std::string host, std::string port) {
   asio::connect(socket, endpoints);
   asio::ip::tcp::no_delay option(true);
   socket.set_option(option);
+  socket.non_blocking(true);
 }
 
 // This will send synchronously.
@@ -25,7 +26,10 @@ std::string Networking::receive() {
   // Sync read.
   size_t len = socket.read_some(asio::buffer(buf), error);
 
-  if (error == asio::error::eof) {
+  if (error == asio::error::would_block) {
+    // Closed by remote.
+    return std::string("");
+  } else if (error == asio::error::eof) {
     // Closed by remote.
     throw asio::system_error(error);
   } else if (error) {

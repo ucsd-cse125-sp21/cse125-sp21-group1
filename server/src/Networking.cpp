@@ -30,8 +30,14 @@ std::vector<Message> NetworkMessages::getAll() {
 int Session::getNextSessionId() {
   // Note: Can also be implemented as a pool of numbers to give out so that only
   // [0, 3] will appear in sessionId, which allows for easier player assignment.
-  static int nextSessionId = 0;  // Static variables only initialize once.
-  return nextSessionId++;
+  for (int i = 0; i < 4; i++) {
+    if (Networking::allSessions[i] == NULL) {
+      return i;
+    }
+  }
+  // static int nextSessionId = 0;  // Static variables only initialize once.
+  // return nextSessionId++;
+  return 0;
 }
 
 Session::Session(tcp::socket socket, NetworkMessages* dataPtr)
