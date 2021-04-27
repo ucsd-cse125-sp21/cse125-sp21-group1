@@ -2,7 +2,9 @@
 #include <iostream>
 #include <thread>
 
+#include "GameObject.h"
 #include "Networking.h"
+#include "Parser.h"
 
 #define PORT 13
 
@@ -38,4 +40,14 @@ int main(int argc, char* argv[]) {
     std::this_thread::sleep_for(std::chrono::seconds(1));
   }
   return 0;
+}
+
+void draw_main_board() {
+  Parser p;
+  // pseudo-code
+  std::vector<Message> data = Networking::recvData->getAll();
+  for (auto it = data.begin(); it != data.end(); it++) {
+    game_object_t obj = p.parseMessage(it->msg);
+    handle_object(obj);  // TO-IMPLEMENT
+  }
 }
