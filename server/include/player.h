@@ -7,5 +7,6 @@ struct Player {
 	float speed;
 	int bomb_power; // how many grids are influenced (1D)
 	float[4][4] gen; // 4 * 4 float matrix used for graphics
+	int facing; // 0 if upward, 1 if downward, 2 if leftward, 3 if rightward
 }
 typedef struct Player Player;
