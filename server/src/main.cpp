@@ -5,6 +5,7 @@
 // #include "GameObject.h"
 #include "GameState.h"
 #include "Networking.h"
+#include "player.h"
 // #include "Parser.h"
 
 #define PORT 13

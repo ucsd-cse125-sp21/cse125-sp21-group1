@@ -16,3 +16,4 @@
 #define BALL 15
 #define SHIELD 16
 #define SHOES 17
+#define BOMB 18
