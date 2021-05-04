@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "GameState.h"
 #include "Window.h"
 
 #endif

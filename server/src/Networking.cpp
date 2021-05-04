@@ -68,14 +68,14 @@ void Session::read() {
       });
 }
 
-void Session::send(std::string msg) {
+void Session::send(char* msg, int len) {
   if (this == NULL) {
     // Check if the session has disconnected or not.
     return;
   }
   auto self(shared_from_this());
   socket_.async_write_some(
-      asio::buffer(msg, msg.length()),
+      asio::buffer(msg, len),
       [this, self](asio::error_code ec, std::size_t /*length*/) {
         if (!ec) {
         } else {

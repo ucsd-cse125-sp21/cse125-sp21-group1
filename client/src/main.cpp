@@ -81,16 +81,18 @@ int main(int argc, char* argv[]) {
     Window::idleCallback();
 
     // Networking::send("Message from client. ");
-    std::string msg = Networking::receive();
-    if (msg.length() > 0) {
-      std::cout << msg << std::endl;
-      std::stringstream stream(msg);
-      int x, y;
+    char* msg = Networking::receive();
+    if (msg != NULL) {
+      GameState s;
+      memcpy(&s, msg, sizeof(GameState));
+      std::cout << (int)s.board_x << " " << (int)s.board_y << std::endl;
       for (int i = 0; i < 4; i++) {
-        stream >> x >> y;
-        moveSthBy(i, x, y, 0);
+        moveSthBy(i, s.players[i].x, s.players[i].y, 0);
+        std::cout << i << " " << (int)s.players[i].x << " "
+                  << (int)s.players[i].y << std::endl;
       }
     }
+    free(msg);
 
     // moveSthBy(0, 10, 0, 0);
 

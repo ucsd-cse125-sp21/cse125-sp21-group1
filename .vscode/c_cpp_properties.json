@@ -4,13 +4,15 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
+                "${workspaceFolder}/common",
                 "${workspaceFolder}/client/lib/asio-1.18.1/include",
                 "${workspaceFolder}/client/lib/GLEW/include",
                 "${workspaceFolder}/client/lib/GLFW/include",
                 "${workspaceFolder}/client/lib/glm",
                 "${workspaceFolder}/client/include",
                 "${workspaceFolder}/client/include/graphics",
-                "${workspaceFolder}/server/lib/asio-1.18.1/include"
+                // "${workspaceFolder}/server/include", 
+                // "${workspaceFolder}/server/lib/asio-1.18.1/include"
             ],
             "defines": [
                 "_DEBUG",

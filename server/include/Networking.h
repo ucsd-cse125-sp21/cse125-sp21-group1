@@ -30,7 +30,7 @@ class Session : public std::enable_shared_from_this<Session> {
   Session(tcp::socket, NetworkMessages*);
   void start();
   // Write to the client.
-  void send(std::string);
+  void send(char*, int);
 
  private:
   // Keeps reading messages. The lambda function it creates will call do_read to

@@ -2,6 +2,8 @@
 #include <iostream>
 #include <thread>
 
+#include "asio.hpp"
+
 // #include "GameObject.h"
 #include "GameState.h"
 #include "Networking.h"
@@ -22,7 +24,7 @@ int main(int argc, char* argv[]) {
   // The initialization of the network.
   Networking::initServerNetworking(PORT);
 
-  GameState state(4);
+  GameState state;
 
   while (true) {
     // Get all received data.
@@ -38,12 +40,13 @@ int main(int argc, char* argv[]) {
       state.updateWithAction(it->sessionId, it->msg.c_str()[0]);
     }
     // Send message.
-    std::string writeBuf = state.toString();
+    char* writeBuf = state.toString();
     for (int i = 0; i < 4; i++) {
       if (Networking::allSessions[i] != NULL) {
-        Networking::allSessions[i]->send(writeBuf);
+        Networking::allSessions[i]->send(writeBuf, sizeof(GameState));
       }
     }
+    free(writeBuf);
 
     // Sleep for 1 secs.
     std::this_thread::sleep_for(std::chrono::microseconds(100000));
