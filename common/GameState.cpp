@@ -22,7 +22,31 @@ void GameState::initialize_player(int playerI) {
 }
 
 /* i ranges from 0 - 3 */
-void GameState::initialize_board() { memset(board, NOTHING, sizeof(board)); }
+void GameState::initialize_board() {
+    // read from file to initialize non-border non-destroyable cubes
+    FILE * fp;
+    if ((fp = fopen("./board.txt", "r")) == NULL) {
+        std::cerr << "Error when loading the board." << std::endl;
+        exit(1);
+    }
+    fscanf(fp, "%d\n", board_x);
+    fscanf(fp, "%d\n", board_y);
+    board = malloc(sizeof(int) * board_x * board_y);
+    memset(board, NOTHING, sizeof(board));
+    int row, col;
+    while (fscanf(fp, "%d %d", &row, &col) > 0) {
+        board[row][col] = NOT_DESTROYABLE_CUBE;
+    }
+    // set the boarder to be non-destroyable cubes
+    for (int i = 0; i < board_x; i++) {
+        board[i][0] = NOT_DESTROYABLE_CUBE;
+        board[i][board_y-1] = NOT_DESTROYABLE_CUBE;
+    }
+    for (int i = 0; i < board_y; i++) {
+        board[0][i] = NOT_DESTROYABLE_CUBE;
+        board[board_x-1][i] = NOT_DESTROYABLE_CUBE;
+    }
+}
 
 /* playerI ranges from 0 - 3 */
 void GameState::updateWithAction(int playerI, char action) {
