@@ -29,8 +29,13 @@ void GameState::initialize_board() {
         std::cerr << "Error when loading the board." << std::endl;
         exit(1);
     }
-    fscanf(fp, "%d\n", board_x);
-    fscanf(fp, "%d\n", board_y);
+    fscanf(fp, "%d\n", &board_x);
+    fscanf(fp, "%d\n", &board_y);
+    fscanf(fp, "%d %d", &(players[0].x), &(players[0].y));
+    fscanf(fp, "%d %d", &(players[1].x), &(players[1].y));
+    fscanf(fp, "%d %d", &(players[2].x), &(players[2].y));
+    fscanf(fp, "%d %d", &(players[3].x), &(players[3].y));
+
     board = malloc(sizeof(int) * board_x * board_y);
     memset(board, NOTHING, sizeof(board));
     int row, col;
