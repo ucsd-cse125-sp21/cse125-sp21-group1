@@ -36,20 +36,20 @@ void GameState::initialize_board() {
     fscanf(fp, "%d %d", &(players[2].x), &(players[2].y));
     fscanf(fp, "%d %d", &(players[3].x), &(players[3].y));
 
-    board = malloc(sizeof(int) * board_x * board_y);
-    memset(board, NOTHING, sizeof(board));
+    board = calloc(sizeof(int) * board_x * board_y);
+    //memset(board, NOTHING, sizeof(board));
     int row, col;
     while (fscanf(fp, "%d %d", &row, &col) > 0) {
-        board[row][col] = NOT_DESTROYABLE_CUBE;
+        board[board_y*row+col] = NOT_DESTROYABLE_CUBE;
     }
     // set the boarder to be non-destroyable cubes
     for (int i = 0; i < board_x; i++) {
-        board[i][0] = NOT_DESTROYABLE_CUBE;
-        board[i][board_y-1] = NOT_DESTROYABLE_CUBE;
+        board[board_y*i] = NOT_DESTROYABLE_CUBE;
+        board[board_y*i+board_y-1] = NOT_DESTROYABLE_CUBE;
     }
     for (i = 0; i < board_y; i++) {
-        board[0][i] = NOT_DESTROYABLE_CUBE;
-        board[board_x-1][i] = NOT_DESTROYABLE_CUBE;
+        board[i] = NOT_DESTROYABLE_CUBE;
+        board[board_y*(board_x-1)+i] = NOT_DESTROYABLE_CUBE;
     }
 }
 
