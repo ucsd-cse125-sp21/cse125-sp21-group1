@@ -47,7 +47,7 @@ void GameState::initialize_board() {
         board[i][0] = NOT_DESTROYABLE_CUBE;
         board[i][board_y-1] = NOT_DESTROYABLE_CUBE;
     }
-    for (int i = 0; i < board_y; i++) {
+    for (i = 0; i < board_y; i++) {
         board[0][i] = NOT_DESTROYABLE_CUBE;
         board[board_x-1][i] = NOT_DESTROYABLE_CUBE;
     }
