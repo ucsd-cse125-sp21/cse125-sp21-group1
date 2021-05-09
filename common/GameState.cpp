@@ -5,6 +5,7 @@ GameState::GameState() {
     initialize_player(i);
   }
   initialize_board();
+  initialize_weapon_list();
 }
 
 /* i ranges from 0 - 3 */
@@ -19,6 +20,20 @@ void GameState::initialize_player(int playerI) {
   p.speed = 1;
   /*p.gen;*/  // no idea
   players[playerI] = p;
+}
+
+void GameState::initialize_weapon_list() {
+  weapon_list.insert(weapon_list.begin(), num_laser, LASER);
+  weapon_list.insert(weapon_list.begin(), num_grenade, GRENADE);
+  weapon_list.insert(weapon_list.begin(), num_rocket, ROCKET);
+  weapon_list.insert(weapon_list.begin(), num_landmine, LANDMINE);
+  weapon_list.insert(weapon_list.begin(), num_fire, FIRE);
+  weapon_list.insert(weapon_list.begin(), num_frozen, FROZEN);
+  weapon_list.insert(weapon_list.begin(), num_glove, GLOVE);
+  weapon_list.insert(weapon_list.begin(), num_elixir, ELIXIR);
+  weapon_list.insert(weapon_list.begin(), num_ball, BALL);
+  weapon_list.insert(weapon_list.begin(), num_shield, SHIELD);
+  weapon_list.insert(weapon_list.begin(), num_shoes, SHOES);
 }
 
 /* i ranges from 0 - 3 */
