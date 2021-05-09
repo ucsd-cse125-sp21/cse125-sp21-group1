@@ -36,11 +36,11 @@ void GameState::initialize_board() {
     fscanf(fp, "%d %d", &(players[2].x), &(players[2].y));
     fscanf(fp, "%d %d", &(players[3].x), &(players[3].y));
 
-    board = calloc(sizeof(int) * board_x * board_y);
+    board = (char *) calloc(board_x * board_y, sizeof(char));
     //memset(board, NOTHING, sizeof(board));
     int row, col;
     while (fscanf(fp, "%d %d", &row, &col) > 0) {
-        board[board_y*row+col] = NOT_DESTROYABLE_CUBE;
+        board[getIndex(row, col)] = NOT_DESTROYABLE_CUBE;
     }
     // set the boarder to be non-destroyable cubes
     for (int i = 0; i < board_x; i++) {
@@ -51,6 +51,8 @@ void GameState::initialize_board() {
         board[i] = NOT_DESTROYABLE_CUBE;
         board[board_y*(board_x-1)+i] = NOT_DESTROYABLE_CUBE;
     }
+
+    fclose(fp);
 }
 
 /* playerI ranges from 0 - 3 */
@@ -58,7 +60,8 @@ void GameState::updateWithAction(int playerI, char action) {
   switch (action) {
     case 'W':
       if (players[playerI].y < board_y - 1) {
-        char nextStepBoard = board[players[playerI].x][players[playerI].y + 1];
+        //char nextStepBoard = board[players[playerI].x][players[playerI].y + 1];
+        char nextStepBoard = board[getIndex(players[playerI].x, players[playerI].y + 1)];
         if (nextStepBoard != NOT_DESTROYABLE_CUBE && nextStepBoard != DONUT &&
             nextStepBoard != BOMB) {
           players[playerI].y++;
@@ -68,7 +71,8 @@ void GameState::updateWithAction(int playerI, char action) {
       break;
     case 'A':
       if (players[playerI].x > 0) {
-        char nextStepBoard = board[players[playerI].x - 1][players[playerI].y];
+        //char nextStepBoard = board[players[playerI].x - 1][players[playerI].y];
+        char nextStepBoard = board[getIndex(players[playerI].x - 1, players[playerI].y)];
         if (nextStepBoard != NOT_DESTROYABLE_CUBE && nextStepBoard != DONUT &&
             nextStepBoard != BOMB) {
           players[playerI].x--;
@@ -78,7 +82,8 @@ void GameState::updateWithAction(int playerI, char action) {
       break;
     case 'S':
       if (players[playerI].y > 0) {
-        char nextStepBoard = board[players[playerI].x][players[playerI].y - 1];
+        //char nextStepBoard = board[players[playerI].x][players[playerI].y - 1];
+        char nextStepBoard = board[getIndex(players[playerI].x, players[playerI].y - 1)];
         if (nextStepBoard != NOT_DESTROYABLE_CUBE && nextStepBoard != DONUT &&
             nextStepBoard != BOMB) {
           players[playerI].y--;
@@ -88,7 +93,8 @@ void GameState::updateWithAction(int playerI, char action) {
       break;
     case 'D':
       if (players[playerI].x < board_x - 1) {
-        char nextStepBoard = board[players[playerI].x + 1][players[playerI].y];
+        //char nextStepBoard = board[players[playerI].x + 1][players[playerI].y];
+        char nextStepBoard = board[getIndex(players[playerI].x + 1, players[playerI].y)];
         if (nextStepBoard != NOT_DESTROYABLE_CUBE && nextStepBoard != DONUT &&
             nextStepBoard != BOMB) {
           players[playerI].x++;
@@ -114,7 +120,8 @@ char* GameState::toString() {
 /* playerI ranges from 0 - 3 */
 void GameState::check_bubble(int playerI) {
   // Player I picks up the weapon.
-  switch (board[players[playerI].x][players[playerI].y]) {
+  //switch (board[players[playerI].x][players[playerI].y]) {
+  switch (board[getIndex(players[playerI].x, players[playerI].y)]) {
     case LASER:
       players[playerI].weapon = LASER;
       break;
@@ -154,5 +161,10 @@ void GameState::check_bubble(int playerI) {
       break;
   }
   // Removes weapon from board.
-  board[players[playerI].x][players[playerI].y] = NOTHING;
+  //board[players[playerI].x][players[playerI].y] = NOTHING;
+  board[getIndex(players[playerI].x, players[playerI].y)] = NOTHING;
 }
+
+ int GameState::getIndex(int row, int col) {
+   return GameState::board_y * row + col;
+ }
