@@ -51,6 +51,7 @@ int main(int argc, char* argv[]) {
     // Sleep for 1 secs.
     std::this_thread::sleep_for(std::chrono::microseconds(100000));
   }
+  free(GameState::board);
   return 0;
 }
 
