@@ -19,7 +19,8 @@ void GameState::initialize_player(int playerI) {
   p.bomb_power = 1;
   p.speed = 1;
   /*p.gen;*/  // no idea
-  players[playerI] = p;
+  //players[playerI] = p;
+  players.insert(players.begin() + playerI, p);
 }
 
 void GameState::initialize_weapon_list() {
@@ -68,12 +69,22 @@ void GameState::initialize_board() {
     }
 
     fclose(fp);
+
+    // generate destroyable blocks
+    for (int i = 0; i < num_destroyables; i++) {
+      int x = rand() % board_x;
+      int y = rand() % board_y;
+      if (board[getIndex(x, y)] != NOT_DESTROYABLE_CUBE) {
+        board[getIndex(x, y)] = DONUT;
+      }
+    }
 }
 
 /* playerI ranges from 0 - 3 */
 void GameState::updateWithAction(int playerI, char action) {
   switch (action) {
     case 'W':
+      players[playerI].facing = '0';
       if (players[playerI].y < board_y - 1) {
         //char nextStepBoard = board[players[playerI].x][players[playerI].y + 1];
         char nextStepBoard = board[getIndex(players[playerI].x, players[playerI].y + 1)];
@@ -85,6 +96,7 @@ void GameState::updateWithAction(int playerI, char action) {
       }
       break;
     case 'A':
+      players[playerI].facing = '2';
       if (players[playerI].x > 0) {
         //char nextStepBoard = board[players[playerI].x - 1][players[playerI].y];
         char nextStepBoard = board[getIndex(players[playerI].x - 1, players[playerI].y)];
@@ -96,6 +108,7 @@ void GameState::updateWithAction(int playerI, char action) {
       }
       break;
     case 'S':
+      players[playerI].facing = '1';
       if (players[playerI].y > 0) {
         //char nextStepBoard = board[players[playerI].x][players[playerI].y - 1];
         char nextStepBoard = board[getIndex(players[playerI].x, players[playerI].y - 1)];
@@ -107,6 +120,7 @@ void GameState::updateWithAction(int playerI, char action) {
       }
       break;
     case 'D':
+      players[playerI].facing = '3';
       if (players[playerI].x < board_x - 1) {
         //char nextStepBoard = board[players[playerI].x + 1][players[playerI].y];
         char nextStepBoard = board[getIndex(players[playerI].x + 1, players[playerI].y)];
@@ -118,6 +132,7 @@ void GameState::updateWithAction(int playerI, char action) {
       }
       break;
     case ' ':
+      attack(playerI, players[playerI].x, players[playerI].y );
       break;
 
     default:
@@ -180,6 +195,93 @@ void GameState::check_bubble(int playerI) {
   board[getIndex(players[playerI].x, players[playerI].y)] = NOTHING;
 }
 
- int GameState::getIndex(int row, int col) {
-   return GameState::board_y * row + col;
- }
+void GameState::attack(int playerI, int x, int y) {
+  switch (players[playerI].weapon) {
+    case BOMB:
+      // check upward
+      for (int i = 1; i <= players[playerI].bomb_power; i++) {
+       if (check_bomb_effect(x, y - i)) break;
+      }
+      // check downward
+      for (int i = 1; i <= players[playerI].bomb_power; i++) {
+       if (check_bomb_effect(x, y + i)) break;
+      }
+      // check leftward
+      for (int i = 1; i <= players[playerI].bomb_power; i++) {
+       if (check_bomb_effect(x - i, y)) break;
+      }
+      // check rightward
+      for (int i = 1; i <= players[playerI].bomb_power; i++) {
+       if (check_bomb_effect(x + i, y)) break;
+      }
+      break;
+    case LASER:
+    case GRENADE:
+    case ROCKET:
+    case LANDMINE:
+    case FIRE:
+    case FROZEN:
+    default:
+      break;
+  }
+}
+
+int GameState::check_bomb_effect(int x, int y) {
+  int coord = getIndex(x, y);
+  if (coord < 0) return 1;
+  char obj = board[coord];
+  if (obj == NOT_DESTROYABLE_CUBE) return 1;
+  if (obj == DONUT) {
+    int ind = rand() % weapon_list.size();
+    board[coord] = weapon_list[ind]; // update corresponding object in board
+    weapon_list.erase(weapon_list.begin() + ind); // remove the weapon from weapon list
+    return 1;
+  }
+  // encounter player
+  if (obj == PLAYER_1) {
+    if (!players[0].life_left) {
+      players.erase(players.begin());
+      board[coord] = NOTHING;
+    }
+    else {
+      players[0].life_left--;
+    }
+    return 1;
+  }
+  if (obj == PLAYER_2) {
+    if (!players[1].life_left) {
+      players.erase(players.begin());
+      board[coord] = NOTHING;
+    }
+    else {
+      players[1].life_left--;
+    }
+    return 1;
+  }
+  if (obj == PLAYER_3) {
+    if (!players[2].life_left) {
+      players.erase(players.begin());
+      board[coord] = NOTHING;
+    }
+    else {
+      players[2].life_left--;
+    }
+    return 1;
+  }
+  if (obj == PLAYER_4) {
+    if (!players[3].life_left) {
+      players.erase(players.begin());
+      board[coord] = NOTHING;
+    }
+    else {
+      players[3].life_left--;
+    }
+    return 1;
+  }
+
+  return 0;
+}
+
+int GameState::getIndex(int row, int col) {
+  return GameState::board_y * row + col;
+}
