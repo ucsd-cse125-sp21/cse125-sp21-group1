@@ -4,6 +4,7 @@
 #include <iostream>
 #include <thread>
 #include <vector>
+#include <stdlib.h>
 
 #include "Networking.h"
 #include "board.h"
@@ -29,10 +30,12 @@ class GameState {
   int num_ball = 10;
   int num_shield = 5;
   int num_shoes = 5;
+  int num_destroyables = 100;
 
   std::vector <char> weapon_list;
+  std::vector <struct Player> players;
 
-  Player players[NUM_PLAYERS];
+  //Player players[NUM_PLAYERS];
 
   GameState();
 
@@ -44,8 +47,10 @@ class GameState {
   void initialize_board();
   void initialize_weapon_list();
   void check_bubble(int);
+  void attack(int, int, int);
+  int check_bomb_effect(int, int);
 
-  int getIndex(int row, int col);
+  int getIndex(int, int);
 };
 
 #endif
