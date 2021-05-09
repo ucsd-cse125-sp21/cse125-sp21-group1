@@ -2,8 +2,8 @@
 #define __PLAYER_H__
 struct Player {
   char id;
-  char x;
-  char y;
+  int x;
+  int y;
   char max_bomb;   // how many bombs can the player place at most
   char bomb_left;  // how many bombs can the player still place
   char weapon;     // use index of object array
