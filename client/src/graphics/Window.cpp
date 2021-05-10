@@ -7,11 +7,15 @@
 namespace {
 int width, height;
 std::string windowTitle("GLFW Starter Project");
-
-PointCloud* bunnyPoints;
-PointCloud* dragonPoints;
-PointCloud* bearPoints;
-PointCloud* bunnyPoints2;
+PointCloud* cake;
+PointCloud* gingerbreadHouse;
+PointCloud* bomb;
+PointCloud* glove;
+PointCloud* gun;
+PointCloud* medicine;
+PointCloud* mortarshell;
+PointCloud* shield;
+PointCloud* shoe;
 PointCloud* plsPoints;  // point light sphere
 
 // collection of PointCloud, store all the game objects
@@ -82,17 +86,30 @@ bool Window::initializeObjects() {
   // ItemObj itemObjs[]
   // etc.
 
-  bunnyPoints = new PointCloud("bunny.obj", 1);
-  dragonPoints = new PointCloud("bunny.obj", 1);
-  // new PointCloud("dragon.obj", 1);
-  bearPoints = new PointCloud("bunny.obj", 1);
-  // new PointCloud("bear.obj", 1);
-  bunnyPoints2 = new PointCloud("bunny.obj", 1);
+  cake = new PointCloud("source/obstacle_cake/cake_without_plate.obj", 1);
+  gingerbreadHouse = new PointCloud(
+      "source/obstacle_GingerbreadHouse/GingerbreadHouse.obj", 1);
+  bomb = new PointCloud("source/weapon_bomb_texture/Bomb.obj", 1);
+  glove = new PointCloud("source/weapon_gloves/gloves.obj", 1);
+  gun = new PointCloud("source/weapon_gun/gun.obj", 1);
+  medicine = new PointCloud("source/weapon_medicine/medicine.obj", 1);
+  mortarshell =
+      new PointCloud("source/weapon_mortarshell/weapon_mortarshell.obj", 1);
+  shield = new PointCloud("source/weapon_shiled_texture/shiled.obj", 1);
+  shoe = new PointCloud("source/weapon_shoe/shoe.obj", 1);
 
-  geometrys.push_back(bunnyPoints);   // geometry[0]
-  geometrys.push_back(dragonPoints);  // geometry[1]
-  geometrys.push_back(bearPoints);    // geometry[2]
-  geometrys.push_back(bunnyPoints2);  // geometry[3]
+  // TESTING
+  // cake->scale(3);
+
+  geometrys.push_back(cake);              // geometry[0]
+  geometrys.push_back(gingerbreadHouse);  // geometry[1]
+  geometrys.push_back(bomb);              // geometry[2]
+  geometrys.push_back(glove);
+  geometrys.push_back(gun);  // geometry[3]
+  geometrys.push_back(medicine);
+  geometrys.push_back(mortarshell);
+  geometrys.push_back(shield);
+  geometrys.push_back(shoe);
 
   plsPoints = new PointCloud("sphere.obj", -1);
 
@@ -106,29 +123,19 @@ bool Window::initializeObjects() {
   //    bunnyPoints->mat.specular = glm::vec3(0.5f, 0.5f, 0.5f);
   //    bunnyPoints->mat.shininess = 1.0f;
 
-  bearPoints->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
-  bearPoints->mat.ambient = glm::vec3(0.5f);
-  bearPoints->mat.diffuse = glm::vec3(0.0f);
-  bearPoints->mat.specular = glm::vec3(0.5f, 0.5f, 0.5f);
-  bearPoints->mat.shininess = 64.0f;
+  cake->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
+  cake->mat.ambient = glm::vec3(0.5f);
+  cake->mat.diffuse = glm::vec3(0.0f);
+  cake->mat.specular = glm::vec3(0.5f, 0.5f, 0.5f);
+  cake->mat.shininess = 64.0f;
 
-  dragonPoints->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
-  dragonPoints->mat.ambient = glm::vec3(0.1f);
-  dragonPoints->mat.diffuse = glm::vec3(1.0f);
-  dragonPoints->mat.specular = glm::vec3(1.0f);
-  dragonPoints->mat.shininess = 0.0f;
-
-  bunnyPoints->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
-  bunnyPoints->mat.ambient = glm::vec3(0.5f);
-  bunnyPoints->mat.diffuse = glm::vec3(1.0f);
-  bunnyPoints->mat.specular = glm::vec3(1.0f);
-  bunnyPoints->mat.shininess = 16.0f;
-
-  bunnyPoints2->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
-  bunnyPoints2->mat.ambient = glm::vec3(0.5f);
-  bunnyPoints2->mat.diffuse = glm::vec3(1.0f);
-  bunnyPoints2->mat.specular = glm::vec3(1.0f);
-  bunnyPoints2->mat.shininess = 16.0f;
+  medicine->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
+  mortarshell->mat.color = glm::vec3(0.0f, 1.0f, 0.0f);
+  shield->mat.color = glm::vec3(1.0f, 0.0f, 1.0f);
+  gingerbreadHouse->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
+  bomb->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
+  glove->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
+  gun->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
 
   directLight = new Light(false);
 
@@ -155,9 +162,6 @@ bool Window::initializeObjects() {
 
 void Window::cleanUp() {
   // Deallcoate the objects.
-  delete bunnyPoints;
-  delete dragonPoints;
-  delete bearPoints;
   delete plsPoints;
   delete directLight;
   //   delete quad;
@@ -261,9 +265,11 @@ void Window::displayCallback(GLFWwindow* window) {
 
   // TESTING: different locations
   glm::vec3 locations[] = {
-      glm::vec3(2.0f, 5.0f, -15.0f),
-      glm::vec3(-1.5f, -2.2f, -2.5f),
-      glm::vec3(-3.8f, -2.0f, -12.3f),
+      glm::vec3(2.0f, 5.0f, -15.0f),   glm::vec3(-1.5f, -2.2f, -2.5f),
+      glm::vec3(-3.8f, -2.0f, -12.3f), glm::vec3(5.0f, 5.0f, 0.0f),
+      glm::vec3(-1.5f, -2.2f, 0.5f),   glm::vec3(-3.8f, -2.0f, 1.3f),
+      glm::vec3(3.0f, -4.0f, 0.0f),    glm::vec3(-2.5f, -2.2f, 0.5f),
+      glm::vec3(-3.8f, 2.0f, 1.3f),
   };
 
   // rendering
