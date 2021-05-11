@@ -55,8 +55,6 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
-  Networking::initClientNetworking(argv[1], argv[2]);
-
   // Create the GLFW window.
   GLFWwindow* window = Window::createWindow(640, 480);
   if (!window) exit(EXIT_FAILURE);
@@ -72,6 +70,9 @@ int main(int argc, char* argv[]) {
   // Initialize objects/pointers for rendering; exit if initialization fails.
   if (!Window::initializeObjects()) exit(EXIT_FAILURE);
 
+  Networking::initClientNetworking(argv[1], argv[2]);
+
+  GameState s;
   // Loop while GLFW window should stay open.
   while (!glfwWindowShouldClose(window)) {
     // Main render display callback. Rendering of objects is done here.
@@ -81,23 +82,109 @@ int main(int argc, char* argv[]) {
     Window::idleCallback();
 
     // Networking::send("Message from client. ");
-    char* msg = Networking::receive();
+    char* msg = Networking::receive(sizeof(GameState));
+    // GameState* s = (GameState*)malloc(sizeof(GameState));
+    // std::cout << std::string(msg) << std::endl;
     if (msg != NULL) {
-      GameState s;
       memcpy(&s, msg, sizeof(GameState));
-      std::cout << (int)s.board_x << " " << (int)s.board_y << std::endl;
-      for (int i = 0; i < 4; i++) {
+      for (int i = 0; i < NUM_PLAYERS; i++) {
         moveSthBy(i, s.players[i].x, s.players[i].y, 0);
-        std::cout << i << " " << (int)s.players[i].x << " "
-                  << (int)s.players[i].y << std::endl;
+        s.board[s.players[i].x][s.players[i].y] = 4 + i;
       }
+
+      free(msg);
+
+      // Print GameState board.
+      std::system("CLS");
+      std::ostringstream os;
+      for (int i = 0; i <= s.board.height; i++) {
+        for (int j = 0; j <= s.board.width; j++) {
+          switch (s.board[j][i]) {
+            case NOTHING:
+              os << "  ";
+              break;
+            case NOT_DESTROYABLE_CUBE:
+              os << "\033[1;40m  \033[0m";
+              break;
+            case DONUT:
+              os << "\033[1;42m  \033[0m";
+              break;
+            case PLAYER_1:
+              if (s.players[0].life_left > 0) {
+                os << "\033[1;37m11\033[0m";
+              } else {
+                os << "\033[1;37m  \033[0m";
+              }
+              break;
+            case PLAYER_2:
+              if (s.players[1].life_left > 0) {
+                os << "\033[1;37m22\033[0m";
+              } else {
+                os << "\033[1;37m  \033[0m";
+              }
+              break;
+            case PLAYER_3:
+              if (s.players[2].life_left > 0) {
+                os << "\033[1;37m33\033[0m";
+              } else {
+                os << "\033[1;37m  \033[0m";
+              }
+              break;
+            case PLAYER_4:
+              if (s.players[3].life_left > 0) {
+                os << "\033[1;37m44\033[0m";
+              } else {
+                os << "\033[1;37m  \033[0m";
+              }
+              break;
+            case LASER:
+              os << "\033[1;31mLL\033[0m";
+              break;
+            case GRENADE:
+              os << "\033[1;31mGG\033[0m";
+              break;
+            case ROCKET:
+              os << "\033[1;31mRR\033[0m";
+              break;
+            case LANDMINE:
+              os << "\033[1;31mLL\033[0m";
+              break;
+            case FIRE:
+              os << "\033[1;31mFF\033[0m";
+              break;
+            case FROZEN:
+              os << "\033[1;31mZZ\033[0m";
+              break;
+            case GLOVE:
+              os << "\033[1;31mGG\033[0m";
+              break;
+            case ELIXIR:
+              os << "\033[1;31mEE\033[0m";
+              break;
+            case BALL:
+              os << "\033[1;31mBB\033[0m";
+              break;
+            case SHIELD:
+              os << "\033[1;31mSS\033[0m";
+              break;
+            case SHOES:
+              os << "\033[1;31mMM\033[0m";
+              break;
+            case BOMB:
+              os << "\033[1;33mOO\033[0m";
+              break;
+
+            default:
+              break;
+          }
+        }
+        os << "\n";
+      }
+      std::cout << os.str() << std::endl;
+
+      // Sleep for 1000 nanosecs.
+      // std::this_thread::sleep_for(std::chrono::nanoseconds(1000));
     }
-    free(msg);
-
-    // moveSthBy(0, 10, 0, 0);
-
-    // Sleep for 1 secs.
-    // std::this_thread::sleep_for(std::chrono::seconds(1));
   }
 
   Window::cleanUp();

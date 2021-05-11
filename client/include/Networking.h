@@ -21,7 +21,7 @@ class Networking {
   static void send(std::string msg);
 
   // This will read synchronously.
-  static char* receive();
+  static char* receive(size_t);
 };
 
 #endif

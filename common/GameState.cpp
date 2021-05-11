@@ -1,26 +1,25 @@
 #include "GameState.h"
 
 GameState::GameState() {
-  for (int i = 0; i < NUM_PLAYERS; i++) {
-    initialize_player(i);
-  }
+  initialize_players();
   initialize_board();
   initialize_weapon_list();
 }
 
 /* i ranges from 0 - 3 */
-void GameState::initialize_player(int playerI) {
-  Player p;
-  p.id = playerI + 1;
-  p.max_bomb = 1;
-  p.bomb_left = 1;
-  p.weapon = BOMB;
-  p.life_left = 1;
-  p.bomb_power = 1;
-  p.speed = 1;
-  /*p.gen;*/  // no idea
-  //players[playerI] = p;
-  players.insert(players.begin() + playerI, p);
+void GameState::initialize_players() {
+  for (int i = 0; i < NUM_PLAYERS; i++) {
+    Player p;
+    p.id = i + 1;
+    p.max_bomb = 1;
+    p.weapon_left = p.max_bomb;
+    p.weapon = BOMB;
+    p.life_left = 1;
+    p.bomb_power = 1;
+    p.speed = 1;
+    /*p.gen;*/  // no idea
+    players[i] = p;
+  }
 }
 
 void GameState::initialize_weapon_list() {
@@ -39,58 +38,81 @@ void GameState::initialize_weapon_list() {
 
 /* i ranges from 0 - 3 */
 void GameState::initialize_board() {
-    // read from file to initialize non-border non-destroyable cubes
-    FILE * fp;
-    if ((fp = fopen("./board.txt", "r")) == NULL) {
-        std::cerr << "Error when loading the board." << std::endl;
-        exit(1);
-    }
-    fscanf(fp, "%d\n", &board_x);
-    fscanf(fp, "%d\n", &board_y);
-    fscanf(fp, "%d %d", &(players[0].x), &(players[0].y));
-    fscanf(fp, "%d %d", &(players[1].x), &(players[1].y));
-    fscanf(fp, "%d %d", &(players[2].x), &(players[2].y));
-    fscanf(fp, "%d %d", &(players[3].x), &(players[3].y));
+  // read from file to initialize non-border non-destroyable cubes
+  FILE* fp;
+  if ((fp = fopen("../common/board.txt", "r")) == NULL) {
+    std::cerr << "Error when loading the board." << std::endl;
+    exit(1);
+  }
+  fscanf(fp, "%d\n", &board.width);
+  fscanf(fp, "%d\n", &board.height);
+  fscanf(fp, "%d %d", &(players[0].x), &(players[0].y));
+  fscanf(fp, "%d %d", &(players[1].x), &(players[1].y));
+  fscanf(fp, "%d %d", &(players[2].x), &(players[2].y));
+  fscanf(fp, "%d %d", &(players[3].x), &(players[3].y));
 
-    board = (char *) calloc(board_x * board_y, sizeof(char));
-    //memset(board, NOTHING, sizeof(board));
-    int row, col;
-    while (fscanf(fp, "%d %d", &row, &col) > 0) {
-        board[getIndex(row, col)] = NOT_DESTROYABLE_CUBE;
-    }
-    // set the boarder to be non-destroyable cubes
-    for (int i = 0; i < board_x; i++) {
-        board[board_y*i] = NOT_DESTROYABLE_CUBE;
-        board[board_y*i+board_y-1] = NOT_DESTROYABLE_CUBE;
-    }
-    for (int i = 0; i < board_y; i++) {
-        board[i] = NOT_DESTROYABLE_CUBE;
-        board[board_y*(board_x-1)+i] = NOT_DESTROYABLE_CUBE;
-    }
+  // board = (char *) calloc(board_x * board_y, sizeof(char)); // See board
+  // declaration for justification.
+  // memset(board, NOTHING, sizeof(board));
+  int row, col;
+  while (fscanf(fp, "%d %d", &row, &col) > 0) {
+    board[row][col] = NOT_DESTROYABLE_CUBE;
+  }
+  // set the boarder to be non-destroyable cubes
+  // Unsure about border, board.txt suggests players are on the boarders.
+  // for (int i = 0; i < board.width; i++) {
+  //   board[i][0] = NOT_DESTROYABLE_CUBE;
+  //   board[i][board.height - 1] = NOT_DESTROYABLE_CUBE;
+  // }
+  // for (int i = 0; i < board.height; i++) {
+  //   board[0][i] = NOT_DESTROYABLE_CUBE;
+  //   board[board.width - 1][i] = NOT_DESTROYABLE_CUBE;
+  // }
 
-    fclose(fp);
+  fclose(fp);
 
-    // generate destroyable blocks
-    for (int i = 0; i < num_destroyables; i++) {
-      int x = rand() % board_x;
-      int y = rand() % board_y;
-      if (board[getIndex(x, y)] != NOT_DESTROYABLE_CUBE) {
-        board[getIndex(x, y)] = DONUT;
-      }
+  // generate destroyable blocks
+  for (int i = 0; i < num_destroyables;) {
+    int x = rand() % board.width;
+    int y = rand() % board.height;
+    if (board[x][y] != NOT_DESTROYABLE_CUBE) {
+      board[x][y] = DONUT;
+      i++;
     }
+  }
+
+  // Ensure four corners are clear for player to place their first bomb.
+  // Top left.
+  board[0][0] = NOTHING;
+  board[0][1] = NOTHING;
+  board[1][0] = NOTHING;
+  // Top right.
+  board[board.width - 1][0] = NOTHING;
+  board[board.width - 1][1] = NOTHING;
+  board[board.width - 2][0] = NOTHING;
+  // Bottom right.
+  board[board.width - 1][board.height - 1] = NOTHING;
+  board[board.width - 1][board.height - 2] = NOTHING;
+  board[board.width - 2][board.height - 1] = NOTHING;
+  // Bottom left.
+  board[0][board.height - 1] = NOTHING;
+  board[0][board.height - 2] = NOTHING;
+  board[1][board.height - 1] = NOTHING;
 }
 
 /* playerI ranges from 0 - 3 */
 void GameState::updateWithAction(int playerI, char action) {
+  if (players[playerI].life_left < 0) {
+    return;
+  }
   switch (action) {
     case 'W':
       players[playerI].facing = '0';
-      if (players[playerI].y < board_y - 1) {
-        //char nextStepBoard = board[players[playerI].x][players[playerI].y + 1];
-        char nextStepBoard = board[getIndex(players[playerI].x, players[playerI].y + 1)];
+      if (players[playerI].y > 0) {
+        char nextStepBoard = board[players[playerI].x][players[playerI].y - 1];
         if (nextStepBoard != NOT_DESTROYABLE_CUBE && nextStepBoard != DONUT &&
             nextStepBoard != BOMB) {
-          players[playerI].y++;
+          players[playerI].y--;
         }
         check_bubble(playerI);
       }
@@ -98,8 +120,7 @@ void GameState::updateWithAction(int playerI, char action) {
     case 'A':
       players[playerI].facing = '2';
       if (players[playerI].x > 0) {
-        //char nextStepBoard = board[players[playerI].x - 1][players[playerI].y];
-        char nextStepBoard = board[getIndex(players[playerI].x - 1, players[playerI].y)];
+        char nextStepBoard = board[players[playerI].x - 1][players[playerI].y];
         if (nextStepBoard != NOT_DESTROYABLE_CUBE && nextStepBoard != DONUT &&
             nextStepBoard != BOMB) {
           players[playerI].x--;
@@ -109,21 +130,19 @@ void GameState::updateWithAction(int playerI, char action) {
       break;
     case 'S':
       players[playerI].facing = '1';
-      if (players[playerI].y > 0) {
-        //char nextStepBoard = board[players[playerI].x][players[playerI].y - 1];
-        char nextStepBoard = board[getIndex(players[playerI].x, players[playerI].y - 1)];
+      if (players[playerI].y < board.height) {
+        char nextStepBoard = board[players[playerI].x][players[playerI].y + 1];
         if (nextStepBoard != NOT_DESTROYABLE_CUBE && nextStepBoard != DONUT &&
             nextStepBoard != BOMB) {
-          players[playerI].y--;
+          players[playerI].y++;
         }
         check_bubble(playerI);
       }
       break;
     case 'D':
       players[playerI].facing = '3';
-      if (players[playerI].x < board_x - 1) {
-        //char nextStepBoard = board[players[playerI].x + 1][players[playerI].y];
-        char nextStepBoard = board[getIndex(players[playerI].x + 1, players[playerI].y)];
+      if (players[playerI].x < board.width - 1) {
+        char nextStepBoard = board[players[playerI].x + 1][players[playerI].y];
         if (nextStepBoard != NOT_DESTROYABLE_CUBE && nextStepBoard != DONUT &&
             nextStepBoard != BOMB) {
           players[playerI].x++;
@@ -132,7 +151,7 @@ void GameState::updateWithAction(int playerI, char action) {
       }
       break;
     case ' ':
-      attack(playerI, players[playerI].x, players[playerI].y );
+      attack(playerI, players[playerI].x, players[playerI].y);
       break;
 
     default:
@@ -150,25 +169,32 @@ char* GameState::toString() {
 /* playerI ranges from 0 - 3 */
 void GameState::check_bubble(int playerI) {
   // Player I picks up the weapon.
-  //switch (board[players[playerI].x][players[playerI].y]) {
-  switch (board[getIndex(players[playerI].x, players[playerI].y)]) {
+  // switch (board[players[playerI].x][players[playerI].y]) {
+  switch (board[players[playerI].x][players[playerI].y]) {
     case LASER:
       players[playerI].weapon = LASER;
+      players[playerI].weapon_left =
+          1;  // TODO: Discuss number for weapon_left for special weapons.
       break;
     case GRENADE:
       players[playerI].weapon = GRENADE;
+      players[playerI].weapon_left = 2;
       break;
     case ROCKET:
       players[playerI].weapon = ROCKET;
+      players[playerI].weapon_left = 2;
       break;
     case LANDMINE:
       players[playerI].weapon = LANDMINE;
+      players[playerI].weapon_left = 1;
       break;
     case FIRE:
       players[playerI].weapon = FIRE;
+      players[playerI].weapon_left = 2;
       break;
     case FROZEN:
       players[playerI].weapon = FROZEN;
+      players[playerI].weapon_left = 2;
       break;
     case GLOVE:  // TODO
       break;
@@ -177,7 +203,7 @@ void GameState::check_bubble(int playerI) {
       break;
     case BALL:
       players[playerI].max_bomb += 1;
-      players[playerI].bomb_left += 1;
+      players[playerI].weapon_left += 1;
       break;
     case SHIELD:
       players[playerI].life_left += 1;
@@ -191,97 +217,131 @@ void GameState::check_bubble(int playerI) {
       break;
   }
   // Removes weapon from board.
-  //board[players[playerI].x][players[playerI].y] = NOTHING;
-  board[getIndex(players[playerI].x, players[playerI].y)] = NOTHING;
+  board[players[playerI].x][players[playerI].y] = NOTHING;
 }
 
 void GameState::attack(int playerI, int x, int y) {
-  switch (players[playerI].weapon) {
-    case BOMB:
-      // check upward
-      for (int i = 1; i <= players[playerI].bomb_power; i++) {
-       if (check_bomb_effect(x, y - i)) break;
+  if (players[playerI].weapon == BOMB) {
+    if (players[playerI].weapon_left > 0) {
+      players[playerI].weapon_left--;
+      board[x][y] = BOMB;
+      bombs_on_map.push_back(Bomb(x, y, playerI));
+    }
+  } else {
+    if (players[playerI].weapon_left > 0) {
+      switch (players[playerI].weapon) {
+        case LASER:
+          break;
+        case GRENADE:
+          break;
+        case ROCKET:
+          break;
+        case LANDMINE:
+          break;
+        case FIRE:
+          break;
+        case FROZEN:
+          break;
+        default:
+          break;
       }
-      // check downward
-      for (int i = 1; i <= players[playerI].bomb_power; i++) {
-       if (check_bomb_effect(x, y + i)) break;
-      }
-      // check leftward
-      for (int i = 1; i <= players[playerI].bomb_power; i++) {
-       if (check_bomb_effect(x - i, y)) break;
-      }
-      // check rightward
-      for (int i = 1; i <= players[playerI].bomb_power; i++) {
-       if (check_bomb_effect(x + i, y)) break;
-      }
-      break;
-    case LASER:
-    case GRENADE:
-    case ROCKET:
-    case LANDMINE:
-    case FIRE:
-    case FROZEN:
-    default:
-      break;
+      players[playerI].weapon_left--;
+    }
+    if (players[playerI].weapon_left <= 0) {
+      players[playerI].weapon = BOMB;
+      players[playerI].weapon_left = players[playerI].max_bomb;
+    }
   }
 }
 
 int GameState::check_bomb_effect(int x, int y) {
-  int coord = getIndex(x, y);
-  if (coord < 0) return 1;
-  char obj = board[coord];
+  char obj = board[x][y];
   if (obj == NOT_DESTROYABLE_CUBE) return 1;
   if (obj == DONUT) {
     int ind = rand() % weapon_list.size();
-    board[coord] = weapon_list[ind]; // update corresponding object in board
-    weapon_list.erase(weapon_list.begin() + ind); // remove the weapon from weapon list
+    board[x][y] = weapon_list[ind];  // update corresponding object in board
+    weapon_list.erase(weapon_list.begin() +
+                      ind);  // remove the weapon from weapon list
     return 1;
   }
   // encounter player
-  if (obj == PLAYER_1) {
-    if (!players[0].life_left) {
-      players.erase(players.begin());
-      board[coord] = NOTHING;
+  for (int i = 0; i < NUM_PLAYERS; i++) {
+    if (x == players[i].x && y == players[i].y) {
+      if (!players[i].life_left) {
+        // players.erase(players.begin());
+        board[x][y] = NOTHING;
+      }
+      players[i].life_left--;
+      return 1;
     }
-    else {
-      players[0].life_left--;
-    }
-    return 1;
   }
-  if (obj == PLAYER_2) {
-    if (!players[1].life_left) {
-      players.erase(players.begin());
-      board[coord] = NOTHING;
-    }
-    else {
-      players[1].life_left--;
-    }
-    return 1;
-  }
-  if (obj == PLAYER_3) {
-    if (!players[2].life_left) {
-      players.erase(players.begin());
-      board[coord] = NOTHING;
-    }
-    else {
-      players[2].life_left--;
-    }
-    return 1;
-  }
-  if (obj == PLAYER_4) {
-    if (!players[3].life_left) {
-      players.erase(players.begin());
-      board[coord] = NOTHING;
-    }
-    else {
-      players[3].life_left--;
-    }
-    return 1;
+  // Players are not drawn directly on the board. They could conflict with a
+  // bomb. For example, placing a bomb on one's face.
+  // if (obj == PLAYER_1) {
+  //   if (!players[0].life_left) {
+  //     // players.erase(players.begin());
+  //     board[x][y] = NOTHING;
+  //   }
+  //   players[0].life_left--;
+  //   return 1;
+  // }
+  // if (obj == PLAYER_2) {
+  //   if (!players[1].life_left) {
+  //     // players.erase(players.begin());
+  //     board[x][y] = NOTHING;
+  //   }
+  //   players[1].life_left--;
+  //   return 1;
+  // }
+  // if (obj == PLAYER_3) {
+  //   if (!players[2].life_left) {
+  //     // players.erase(players.begin());
+  //     board[x][y] = NOTHING;
+  //   }
+  //   players[2].life_left--;
+  //   return 1;
+  // }
+  // if (obj == PLAYER_4) {
+  //   if (!players[3].life_left) {
+  //     // players.erase(players.begin());
+  //     board[x][y] = NOTHING;
+  //   }
+  //   players[3].life_left--;
+  //   return 1;
+  // }
+
+  // Check if landmine. If it is, remove it.
+  if (obj == LANDMINE) {
+    board[x][y] = NOTHING;
   }
 
   return 0;
 }
 
-int GameState::getIndex(int row, int col) {
-  return GameState::board_y * row + col;
+void GameState::tick_bomb() {
+  for (auto b = bombs_on_map.begin(); b != bombs_on_map.end();) {
+    if (b->is_bombed()) {
+      // check upward, also consider putting a bomb on others' face.
+      for (int i = 0; i <= players[b->bomberI].bomb_power; i++) {
+        if (check_bomb_effect(b->x, b->y - i)) break;
+      }
+      // check downward
+      for (int i = 1; i <= players[b->bomberI].bomb_power; i++) {
+        if (check_bomb_effect(b->x, b->y + i)) break;
+      }
+      // check leftward
+      for (int i = 1; i <= players[b->bomberI].bomb_power; i++) {
+        if (check_bomb_effect(b->x - i, b->y)) break;
+      }
+      // check rightward
+      for (int i = 1; i <= players[b->bomberI].bomb_power; i++) {
+        if (check_bomb_effect(b->x + i, b->y)) break;
+      }
+      players[b->bomberI].weapon_left++;
+      board[b->x][b->y] = NOTHING;
+      bombs_on_map.erase(b);
+    } else {
+      b++;
+    }
+  }
 }
