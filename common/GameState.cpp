@@ -51,7 +51,6 @@ void GameState::initialize_board() {
   fscanf(fp, "%d %d", &(players[2].x), &(players[2].y));
   fscanf(fp, "%d %d", &(players[3].x), &(players[3].y));
 
-  // board = (char *) calloc(board_x * board_y, sizeof(char)); // See board
   // declaration for justification.
   // memset(board, NOTHING, sizeof(board));
   int row, col;
@@ -277,38 +276,6 @@ int GameState::check_bomb_effect(int x, int y) {
   }
   // Players are not drawn directly on the board. They could conflict with a
   // bomb. For example, placing a bomb on one's face.
-  // if (obj == PLAYER_1) {
-  //   if (!players[0].life_left) {
-  //     // players.erase(players.begin());
-  //     board[x][y] = NOTHING;
-  //   }
-  //   players[0].life_left--;
-  //   return 1;
-  // }
-  // if (obj == PLAYER_2) {
-  //   if (!players[1].life_left) {
-  //     // players.erase(players.begin());
-  //     board[x][y] = NOTHING;
-  //   }
-  //   players[1].life_left--;
-  //   return 1;
-  // }
-  // if (obj == PLAYER_3) {
-  //   if (!players[2].life_left) {
-  //     // players.erase(players.begin());
-  //     board[x][y] = NOTHING;
-  //   }
-  //   players[2].life_left--;
-  //   return 1;
-  // }
-  // if (obj == PLAYER_4) {
-  //   if (!players[3].life_left) {
-  //     // players.erase(players.begin());
-  //     board[x][y] = NOTHING;
-  //   }
-  //   players[3].life_left--;
-  //   return 1;
-  // }
 
   // Check if landmine. If it is, remove it.
   if (obj == LANDMINE) {

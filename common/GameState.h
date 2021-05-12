@@ -17,18 +17,18 @@
 // TODO (decide actual number)
 // Moved outside GameState to minimize bytes needed for transmission, and they
 // are also constants.
-#define num_laser 5
-#define num_grenade 5
-#define num_rocket 5
-#define num_landmine 5
+#define num_laser 20
+#define num_grenade 20
+#define num_rocket 20
+#define num_landmine 20
 #define num_fire 0
 #define num_frozen 0
-#define num_glove 5
-#define num_elixir 10
-#define num_ball 10
-#define num_shield 5
-#define num_shoes 5
-#define num_destroyables 100
+#define num_glove 20
+#define num_elixir 30
+#define num_ball 30
+#define num_shield 20
+#define num_shoes 20
+#define num_destroyables 230
 
 class GameState {
  public:
