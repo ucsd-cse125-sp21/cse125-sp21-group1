@@ -86,7 +86,7 @@ int main(int argc, char* argv[]) {
       GameState s;
       memcpy(&s, msg, sizeof(GameState));
       std::cout << (int)s.board_x << " " << (int)s.board_y << std::endl;
-      for (int i = 0; i < 4; i++) {
+      for (int i = 0; i < 1; i++) {
         moveSthBy(i, s.players[i].x, s.players[i].y, 0);
         std::cout << i << " " << (int)s.players[i].x << " "
                   << (int)s.players[i].y << std::endl;

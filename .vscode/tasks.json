@@ -37,7 +37,10 @@
                 "-lopengl32"
             ],
             "problemMatcher": [],
-            "group": "build"
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         },
         {
             "label": "build server",
@@ -62,10 +65,7 @@
                 "-lwsock32"
             ],
             "problemMatcher": [],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
+            "group": "build"
         }
     ]
 }

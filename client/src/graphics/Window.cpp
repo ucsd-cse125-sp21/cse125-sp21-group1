@@ -23,9 +23,9 @@ std::vector<PointCloud*> geometrys;
 
 Light* directLight;
 
-glm::vec3 eye(0, 0, 20);    // Camera position.
+glm::vec3 eye(0, 0, 20);    // Camera position. up to down: (0,20,0)
 glm::vec3 center(0, 0, 0);  // The point we are looking at.
-glm::vec3 up(0, 1, 0);      // The up direction of the camera.
+glm::vec3 up(0, 1, 0);  // The up direction of the camera. up to down: (1,0,0)
 float fovy = 60;
 float nearVal = 1;
 float farVal = 1000;
@@ -86,35 +86,38 @@ bool Window::initializeObjects() {
   // ItemObj itemObjs[]
   // etc.
 
-  cake = new PointCloud("source/obstacle_cake/cake_without_plate.obj", 1);
-  gingerbreadHouse = new PointCloud(
-      "source/obstacle_GingerbreadHouse/GingerbreadHouse.obj", 1);
-  bomb = new PointCloud("source/weapon_bomb_texture/Bomb.obj", 1);
-  glove = new PointCloud("source/weapon_gloves/gloves.obj", 1);
-  gun = new PointCloud("source/weapon_gun/gun.obj", 1);
-  medicine = new PointCloud("source/weapon_medicine/medicine.obj", 1);
-  mortarshell =
-      new PointCloud("source/weapon_mortarshell/weapon_mortarshell.obj", 1);
-  shield = new PointCloud("source/weapon_shiled_texture/shiled.obj", 1);
-  shoe = new PointCloud("source/weapon_shoe/shoe.obj", 1);
+  // cake = new
+  // PointCloud("source/obstacle_GingerbreadHouse/GingerbreadHouse.obj",
+  //                       1);
+  cake = new PointCloud("bunny.obj", 1);
+  // gingerbreadHouse = new PointCloud(
+  //     "source/obstacle_GingerbreadHouse/GingerbreadHouse.obj", 1);
+  // bomb = new PointCloud("source/weapon_bomb_texture/Bomb.obj", 1);
+  // glove = new PointCloud("source/weapon_gloves/gloves.obj", 1);
+  // gun = new PointCloud("source/weapon_gun/gun.obj", 1);
+  // medicine = new PointCloud("source/weapon_medicine/medicine.obj", 1);
+  // mortarshell =
+  //     new PointCloud("source/weapon_mortarshell/weapon_mortarshell.obj", 1);
+  // shield = new PointCloud("source/weapon_shiled_texture/shiled.obj", 1);
+  // shoe = new PointCloud("source/weapon_shoe/shoe.obj", 1);
 
   // TESTING
-  // cake->scale(3);
+  // cake->scale(10);
 
-  geometrys.push_back(cake);              // geometry[0]
-  geometrys.push_back(gingerbreadHouse);  // geometry[1]
-  geometrys.push_back(bomb);              // geometry[2]
-  geometrys.push_back(glove);
-  geometrys.push_back(gun);  // geometry[3]
-  geometrys.push_back(medicine);
-  geometrys.push_back(mortarshell);
-  geometrys.push_back(shield);
-  geometrys.push_back(shoe);
+  geometrys.push_back(cake);  // geometry[0]
+  // geometrys.push_back(gingerbreadHouse);  // geometry[1]
+  // geometrys.push_back(bomb);              // geometry[2]
+  // geometrys.push_back(glove);
+  // geometrys.push_back(gun);  // geometry[3]
+  // geometrys.push_back(medicine);
+  // geometrys.push_back(mortarshell);
+  // geometrys.push_back(shield);
+  // geometrys.push_back(shoe);
 
-  plsPoints = new PointCloud("sphere.obj", -1);
+  // plsPoints = new PointCloud("sphere.obj", -1);
 
-  plsPoints->scale(0.3);
-  plsPoints->translate(0.0, 2.0, 0.0);
+  // plsPoints->scale(0.3);
+  // plsPoints->translate(0.0, 2.0, 0.0);
 
   // init material values
   //    bunnyPoints->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
@@ -124,35 +127,35 @@ bool Window::initializeObjects() {
   //    bunnyPoints->mat.shininess = 1.0f;
 
   cake->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
-  cake->mat.ambient = glm::vec3(0.5f);
-  cake->mat.diffuse = glm::vec3(0.0f);
-  cake->mat.specular = glm::vec3(0.5f, 0.5f, 0.5f);
-  cake->mat.shininess = 64.0f;
+  // cake->mat.ambient = glm::vec3(0.5f);
+  // cake->mat.diffuse = glm::vec3(0.0f);
+  // cake->mat.specular = glm::vec3(0.5f, 0.5f, 0.5f);
+  // cake->mat.shininess = 64.0f;
 
-  medicine->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
-  mortarshell->mat.color = glm::vec3(0.0f, 1.0f, 0.0f);
-  shield->mat.color = glm::vec3(1.0f, 0.0f, 1.0f);
-  gingerbreadHouse->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
-  bomb->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
-  glove->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
-  gun->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
+  // medicine->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
+  // mortarshell->mat.color = glm::vec3(0.0f, 1.0f, 0.0f);
+  // shield->mat.color = glm::vec3(1.0f, 0.0f, 1.0f);
+  // gingerbreadHouse->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
+  // bomb->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
+  // glove->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
+  // gun->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
 
   directLight = new Light(false);
 
   // bind light
-  glUniform3fv(glGetUniformLocation(program, "DirLight.direction"), 1,
-               glm::value_ptr(glm::vec3(0.5f)));
-  glUniform3fv(glGetUniformLocation(program, "DirLight.position"), 1,
-               glm::value_ptr(glm::vec3(0.0f)));
-  glUniform3fv(glGetUniformLocation(program, "DirLight.ambient"), 1,
-               glm::value_ptr(glm::vec3(0.0f)));
-  glUniform3fv(glGetUniformLocation(program, "DirLight.diffuse"), 1,
-               glm::value_ptr(glm::vec3(1.0f)));
-  glUniform3fv(glGetUniformLocation(program, "DirLight.specular"), 1,
-               glm::value_ptr(glm::vec3(1.0f)));
-  glUniform1f(glGetUniformLocation(program, "DirLight.constant"), 1.0f);
-  glUniform1f(glGetUniformLocation(program, "DirLight.linear"), 0.35f);
-  glUniform1f(glGetUniformLocation(program, "DirLight.quadratic"), 0.44f);
+  // glUniform3fv(glGetUniformLocation(program, "DirLight.direction"), 1,
+  //              glm::value_ptr(glm::vec3(0.5f)));
+  // glUniform3fv(glGetUniformLocation(program, "DirLight.position"), 1,
+  //              glm::value_ptr(glm::vec3(0.0f)));
+  // glUniform3fv(glGetUniformLocation(program, "DirLight.ambient"), 1,
+  //              glm::value_ptr(glm::vec3(0.0f)));
+  // glUniform3fv(glGetUniformLocation(program, "DirLight.diffuse"), 1,
+  //              glm::value_ptr(glm::vec3(1.0f)));
+  // glUniform3fv(glGetUniformLocation(program, "DirLight.specular"), 1,
+  //              glm::value_ptr(glm::vec3(1.0f)));
+  // glUniform1f(glGetUniformLocation(program, "DirLight.constant"), 1.0f);
+  // glUniform1f(glGetUniformLocation(program, "DirLight.linear"), 0.35f);
+  // glUniform1f(glGetUniformLocation(program, "DirLight.quadratic"), 0.44f);
 
   // bind other values
   glUniform3fv(glGetUniformLocation(program, "eyePos"), 1, glm::value_ptr(eye));
@@ -265,7 +268,7 @@ void Window::displayCallback(GLFWwindow* window) {
 
   // TESTING: different locations
   glm::vec3 locations[] = {
-      glm::vec3(2.0f, 5.0f, -15.0f),   glm::vec3(-1.5f, -2.2f, -2.5f),
+      glm::vec3(0.0f, 0.0f, 0.0f),     glm::vec3(-1.5f, -2.2f, -2.5f),
       glm::vec3(-3.8f, -2.0f, -12.3f), glm::vec3(5.0f, 5.0f, 0.0f),
       glm::vec3(-1.5f, -2.2f, 0.5f),   glm::vec3(-3.8f, -2.0f, 1.3f),
       glm::vec3(3.0f, -4.0f, 0.0f),    glm::vec3(-2.5f, -2.2f, 0.5f),
@@ -279,7 +282,7 @@ void Window::displayCallback(GLFWwindow* window) {
   for (int i = 0; i < geometrys.size(); i++) {
     PointCloud* currentObj = geometrys[i];
     // mat
-    glm::mat4 curr_model = glm::translate(currentObj->getModel(), locations[i]);
+    glm::mat4 curr_model = glm::translate(currentObj->getModel(), locations[2]);
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(curr_model));
 
     glUniform3fv(colorLoc, 1, glm::value_ptr(currentObj->mat.color));
@@ -290,7 +293,7 @@ void Window::displayCallback(GLFWwindow* window) {
 
     int coloringType = 0;
     // if (enablePointLight) coloringType += 2;
-    if (enableDirectionalLight) coloringType += 1;
+    // if (enableDirectionalLight) coloringType += 1;
     if (!enablePhongColoring) coloringType = 4;
     glUniform1i(glGetUniformLocation(program, "coloringType"), coloringType);
 

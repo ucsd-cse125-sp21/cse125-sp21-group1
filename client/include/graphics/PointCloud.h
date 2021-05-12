@@ -8,6 +8,8 @@
 #include <GL/glew.h>
 #endif
 
+#include <stb_image.h>
+
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <string>
@@ -17,8 +19,8 @@
 
 class PointCloud : public Object {
  private:
-  std::vector<glm::vec3> points, vn;
-  std::vector<unsigned int> face, face_tex;
+  std::vector<glm::vec3> points, vn;  // vs, vns
+  std::vector<unsigned int> face, face_tex, face_n;
   std::vector<float> lightType;
   glm::vec3 spinrate;
   GLuint vao, vbo_v, vbo_vn, vbo_obey, ebo;
@@ -27,7 +29,6 @@ class PointCloud : public Object {
  public:
   PointCloud(std::string objFilename, GLfloat pointSize);
   ~PointCloud();
-
   void draw();
   void update();
 
