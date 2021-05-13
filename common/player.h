@@ -1,5 +1,10 @@
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
+#define UPWARD 0
+#define DOWNWARD 1
+#define LEFTWARD 2
+#define RIGHTWARD 3
+
 struct Player {
   char id;
   int x;

@@ -17,6 +17,7 @@ void GameState::initialize_players() {
     p.life_left = 1;
     p.bomb_power = 1;
     p.speed = 1;
+    p.facing = DOWNWARD;
     /*p.gen;*/  // no idea
     players[i] = p;
   }
@@ -106,7 +107,7 @@ void GameState::updateWithAction(int playerI, char action) {
   }
   switch (action) {
     case 'W':
-      players[playerI].facing = '0';
+      players[playerI].facing = UPWARD;
       if (players[playerI].y > 0) {
         char nextStepBoard = board[players[playerI].x][players[playerI].y - 1];
         if (nextStepBoard != NOT_DESTROYABLE_CUBE && nextStepBoard != DONUT &&
@@ -117,7 +118,7 @@ void GameState::updateWithAction(int playerI, char action) {
       }
       break;
     case 'A':
-      players[playerI].facing = '2';
+      players[playerI].facing = LEFTWARD;
       if (players[playerI].x > 0) {
         char nextStepBoard = board[players[playerI].x - 1][players[playerI].y];
         if (nextStepBoard != NOT_DESTROYABLE_CUBE && nextStepBoard != DONUT &&
@@ -128,7 +129,7 @@ void GameState::updateWithAction(int playerI, char action) {
       }
       break;
     case 'S':
-      players[playerI].facing = '1';
+      players[playerI].facing = DOWNWARD;
       if (players[playerI].y < board.height) {
         char nextStepBoard = board[players[playerI].x][players[playerI].y + 1];
         if (nextStepBoard != NOT_DESTROYABLE_CUBE && nextStepBoard != DONUT &&
@@ -139,7 +140,7 @@ void GameState::updateWithAction(int playerI, char action) {
       }
       break;
     case 'D':
-      players[playerI].facing = '3';
+      players[playerI].facing = RIGHTWARD;
       if (players[playerI].x < board.width - 1) {
         char nextStepBoard = board[players[playerI].x + 1][players[playerI].y];
         if (nextStepBoard != NOT_DESTROYABLE_CUBE && nextStepBoard != DONUT &&
