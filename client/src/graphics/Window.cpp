@@ -10,12 +10,10 @@ std::string windowTitle("GLFW Starter Project");
 PointCloud* cake;
 PointCloud* gingerbreadHouse;
 PointCloud* bomb;
-PointCloud* glove;
 PointCloud* gun;
-PointCloud* medicine;
 PointCloud* mortarshell;
-PointCloud* shield;
 PointCloud* shoe;
+PointCloud* coffee;
 PointCloud* plsPoints;  // point light sphere
 
 // collection of PointCloud, store all the game objects
@@ -86,33 +84,28 @@ bool Window::initializeObjects() {
   // ItemObj itemObjs[]
   // etc.
 
-  // cake = new
-  // PointCloud("source/obstacle_GingerbreadHouse/GingerbreadHouse.obj",
-  //                       1);
-  cake = new PointCloud("bunny.obj", 1);
-  // gingerbreadHouse = new PointCloud(
-  //     "source/obstacle_GingerbreadHouse/GingerbreadHouse.obj", 1);
-  // bomb = new PointCloud("source/weapon_bomb_texture/Bomb.obj", 1);
-  // glove = new PointCloud("source/weapon_gloves/gloves.obj", 1);
-  // gun = new PointCloud("source/weapon_gun/gun.obj", 1);
-  // medicine = new PointCloud("source/weapon_medicine/medicine.obj", 1);
-  // mortarshell =
-  //     new PointCloud("source/weapon_mortarshell/weapon_mortarshell.obj", 1);
-  // shield = new PointCloud("source/weapon_shiled_texture/shiled.obj", 1);
-  // shoe = new PointCloud("source/weapon_shoe/shoe.obj", 1);
+  cake = new PointCloud(
+      "source/obstacle_cake2_texture/cake_obj/Chocolate Cake.obj", 1);
+  gingerbreadHouse = new PointCloud(
+      "source/obstacle_GingerbreadHouse/GingerbreadHouse.obj", 1);
+  bomb = new PointCloud("source/weapon_bomb_texture/Bomb.obj", 1);
+  gun = new PointCloud("source/weapon_gun/gun.obj", 1);
+  mortarshell =
+      new PointCloud("source/weapon_mortarshell/weapon_mortarshell.obj", 1);
+  shoe = new PointCloud("source/weapon_shoe/shoe.obj", 1);
+  coffee = new PointCloud("source/obstacle_coffee_texture/Cup _ Saucer.obj", 1);
 
   // TESTING
-  // cake->scale(10);
+  // coffee->scale(10);
 
-  geometrys.push_back(cake);  // geometry[0]
-  // geometrys.push_back(gingerbreadHouse);  // geometry[1]
-  // geometrys.push_back(bomb);              // geometry[2]
-  // geometrys.push_back(glove);
-  // geometrys.push_back(gun);  // geometry[3]
-  // geometrys.push_back(medicine);
-  // geometrys.push_back(mortarshell);
-  // geometrys.push_back(shield);
-  // geometrys.push_back(shoe);
+  // TODO: match the object number
+  geometrys.push_back(cake);              // geometry[0]
+  geometrys.push_back(gingerbreadHouse);  // geometry[1]
+  geometrys.push_back(bomb);              // geometry[2]
+  geometrys.push_back(gun);               // geometry[3]
+  geometrys.push_back(mortarshell);
+  geometrys.push_back(shoe);
+  geometrys.push_back(coffee);
 
   // plsPoints = new PointCloud("sphere.obj", -1);
 
@@ -126,7 +119,7 @@ bool Window::initializeObjects() {
   //    bunnyPoints->mat.specular = glm::vec3(0.5f, 0.5f, 0.5f);
   //    bunnyPoints->mat.shininess = 1.0f;
 
-  cake->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
+  // cake->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
   // cake->mat.ambient = glm::vec3(0.5f);
   // cake->mat.diffuse = glm::vec3(0.0f);
   // cake->mat.specular = glm::vec3(0.5f, 0.5f, 0.5f);
@@ -268,10 +261,10 @@ void Window::displayCallback(GLFWwindow* window) {
 
   // TESTING: different locations
   glm::vec3 locations[] = {
-      glm::vec3(0.0f, 0.0f, 0.0f),     glm::vec3(-1.5f, -2.2f, -2.5f),
-      glm::vec3(-3.8f, -2.0f, -12.3f), glm::vec3(5.0f, 5.0f, 0.0f),
-      glm::vec3(-1.5f, -2.2f, 0.5f),   glm::vec3(-3.8f, -2.0f, 1.3f),
-      glm::vec3(3.0f, -4.0f, 0.0f),    glm::vec3(-2.5f, -2.2f, 0.5f),
+      glm::vec3(0.0f, 0.0f, 0.0f),   glm::vec3(-1.5f, -2.2f, 0.0f),
+      glm::vec3(-3.8f, -2.0f, 0.0f), glm::vec3(5.0f, 5.0f, 0.0f),
+      glm::vec3(-1.5f, -2.2f, 0.0f), glm::vec3(-3.8f, -2.0f, 1.3f),
+      glm::vec3(3.0f, -4.0f, 0.0f),  glm::vec3(-2.5f, -2.2f, 0.5f),
       glm::vec3(-3.8f, 2.0f, 1.3f),
   };
 
@@ -279,10 +272,11 @@ void Window::displayCallback(GLFWwindow* window) {
   /* for each input data of client
    * data contains object number and location
    */
+  // TODO: change the loop to loop for client input
   for (int i = 0; i < geometrys.size(); i++) {
     PointCloud* currentObj = geometrys[i];
     // mat
-    glm::mat4 curr_model = glm::translate(currentObj->getModel(), locations[2]);
+    glm::mat4 curr_model = glm::translate(currentObj->getModel(), locations[i]);
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(curr_model));
 
     glUniform3fv(colorLoc, 1, glm::value_ptr(currentObj->mat.color));

@@ -19,11 +19,12 @@
 
 class PointCloud : public Object {
  private:
-  std::vector<glm::vec3> points, vn;  // vs, vns
-  std::vector<unsigned int> face, face_tex, face_n;
-  std::vector<float> lightType;
+  std::vector<glm::vec3> points, vn, vt;  // vs, vns
+  std::vector<unsigned int> face, face_t, face_n;
+  // std::vector<float> lightType;
   glm::vec3 spinrate;
   GLuint vao, vbo_v, vbo_vn, vbo_obey, ebo;
+  // GLuint vbo[2], ebo[2];
   GLfloat pointSize;
 
  public:

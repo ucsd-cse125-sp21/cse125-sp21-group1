@@ -5,6 +5,7 @@
 #include "fstream"
 #include "iostream"
 
+// TODO: add texture
 PointCloud::PointCloud(std::string objFilename, GLfloat pointSize)
     : pointSize(pointSize) {
   std::cout << "\nreading file " << objFilename << " ...\n";
@@ -33,11 +34,13 @@ PointCloud::PointCloud(std::string objFilename, GLfloat pointSize)
       if (miny > y) miny = y;
       if (minz > z) minz = z;
       upscaled_points.push_back(glm::vec3(x, y, z));
-      lightType.push_back(pointSize);
+      // lightType.push_back(pointSize);
     } else if (type == "vn") {
       iss >> x >> y >> z;
       vn.push_back(glm::vec3(x, y, z));
     } else if (type == "vt") {
+      iss >> x >> y >> z;
+      vt.push_back(glm::vec3(x, y, z));
     } else if (type == "f") {
       // iss >> x1;
       // iss.get();
@@ -66,11 +69,12 @@ PointCloud::PointCloud(std::string objFilename, GLfloat pointSize)
       face.push_back(--v1);
       face.push_back(--v2);
       face.push_back(--v3);
-      //            face_t.push_back(--t1); face_t.push_back(--t2);
-      //            face_t.push_back(--t3);
-      // face_n.push_back(--n1);
-      // face_n.push_back(--n2);
-      // face_n.push_back(--n3);
+      face_t.push_back(--t1);
+      face_t.push_back(--t2);
+      face_t.push_back(--t3);
+      face_n.push_back(--n1);
+      face_n.push_back(--n2);
+      face_n.push_back(--n3);
     }
   }
   ifs.close();
@@ -93,18 +97,18 @@ PointCloud::PointCloud(std::string objFilename, GLfloat pointSize)
                                (v[1] - disy) * scalerate,
                                (v[2] - disz) * scalerate));
 
-  // std::vector<unsigned int> _face, _face_n;
-  // std::vector<glm::vec3> _vs, _vns;
-  // for (int i = 0; i < face.size(); i++) {
-  //   _vs.push_back(points[face[i]]);
-  //   _vns.push_back(vn[face_n[i]]);
-  //   _face.push_back(i);
-  //   _face_n.push_back(i);
-  // }
-  // points = _vs;
-  // vn = _vns;
-  // face = _face;
-  // face_n = _face_n;
+  std::vector<unsigned int> _face, _face_n;
+  std::vector<glm::vec3> _vs, _vns;
+  for (int i = 0; i < face.size(); i++) {
+    _vs.push_back(points[face[i]]);
+    _vns.push_back(vn[face_n[i]]);
+    _face.push_back(i);
+    _face_n.push_back(i);
+  }
+  points = _vs;
+  vn = _vns;
+  face = _face;
+  face_n = _face_n;
 
   // Generate a vertex array (VAO) and a vertex buffer objects (VBO).
   glGenVertexArrays(1, &vao);
@@ -130,10 +134,10 @@ PointCloud::PointCloud(std::string objFilename, GLfloat pointSize)
                         (GLvoid*)0);
 
   // obey rule?
-  glGenBuffers(2, &vbo_obey);
-  glBindBuffer(GL_ARRAY_BUFFER, vbo_obey);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(GLuint) * lightType.size(),
-               lightType.data(), GL_STATIC_DRAW);
+  // glGenBuffers(2, &vbo_obey);
+  // glBindBuffer(GL_ARRAY_BUFFER, vbo_obey);
+  // glBufferData(GL_ARRAY_BUFFER, sizeof(GLuint) * lightType.size(),
+  //              lightType.data(), GL_STATIC_DRAW);
 
   glEnableVertexAttribArray(2);
   glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat), (GLvoid*)0);
