@@ -18,3 +18,9 @@
 #define SHIELD 17
 #define SHOES 18
 #define BOMB 19
+
+struct Obj4graphics {
+  char id;
+  float gen[4][4];  // 4 * 4 float matrix used for graphics
+};
+typedef struct Object Object;
