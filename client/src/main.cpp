@@ -76,7 +76,8 @@ int main(int argc, char* argv[]) {
   // Loop while GLFW window should stay open.
   while (!glfwWindowShouldClose(window)) {
     // Main render display callback. Rendering of objects is done here.
-    Window::displayCallback(window);
+    std::vector<Obj4graphics> objects;
+    Window::displayCallback(window, objects);
 
     // Idle callback. Updating objects, etc. can be done here.
     Window::idleCallback();
@@ -88,7 +89,8 @@ int main(int argc, char* argv[]) {
     if (msg != NULL) {
       memcpy(&s, msg, sizeof(GameState));
       for (int i = 0; i < NUM_PLAYERS; i++) {
-        moveSthBy(i, s.players[i].x, s.players[i].y, 0);
+        moveSthBy(i, s.players[i].x - s.board.width/2,
+            s.players[i].y - s.board.height/2, 0);
         s.board[s.players[i].x][s.players[i].y] = 4 + i;
       }
 
