@@ -25,6 +25,7 @@
 #include "Object.h"
 #include "PointCloud.h"
 #include "shader.h"
+#include "player.h"
 
 void moveSthBy(int i, int x, int y, int z);
 
@@ -43,7 +44,7 @@ class Window {
   // Is called on idle.
   static void idleCallback();
   // This renders to the glfw window. Add draw calls here
-  static void displayCallback(GLFWwindow*);
+  static void displayCallback(GLFWwindow*, std::vector<Obj4graphics>);
   // Add your key press event handling here
   static void keyCallback(GLFWwindow* window, int key, int scancode, int action,
                           int mods);

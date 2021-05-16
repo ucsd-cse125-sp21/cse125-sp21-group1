@@ -249,7 +249,8 @@ void Window::idleCallback() {
   //    std::cout << cos(directLight->degree / 10.0) <<'\n';
 }
 
-void Window::displayCallback(GLFWwindow* window) {
+void Window::displayCallback(GLFWwindow* window,
+    std::vector<Obj4graphics> objects) {
   // Switch back to using OpenGL's rasterizer
   glUseProgram(program);
   // Clear the color and depth buffers.
