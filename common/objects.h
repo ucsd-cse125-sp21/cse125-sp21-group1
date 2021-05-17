@@ -1,4 +1,4 @@
-#ifudef __objects__
+#ifndef __objects__
 #define __objects__
 
 #define NOTHING 0
