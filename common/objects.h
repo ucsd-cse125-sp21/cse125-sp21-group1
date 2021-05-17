@@ -1,3 +1,6 @@
+#idudef __objects__
+#define __objects__
+
 #define NOTHING 0
 #define NOT_DESTROYABLE_CUBE 1
 #define DONUT 2
@@ -24,3 +27,5 @@ struct Obj4graphics {
   float gen[4][4];  // 4 * 4 float matrix used for graphics
 };
 typedef struct Object Object;
+
+#endif
