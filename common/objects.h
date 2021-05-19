@@ -26,6 +26,6 @@ struct Obj4graphics {
   char id;
   float gen[4][4];  // 4 * 4 float matrix used for graphics
 };
-typedef struct Object Object;
+typedef struct Obj4graphics Obj4graphics;
 
 #endif

@@ -6,6 +6,9 @@
 #include <vector>
 
 #include "Networking.h"
+#include "assimp/Importer.hpp"
+#include "assimp/postprocess.h"
+#include "assimp/scene.h"
 
 void errorCallback(int error, const char* description) {
   // Print error.
@@ -50,6 +53,29 @@ void printVersions() {
 }
 
 int main(int argc, char* argv[]) {
+  std::cout << "start loading with Assimp" << std::endl;
+
+  // Create an instance of the Importer class
+  Assimp::Importer importer;
+
+  // And have it read the given file with some example postprocessing
+  // Usually - if speed is not the most important aspect for you - you'll
+  // probably to request more postprocessing than we do in this example.
+  const aiScene* scene = importer.ReadFile(
+      "bunny.obj", aiProcess_CalcTangentSpace | aiProcess_Triangulate |
+                       aiProcess_JoinIdenticalVertices | aiProcess_SortByPType);
+
+  // If the import failed, report it
+  if (!scene) {
+    std::cout << "loading failed. " << std::endl;
+    return 1;
+  }
+
+  // Now we can access the file's contents.
+  std::cout << "loading success. " << std::endl;
+  std::cout << "num meshes: " << scene->mNumMeshes << std::endl;
+  std::cout << "num materials: " << scene->mNumMaterials << std::endl;
+
   if (argc != 3) {
     std::cerr << "Usage: client <host> <port>" << std::endl;
     return 1;
@@ -89,8 +115,8 @@ int main(int argc, char* argv[]) {
     if (msg != NULL) {
       memcpy(&s, msg, sizeof(GameState));
       for (int i = 0; i < NUM_PLAYERS; i++) {
-        moveSthBy(i, s.players[i].x - s.board.width/2,
-            s.players[i].y - s.board.height/2, 0);
+        moveSthBy(i, s.players[i].x - s.board.width / 2,
+                  s.players[i].y - s.board.height / 2, 0);
         s.board[s.players[i].x][s.players[i].y] = 4 + i;
       }
 

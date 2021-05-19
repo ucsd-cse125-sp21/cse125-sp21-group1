@@ -24,8 +24,9 @@
 #include "Networking.h"
 #include "Object.h"
 #include "PointCloud.h"
-#include "shader.h"
+#include "objects.h"
 #include "player.h"
+#include "shader.h"
 
 void moveSthBy(int i, int x, int y, int z);
 
