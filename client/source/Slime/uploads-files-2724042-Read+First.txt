@@ -1,0 +1,9 @@
+Thank you for your purchase!
+
+Jump Animation: Frame 0-25
+Move Animation: Frame 26-42
+Idle Animation: Frame 43-75
+Damage Animation: Frame 76-85
+
+If you have any issues or questions please let me know.
+e-mail: mauro.0909@hotmail.com
