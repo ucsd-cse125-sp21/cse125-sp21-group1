@@ -8,16 +8,23 @@ namespace {
 int width, height;
 std::string windowTitle("GLFW Starter Project");
 
-PointCloud* bunnyPoints;
-PointCloud* dragonPoints;
-PointCloud* bearPoints;
-PointCloud* bunnyPoints2;
+Model* cake;
+Model* choco_cake;
+Model* coffee;
+Model* gingerbreadHouse;
+Model* bomb;
+Model* glove;
+Model* gun;
+Model* medicine;
+Model* motarshell;
+Model* sheild;
+Model* shoe;
+
 PointCloud* plsPoints;  // point light sphere
 
 // collection of PointCloud, store all the game objects
-std::vector<PointCloud*> geometrys;
-
-Light* directLight;
+std::vector<Model*> geometrys;
+std::map<int, Model*> models;
 
 glm::vec3 eye(0, 0, 20);    // Camera position.
 glm::vec3 center(0, 0, 0);  // The point we are looking at.
@@ -29,7 +36,8 @@ glm::mat4 view = glm::lookAt(
     eye, center, up);  // View matrix, defined by eye, center and up.
 glm::mat4 projection;  // Projection matrix.
 
-GLuint program;        // The shader program id.
+Shader shader = Shader("shaders/vertex_shader.glsl",
+                       "shaders/fragment_shader.glsl");  // The shader.
 GLuint projectionLoc;  // Location of projection in shader.
 GLuint viewLoc;        // Location of view in shader.
 GLuint modelLoc;       // Location of model in shader.
@@ -51,26 +59,11 @@ void moveSthBy(int i, int x, int y, int z) { geometrys[i]->moveTo(x, y, z); }
 
 bool Window::initializeProgram() {
   // Create a shader program with a vertex shader and a fragment shader.
-  program = LoadShaders("shaders/shader.vert", "shaders/shader.frag");
-
-  // Check the shader programs.
-  if (!program) {
-    std::cerr << "Failed to initialize shader program" << std::endl;
-    return false;
-  }
+  // shader = Shader("shaders/vertex_shader.glsl",
+  // "shaders/fragment_shader.glsl");
 
   // Activate the shader program.
-  glUseProgram(program);
-  // Get the locations of uniform variables.
-  projectionLoc = glGetUniformLocation(program, "projection");
-  viewLoc = glGetUniformLocation(program, "view");
-  modelLoc = glGetUniformLocation(program, "model");
-
-  colorLoc = glGetUniformLocation(program, "mat.color");
-  ambientLoc = glGetUniformLocation(program, "mat.ambient");
-  diffuseLoc = glGetUniformLocation(program, "mat.diffuse");
-  specularLoc = glGetUniformLocation(program, "mat.specular");
-  shininessLoc = glGetUniformLocation(program, "mat.shininess");
+  shader.use();
 
   return true;
 }
@@ -82,88 +75,51 @@ bool Window::initializeObjects() {
   // ItemObj itemObjs[]
   // etc.
 
-  bunnyPoints = new PointCloud("bunny.obj", 1);
-  dragonPoints = new PointCloud("bunny.obj", 1);
-  // new PointCloud("dragon.obj", 1);
-  bearPoints = new PointCloud("bunny.obj", 1);
-  // new PointCloud("bear.obj", 1);
-  bunnyPoints2 = new PointCloud("bunny.obj", 1);
+  cake = new Model("source/obstacle_cake/obstacle_cake.obj");
+  choco_cake =
+      new Model("source/obstacle_cake2_texture/cake_obj/Chocolate Cake.obj");
+  coffee = new Model("source/obstacle_coffee_texture/cup and saucer.obj");
+  gingerbreadHouse =
+      new Model("source/obstacle_GingerbreadHouse/GingerbreadHouse.obj");
+  bomb = new Model("source/weapon_bomb_texture/Bomb.obj");
+  glove = new Model("source/weapon_gloves/gloves.obj");
+  gun = new Model("source/weapon_gun/gun.obj");
+  medicine = new Model("source/weapon_medicine/medicine.obj");
+  motarshell = new Model("source/weapon_mortarshell/mortarshell.obj");
+  sheild = new Model("source/weapon_shiled_texture/shiled.obj");
+  shoe = new Model("source/weapon_shoe/shoe.obj");
 
-  geometrys.push_back(bunnyPoints);   // geometry[0]
-  geometrys.push_back(dragonPoints);  // geometry[1]
-  geometrys.push_back(bearPoints);    // geometry[2]
-  geometrys.push_back(bunnyPoints2);  // geometry[3]
+  geometrys.push_back(cake);
+  geometrys.push_back(choco_cake);
+  geometrys.push_back(coffee);
+  geometrys.push_back(gingerbreadHouse);
+  geometrys.push_back(bomb);
+  geometrys.push_back(glove);
+  geometrys.push_back(gun);
+  geometrys.push_back(medicine);
+  geometrys.push_back(motarshell);
+  geometrys.push_back(sheild);
+  geometrys.push_back(shoe);
 
   plsPoints = new PointCloud("sphere.obj", -1);
 
   plsPoints->scale(0.3);
   plsPoints->translate(0.0, 2.0, 0.0);
 
-  // init material values
-  //    bunnyPoints->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
-  //    bunnyPoints->mat.ambient = glm::vec3(0.5f, 0.5f, 0.5f);
-  //    bunnyPoints->mat.diffuse = glm::vec3(0.5f, 0.5f, 0.5f);
-  //    bunnyPoints->mat.specular = glm::vec3(0.5f, 0.5f, 0.5f);
-  //    bunnyPoints->mat.shininess = 1.0f;
-
-  bearPoints->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
-  bearPoints->mat.ambient = glm::vec3(0.5f);
-  bearPoints->mat.diffuse = glm::vec3(0.0f);
-  bearPoints->mat.specular = glm::vec3(0.5f, 0.5f, 0.5f);
-  bearPoints->mat.shininess = 64.0f;
-
-  dragonPoints->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
-  dragonPoints->mat.ambient = glm::vec3(0.1f);
-  dragonPoints->mat.diffuse = glm::vec3(1.0f);
-  dragonPoints->mat.specular = glm::vec3(1.0f);
-  dragonPoints->mat.shininess = 0.0f;
-
-  bunnyPoints->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
-  bunnyPoints->mat.ambient = glm::vec3(0.5f);
-  bunnyPoints->mat.diffuse = glm::vec3(1.0f);
-  bunnyPoints->mat.specular = glm::vec3(1.0f);
-  bunnyPoints->mat.shininess = 16.0f;
-
-  bunnyPoints2->mat.color = glm::vec3(1.0f, 0.0f, 0.0f);
-  bunnyPoints2->mat.ambient = glm::vec3(0.5f);
-  bunnyPoints2->mat.diffuse = glm::vec3(1.0f);
-  bunnyPoints2->mat.specular = glm::vec3(1.0f);
-  bunnyPoints2->mat.shininess = 16.0f;
-
-  directLight = new Light(false);
-
-  // bind light
-  glUniform3fv(glGetUniformLocation(program, "DirLight.direction"), 1,
-               glm::value_ptr(glm::vec3(0.5f)));
-  glUniform3fv(glGetUniformLocation(program, "DirLight.position"), 1,
-               glm::value_ptr(glm::vec3(0.0f)));
-  glUniform3fv(glGetUniformLocation(program, "DirLight.ambient"), 1,
-               glm::value_ptr(glm::vec3(0.0f)));
-  glUniform3fv(glGetUniformLocation(program, "DirLight.diffuse"), 1,
-               glm::value_ptr(glm::vec3(1.0f)));
-  glUniform3fv(glGetUniformLocation(program, "DirLight.specular"), 1,
-               glm::value_ptr(glm::vec3(1.0f)));
-  glUniform1f(glGetUniformLocation(program, "DirLight.constant"), 1.0f);
-  glUniform1f(glGetUniformLocation(program, "DirLight.linear"), 0.35f);
-  glUniform1f(glGetUniformLocation(program, "DirLight.quadratic"), 0.44f);
-
   // bind other values
-  glUniform3fv(glGetUniformLocation(program, "eyePos"), 1, glm::value_ptr(eye));
+  // glUniform3fv(glGetUniformLocation(program, "eyePos"), 1,
+  // glm::value_ptr(eye));
 
   return true;
 }
 
 void Window::cleanUp() {
   // Deallcoate the objects.
-  delete bunnyPoints;
-  delete dragonPoints;
-  delete bearPoints;
-  delete plsPoints;
-  delete directLight;
+  // TODO: add new model
   //   delete quad;
 
   // Delete the shader programs.
-  glDeleteProgram(program);
+  glDeleteProgram(shader.ID);
   // glDeleteProgram(programQuad);
 }
 
@@ -240,25 +196,20 @@ void Window::resizeCallback(GLFWwindow* window, int w, int h) {
 
 void Window::idleCallback() {
   // Perform any updates as necessary.
-  if (enableDirectionalLight)
-    glUniform3fv(
-        glGetUniformLocation(program, "DirLight.direction"), 1,
-        glm::value_ptr(glm::vec3(cos(++directLight->degree / 500.0), 0.0f,
-                                 sin(directLight->degree / 500.0))));
 
   //    std::cout << cos(directLight->degree / 10.0) <<'\n';
 }
 
 void Window::displayCallback(GLFWwindow* window,
-    std::vector<Obj4graphics> objects) {
+                             std::vector<Obj4graphics> objects) {
   // Switch back to using OpenGL's rasterizer
-  glUseProgram(program);
+  shader.use();
   // Clear the color and depth buffers.
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   // Specify the values of the uniform variables we are going to use.
-  glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
-  glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+  shader.setMat4("projection", projection);
+  shader.setMat4("view", view);
 
   // TESTING: different locations
   glm::vec3 locations[] = {
@@ -272,25 +223,13 @@ void Window::displayCallback(GLFWwindow* window,
    * data contains object number and location
    */
   for (int i = 0; i < geometrys.size(); i++) {
-    PointCloud* currentObj = geometrys[i];
+    Model* currentObj = geometrys[i];
     // mat
     glm::mat4 curr_model = glm::translate(currentObj->getModel(), locations[i]);
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(curr_model));
-
-    glUniform3fv(colorLoc, 1, glm::value_ptr(currentObj->mat.color));
-    glUniform3fv(diffuseLoc, 1, glm::value_ptr(currentObj->mat.diffuse));
-    glUniform3fv(ambientLoc, 1, glm::value_ptr(currentObj->mat.ambient));
-    glUniform3fv(specularLoc, 1, glm::value_ptr(currentObj->mat.specular));
-    glUniform1f(shininessLoc, currentObj->mat.shininess);
-
-    int coloringType = 0;
-    // if (enablePointLight) coloringType += 2;
-    if (enableDirectionalLight) coloringType += 1;
-    if (!enablePhongColoring) coloringType = 4;
-    glUniform1i(glGetUniformLocation(program, "coloringType"), coloringType);
+    shader.setMat4("model", curr_model);
 
     // Render the object.
-    currentObj->draw();
+    currentObj->draw(shader);
   }
 
   // Gets events, including input such as keyboard and mouse or window resizing.

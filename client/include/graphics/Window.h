@@ -21,6 +21,7 @@
 #include <vector>
 
 #include "Light.hpp"
+#include "model.h"
 #include "Networking.h"
 #include "Object.h"
 #include "PointCloud.h"
