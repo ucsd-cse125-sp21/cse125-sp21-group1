@@ -17,9 +17,6 @@ class Shader {
   // ------------------------------------------------------------------------
   Shader(const char* vertexPath, const char* fragmentPath,
          const char* geometryPath = nullptr) {
-    std::cout << "1vertex: " << vertexPath << std::endl;
-    std::cout << "1fragment: " << fragmentPath << std::endl;
-
     // 1. retrieve the vertex/fragment source code from filePath
     std::string vertexCode;
     std::string fragmentCode;
@@ -54,8 +51,6 @@ class Shader {
         geometryCode = gShaderStream.str();
       }
     } catch (std::ifstream::failure& e) {
-      std::cout << "vertex: " << vertexPath << std::endl;
-      std::cout << "fragment: " << fragmentPath << std::endl;
       std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
     }
     const char* vShaderCode = vertexCode.c_str();

@@ -40,11 +40,13 @@ class Model {
 
   // constructor, expects a filepath to a 3D model.
   Model(string const& path, bool gamma = false) : gammaCorrection(gamma) {
+    model = glm::mat4(1.0f);
     loadModel(path);
   }
 
   // draws the model, and thus all its meshes
   void draw(Shader& shader) {
+    // std::cout << "shaderID: in model draw" << shader.ID << std::endl;
     for (unsigned int i = 0; i < meshes.size(); i++) meshes[i].Draw(shader);
   }
 
@@ -61,6 +63,7 @@ class Model {
     model[3][1] = y;
     model[3][2] = z;
     model[3][3] = 1;
+    // translate(x, y, z);
   }
 
   void rotate(float angle, float dx, float dy, float dz) {

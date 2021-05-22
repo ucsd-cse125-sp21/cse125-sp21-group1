@@ -22,7 +22,7 @@ Model* motarshell;
 Model* sheild;
 Model* shoe;
 
-PointCloud* plsPoints;  // point light sphere
+// PointCloud* plsPoints;  // point light sphere
 
 // collection of PointCloud, store all the game objects
 std::vector<Model*> geometrys;
@@ -38,20 +38,19 @@ glm::mat4 view = glm::lookAt(
     eye, center, up);  // View matrix, defined by eye, center and up.
 glm::mat4 projection;  // Projection matrix.
 
-Shader shader("shaders/vertex_shader.glsl",
-              "shaders/fragment_shader.glsl");  // The shader.
-GLuint projectionLoc;  // Location of projection in shader.
-GLuint viewLoc;        // Location of view in shader.
-GLuint modelLoc;       // Location of model in shader.
+Shader* shader;  // The shader.
+// GLuint projectionLoc;  // Location of projection in shader.
+// GLuint viewLoc;        // Location of view in shader.
+// GLuint modelLoc;       // Location of model in shader.
 
-GLuint colorLoc;
-GLuint ambientLoc;
-GLuint diffuseLoc;
-GLuint specularLoc;
-GLuint shininessLoc;
+// GLuint colorLoc;
+// GLuint ambientLoc;
+// GLuint diffuseLoc;
+// GLuint specularLoc;
+// GLuint shininessLoc;
 
-bool enablePhongColoring = 0;
-bool enableDirectionalLight = 0;
+// bool enablePhongColoring = 0;
+// bool enableDirectionalLight = 0;
 
 bool isMouseClicked[3] = {0, 0, 0};
 double lastXpos, lastYpos;
@@ -61,11 +60,12 @@ void moveSthBy(int i, int x, int y, int z) { geometrys[i]->moveTo(x, y, z); }
 
 bool Window::initializeProgram() {
   // Create a shader program with a vertex shader and a fragment shader.
-  // shader = Shader("shaders/vertex_shader.glsl",
-  // "shaders/fragment_shader.glsl");
+  shader =
+      new Shader("shaders/vertex_shader.glsl", "shaders/fragment_shader.glsl");
 
   // Activate the shader program.
-  shader.use();
+  // shader->use();
+  // std::cout << "shaderID: in initialize " << shader->ID << std::endl;
 
   return true;
 }
@@ -77,36 +77,36 @@ bool Window::initializeObjects() {
   // ItemObj itemObjs[]
   // etc.
 
-  cake = new Model("source/obstacle_cake/obstacle_cake.obj");
+  // cake = new Model("source/obstacle_cake/cake_without_plate.obj"); // black
   choco_cake =
       new Model("source/obstacle_cake2_texture/cake_obj/Chocolate Cake.obj");
-  coffee = new Model("source/obstacle_coffee_texture/cup and saucer.obj");
-  gingerbreadHouse =
-      new Model("source/obstacle_GingerbreadHouse/GingerbreadHouse.obj");
-  bomb = new Model("source/weapon_bomb_texture/Bomb.obj");
-  glove = new Model("source/weapon_gloves/gloves.obj");
-  gun = new Model("source/weapon_gun/gun.obj");
-  medicine = new Model("source/weapon_medicine/medicine.obj");
-  motarshell = new Model("source/weapon_mortarshell/mortarshell.obj");
-  sheild = new Model("source/weapon_shiled_texture/shiled.obj");
-  shoe = new Model("source/weapon_shoe/shoe.obj");
+  // coffee = new Model("source/obstacle_coffee_texture/cup and saucer.obj");
+  // gingerbreadHouse =
+  //     new Model("source/obstacle_GingerbreadHouse/GingerbreadHouse.obj");
+  // bomb = new Model("source/weapon_bomb_texture/Bomb.obj");
+  // glove = new Model("source/weapon_gloves/gloves.obj");
+  // gun = new Model("source/weapon_gun/gun.obj");
+  // medicine = new Model("source/weapon_medicine/medicine.obj");
+  // motarshell = new Model("source/weapon_mortarshell/mortarshell.obj");
+  // sheild = new Model("source/weapon_shiled_texture/shiled.obj");
+  // shoe = new Model("source/weapon_shoe/shoe.obj");
 
-  geometrys.push_back(cake);
+  // geometrys.push_back(cake);
   geometrys.push_back(choco_cake);
-  geometrys.push_back(coffee);
-  geometrys.push_back(gingerbreadHouse);
-  geometrys.push_back(bomb);
-  geometrys.push_back(glove);
-  geometrys.push_back(gun);
-  geometrys.push_back(medicine);
-  geometrys.push_back(motarshell);
-  geometrys.push_back(sheild);
-  geometrys.push_back(shoe);
+  // geometrys.push_back(coffee);
+  // geometrys.push_back(gingerbreadHouse);
+  // geometrys.push_back(bomb);
+  // geometrys.push_back(glove);
+  // geometrys.push_back(gun);
+  // geometrys.push_back(medicine);
+  // geometrys.push_back(motarshell);
+  // geometrys.push_back(sheild);
+  // geometrys.push_back(shoe);
 
-  plsPoints = new PointCloud("sphere.obj", -1);
+  // plsPoints = new PointCloud("sphere.obj", -1);
 
-  plsPoints->scale(0.3);
-  plsPoints->translate(0.0, 2.0, 0.0);
+  // plsPoints->scale(0.3);
+  // plsPoints->translate(0.0, 2.0, 0.0);
 
   // bind other values
   // glUniform3fv(glGetUniformLocation(program, "eyePos"), 1,
@@ -121,19 +121,24 @@ void Window::cleanUp() {
   //   delete quad;
 
   // Delete the shader programs.
-  glDeleteProgram(shader.ID);
+  glDeleteProgram(shader->ID);
   // glDeleteProgram(programQuad);
 }
 
 GLFWwindow* Window::createWindow(int width, int height) {
   // Initialize GLFW.
-  if (!glfwInit()) {
-    std::cerr << "Failed to initialize GLFW" << std::endl;
-    return NULL;
-  }
+  // if (!glfwInit()) {
+  //   std::cerr << "Failed to initialize GLFW" << std::endl;
+  //   return NULL;
+  // }
+
+  glfwInit();
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 
   // 4x antialiasing.
-  glfwWindowHint(GLFW_SAMPLES, 4);
+  // glfwWindowHint(GLFW_SAMPLES, 4);
 
 #ifdef __APPLE__
   // Apple implements its own version of OpenGL and requires special treatments
@@ -161,8 +166,10 @@ GLFWwindow* Window::createWindow(int width, int height) {
   // Make the context of the window.
   glfwMakeContextCurrent(window);
 
+  glewInit();
 #ifndef __APPLE__
-  // On Windows and Linux, we need GLEW to provide modern OpenGL functionality.
+  // On Windows and Linux, we need GLEW to provide modern OpenGL
+  // functionality.
 
   // Initialize GLEW.
   if (glewInit()) {
@@ -171,12 +178,15 @@ GLFWwindow* Window::createWindow(int width, int height) {
   }
 #endif
 
+  // tell stb_image.h to flip loaded texture's on the y-axis (before loading
+  // model).
+  stbi_set_flip_vertically_on_load(true);
   // Set swap interval to 1.
   glfwSwapInterval(0);
+  // glEnable(GL_DEPTH_TEST);
 
   // Call the resize callback to make sure things get drawn immediately.
   Window::resizeCallback(window, width, height);
-
   return window;
 }
 
@@ -203,18 +213,18 @@ void Window::idleCallback() {
 }
 
 void Window::displayCallback(GLFWwindow* window) {
-  // Switch back to using OpenGL's rasterizer
-  shader.use();
+  shader->use();
   // Clear the color and depth buffers.
+  // glClearColor(0.05f, 1.05f, 0.05f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   // Specify the values of the uniform variables we are going to use.
-  shader.setMat4("projection", projection);
-  shader.setMat4("view", view);
+  shader->setMat4("projection", projection);
+  shader->setMat4("view", view);
 
   // TESTING: different locations
   glm::vec3 locations[] = {
-      glm::vec3(2.0f, 5.0f, -15.0f),
+      glm::vec3(0.0f, 0.0f, 0.0f),
       glm::vec3(-1.5f, -2.2f, -2.5f),
       glm::vec3(-3.8f, -2.0f, -12.3f),
   };
@@ -223,20 +233,22 @@ void Window::displayCallback(GLFWwindow* window) {
   /* for each input data of client
    * data contains object number and location
    */
-  for (int i = 0; i < geometrys.size(); i++) {
+  for (int i = 0; i < 1; i++) {
     Model* currentObj = geometrys[i];
     // mat
-    glm::mat4 curr_model = glm::translate(currentObj->getModel(), locations[i]);
-    shader.setMat4("model", curr_model);
+    glm::mat4 curr_model = glm::translate(currentObj->getModel(), locations[0]);
+    curr_model = glm::scale(curr_model, glm::vec3(1.0f, 1.0f, 1.0f));
+    shader->setMat4("model", curr_model);
 
     // Render the object.
-    currentObj->draw(shader);
+    // std::cout << "shaderID: in display" << shader->ID << std::endl;
+    currentObj->draw(*shader);
   }
 
-  // Gets events, including input such as keyboard and mouse or window resizing.
-  glfwPollEvents();
   // Swap buffers.
   glfwSwapBuffers(window);
+  // Gets events, including input such as keyboard and mouse or window resizing.
+  glfwPollEvents();
 }
 
 void Window::keyCallback(GLFWwindow* window, int key, int scancode, int action,
