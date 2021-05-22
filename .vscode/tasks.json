@@ -12,13 +12,17 @@
                 "-pthread",
                 "-I",
                 "client/lib/asio-1.18.1/include",
+                "-Iclient/lib/assimp-master/include",
                 "-Icommon",
                 "-Iclient/include",
+                "-Iclient/src/graphics",
                 "-Iclient/include/graphics",
                 "-Iclient/lib/glm",
                 "-Iclient/lib/GLFW/include",
                 "-Iclient/lib/GLEW/include",
                 "-Lclient/lib/GLFW/lib-mingw-w64",
+                "-Lclient/lib/GLEW/lib/Release/x64",
+                "-Lclient/lib/assimp-master/lib",
                 "-g",
                 "${workspaceFolder}/common/*.cpp",
                 "-g",
@@ -27,10 +31,10 @@
                 "${workspaceFolder}/client/src/Networking.cpp",
                 "-g",
                 "${workspaceFolder}/client/src/main.cpp",
-                "-Lclient/lib/GLEW/lib/Release/x64",
                 "-o",
                 "${workspaceFolder}/client/client",
                 "-lws2_32",
+                "-lassimp",
                 "-lglew32s",
                 "-lglfw3",
                 "-lgdi32",
@@ -63,9 +67,7 @@
                 "${workspaceFolder}/server/server",
                 "-lws2_32",
                 "-lwsock32"
-            ],
-            "problemMatcher": [],
-            "group": "build"
+            ]
         }
     ]
 }
