@@ -1,5 +1,7 @@
 #include "Window.h"
 
+#include <glm/gtx/string_cast.hpp>
+
 #include "model.h"
 
 /*
@@ -77,44 +79,45 @@ bool Window::initializeObjects() {
   // ItemObj itemObjs[]
   // etc.
 
-  // cake = new Model("source/obstacle_cake/cake_without_plate.obj");  // black
-  choco_cake =
-      new Model("source/obstacle_cake2_texture/cake_obj/Chocolate Cake.obj");
-  // coffee = new Model("source/obstacle_coffee_texture/Cup _ Saucer.obj");
-  gingerbreadHouse =
-      new Model("source/obstacle_GingerbreadHouse/GingerbreadHouse.obj");
-  bomb = new Model("source/weapon_bomb_texture/Bomb.obj");
-  glove = new Model("source/weapon_gloves/gloves.obj");
-  gun = new Model("source/weapon_gun/gun.obj");
-  // medicine = new Model("source/weapon_medicine/medicine.obj");
+  // cake = new Model("source/obstacle_cake/cake_without_plate.obj", 0.1);  //
+  // black choco_cake =
+  //     new Model("source/obstacle_cake2_texture/cake_obj/Chocolate Cake.obj",
+  //     0.2);
+  // // coffee = new Model("source/obstacle_coffee_texture/Cup _ Saucer.obj");
+  // gingerbreadHouse =
+  //     new Model("source/obstacle_GingerbreadHouse/GingerbreadHouse.obj");
+  bomb = new Model("source/weapon_bomb_texture/Bomb.obj", 4);
+  // glove = new Model("source/weapon_gloves/gloves.obj");
+  // gun = new Model("source/weapon_gun/gun.obj");
+  medicine = new Model("source/weapon_medicine/medicine.obj", 0.05);
   // motarshell = new Model("source/weapon_mortarshell/weapon_mortarshell.obj");
-  sheild = new Model("source/weapon_shiled_texture/shiled.obj");
-  shoe = new Model("source/weapon_shoe/shoe.obj");
+  sheild = new Model("source/weapon_shiled_texture/shiled.obj", 1);
+  // shoe = new Model("source/weapon_shoe/shoe.obj");
 
   // TODO: add scale to model's constructor
   // cake->scale(0.1);
-  choco_cake->scale(0.2);
+  // choco_cake->scale(0.2);
   // coffee->scale(1);
-  gingerbreadHouse->scale(6);
-  bomb->scale(4);
-  glove->scale(0.3);
-  gun->scale(0.7);
+  // gingerbreadHouse->scale(6);
+  // bomb->scale(4);
+  // glove->scale(0.3);
+  // gun->scale(0.7);
   // medicine->scale(0.05);
   // motarshell->scale(0.1);
-  sheild->scale(1);
+  // sheild->scale(1);
   // shoe->scale(1);
 
   // geometrys.push_back(cake);
-  geometrys.push_back(choco_cake);
+  // geometrys.push_back(choco_cake);
   // geometrys.push_back(coffee);
-  geometrys.push_back(gingerbreadHouse);
+  // geometrys.push_back(gingerbreadHouse);
   geometrys.push_back(bomb);
   // geometrys.push_back(glove);
-  geometrys.push_back(gun);
-  // geometrys.push_back(medicine);
+  // geometrys.push_back(gun);
+  geometrys.push_back(medicine);
   // geometrys.push_back(motarshell);
   geometrys.push_back(sheild);
-  geometrys.push_back(shoe);
+  // geometrys.push_back(shoe);
 
   // bind other values
   // glUniform3fv(glGetUniformLocation(program, "eyePos"), 1,
@@ -233,7 +236,7 @@ void Window::displayCallback(GLFWwindow* window) {
   // TESTING: different locations
   glm::vec3 locations[] = {
       glm::vec3(0.0f, 0.0f, 0.0f),   glm::vec3(1.0f, 1.f, 0.0f),
-      glm::vec3(0.f, -3.0f, 0.0f),   glm::vec3(-3.0f, 1.1f, 0.0f),
+      glm::vec3(-1.f, -1.0f, 0.0f),  glm::vec3(-3.0f, 1.1f, 0.0f),
       glm::vec3(2.0f, 3.f, 0.0f),    glm::vec3(1.f, -2.5f, 0.0f),
       glm::vec3(-3.0f, -1.3f, 0.0f), glm::vec3(-3.0f, 3.f, 0.0f),
       glm::vec3(-3.f, -3.0f, 0.0f),
@@ -247,8 +250,17 @@ void Window::displayCallback(GLFWwindow* window) {
   for (int i = 0; i < geometrys.size(); i++) {
     Model* currentObj = geometrys[i];
     // mat
-    glm::mat4 curr_model = glm::translate(currentObj->getModel(), locations[i]);
+    glm::mat4 curr_model = currentObj->getModel();
+
+    glm::mat4 transform = glm::mat4(
+        1.0f);  // make sure to initialize matrix to identity matrix first
+    transform = glm::translate(transform, locations[i]);
+    transform = glm::scale(transform, glm::vec3(currentObj->scale_factor));
+    curr_model = curr_model * transform;
+
     shader->setMat4("model", curr_model);
+
+    // std::cout << glm::to_string(curr_model) << std::endl;
 
     // Render the object.
     // std::cout << "shaderID: in display" << shader->ID << std::endl;

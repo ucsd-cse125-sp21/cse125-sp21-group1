@@ -37,10 +37,13 @@ class Model {
   bool gammaCorrection;
   glm::mat4 model;
   glm::vec3 color;
+  GLfloat scale_factor;
 
   // constructor, expects a filepath to a 3D model.
-  Model(string const& path, bool gamma = false) : gammaCorrection(gamma) {
+  Model(string const& path, GLfloat scale, bool gamma = false)
+      : gammaCorrection(gamma) {
     model = glm::mat4(1.0f);
+    scale_factor = scale;
     loadModel(path);
   }
 
