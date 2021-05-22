@@ -28,7 +28,7 @@ Model* shoe;
 std::vector<Model*> geometrys;
 std::map<int, Model*> models;
 
-glm::vec3 eye(0, 0, 20);    // Camera position.
+glm::vec3 eye(0, 0, 30);    // Camera position.
 glm::vec3 center(0, 0, 0);  // The point we are looking at.
 glm::vec3 up(0, 1, 0);      // The up direction of the camera.
 float fovy = 60;
@@ -77,36 +77,44 @@ bool Window::initializeObjects() {
   // ItemObj itemObjs[]
   // etc.
 
-  // cake = new Model("source/obstacle_cake/cake_without_plate.obj"); // black
+  // cake = new Model("source/obstacle_cake/cake_without_plate.obj");  // black
   choco_cake =
       new Model("source/obstacle_cake2_texture/cake_obj/Chocolate Cake.obj");
-  // coffee = new Model("source/obstacle_coffee_texture/cup and saucer.obj");
-  // gingerbreadHouse =
-  //     new Model("source/obstacle_GingerbreadHouse/GingerbreadHouse.obj");
-  // bomb = new Model("source/weapon_bomb_texture/Bomb.obj");
-  // glove = new Model("source/weapon_gloves/gloves.obj");
-  // gun = new Model("source/weapon_gun/gun.obj");
+  // coffee = new Model("source/obstacle_coffee_texture/Cup _ Saucer.obj");
+  gingerbreadHouse =
+      new Model("source/obstacle_GingerbreadHouse/GingerbreadHouse.obj");
+  bomb = new Model("source/weapon_bomb_texture/Bomb.obj");
+  glove = new Model("source/weapon_gloves/gloves.obj");
+  gun = new Model("source/weapon_gun/gun.obj");
   // medicine = new Model("source/weapon_medicine/medicine.obj");
-  // motarshell = new Model("source/weapon_mortarshell/mortarshell.obj");
-  // sheild = new Model("source/weapon_shiled_texture/shiled.obj");
-  // shoe = new Model("source/weapon_shoe/shoe.obj");
+  // motarshell = new Model("source/weapon_mortarshell/weapon_mortarshell.obj");
+  sheild = new Model("source/weapon_shiled_texture/shiled.obj");
+  shoe = new Model("source/weapon_shoe/shoe.obj");
+
+  // TODO: add scale to model's constructor
+  // cake->scale(0.1);
+  choco_cake->scale(0.2);
+  // coffee->scale(1);
+  gingerbreadHouse->scale(6);
+  bomb->scale(4);
+  glove->scale(0.3);
+  gun->scale(0.7);
+  // medicine->scale(0.05);
+  // motarshell->scale(0.1);
+  sheild->scale(1);
+  // shoe->scale(1);
 
   // geometrys.push_back(cake);
   geometrys.push_back(choco_cake);
   // geometrys.push_back(coffee);
-  // geometrys.push_back(gingerbreadHouse);
-  // geometrys.push_back(bomb);
+  geometrys.push_back(gingerbreadHouse);
+  geometrys.push_back(bomb);
   // geometrys.push_back(glove);
-  // geometrys.push_back(gun);
+  geometrys.push_back(gun);
   // geometrys.push_back(medicine);
   // geometrys.push_back(motarshell);
-  // geometrys.push_back(sheild);
-  // geometrys.push_back(shoe);
-
-  // plsPoints = new PointCloud("sphere.obj", -1);
-
-  // plsPoints->scale(0.3);
-  // plsPoints->translate(0.0, 2.0, 0.0);
+  geometrys.push_back(sheild);
+  geometrys.push_back(shoe);
 
   // bind other values
   // glUniform3fv(glGetUniformLocation(program, "eyePos"), 1,
@@ -215,7 +223,7 @@ void Window::idleCallback() {
 void Window::displayCallback(GLFWwindow* window) {
   shader->use();
   // Clear the color and depth buffers.
-  // glClearColor(0.05f, 1.05f, 0.05f, 1.0f);
+  glClearColor(0.754f / 2, .821f / 2, 0.9375f / 2, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   // Specify the values of the uniform variables we are going to use.
@@ -224,20 +232,22 @@ void Window::displayCallback(GLFWwindow* window) {
 
   // TESTING: different locations
   glm::vec3 locations[] = {
-      glm::vec3(0.0f, 0.0f, 0.0f),
-      glm::vec3(-1.5f, -2.2f, -2.5f),
-      glm::vec3(-3.8f, -2.0f, -12.3f),
-  };
+      glm::vec3(0.0f, 0.0f, 0.0f),   glm::vec3(1.0f, 1.f, 0.0f),
+      glm::vec3(0.f, -3.0f, 0.0f),   glm::vec3(-3.0f, 1.1f, 0.0f),
+      glm::vec3(2.0f, 3.f, 0.0f),    glm::vec3(1.f, -2.5f, 0.0f),
+      glm::vec3(-3.0f, -1.3f, 0.0f), glm::vec3(-3.0f, 3.f, 0.0f),
+      glm::vec3(-3.f, -3.0f, 0.0f),
+
+      glm::vec3(6.0f, 0.0f, 0.0f)};
 
   // rendering
   /* for each input data of client
    * data contains object number and location
    */
-  for (int i = 0; i < 1; i++) {
+  for (int i = 0; i < geometrys.size(); i++) {
     Model* currentObj = geometrys[i];
     // mat
-    glm::mat4 curr_model = glm::translate(currentObj->getModel(), locations[0]);
-    curr_model = glm::scale(curr_model, glm::vec3(1.0f, 1.0f, 1.0f));
+    glm::mat4 curr_model = glm::translate(currentObj->getModel(), locations[i]);
     shader->setMat4("model", curr_model);
 
     // Render the object.
