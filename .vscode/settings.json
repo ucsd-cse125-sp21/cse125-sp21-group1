@@ -88,7 +88,12 @@
     "typeindex": "cpp",
     "valarray": "cpp",
     "variant": "cpp",
-    "cfenv": "cpp"
+    "cfenv": "cpp",
+    "hash_map": "cpp",
+    "hash_set": "cpp",
+    "forward_list": "cpp",
+    "unordered_set": "cpp",
+    "regex": "cpp"
   },
   "editor.tabSize": 2,
   "editor.formatOnSave": true,

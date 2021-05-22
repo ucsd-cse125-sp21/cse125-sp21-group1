@@ -38,8 +38,8 @@ glm::mat4 view = glm::lookAt(
     eye, center, up);  // View matrix, defined by eye, center and up.
 glm::mat4 projection;  // Projection matrix.
 
-Shader shader = Shader("shaders/vertex_shader.glsl",
-                       "shaders/fragment_shader.glsl");  // The shader.
+Shader shader("shaders/vertex_shader.glsl",
+              "shaders/fragment_shader.glsl");  // The shader.
 GLuint projectionLoc;  // Location of projection in shader.
 GLuint viewLoc;        // Location of view in shader.
 GLuint modelLoc;       // Location of model in shader.
