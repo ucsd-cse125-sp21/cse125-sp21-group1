@@ -1,6 +1,8 @@
 #ifndef __objects__
 #define __objects__
 
+#include <glm/glm.hpp>
+
 #define NOTHING 0
 #define NOT_DESTROYABLE_CUBE 1
 #define DONUT 2
