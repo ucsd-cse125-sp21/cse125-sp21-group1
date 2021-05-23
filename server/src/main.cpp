@@ -27,6 +27,9 @@ int main(int argc, char* argv[]) {
   GameState state;
 
   while (true) {
+    // Update state.
+    state.tick_bomb();
+
     // Get all received data.
     std::vector<Message> data = Networking::recvData->getAll();
 
@@ -48,9 +51,10 @@ int main(int argc, char* argv[]) {
     }
     free(writeBuf);
 
-    // Sleep for 1 secs.
+    // Sleep for some time.
     std::this_thread::sleep_for(std::chrono::microseconds(100000));
   }
+  // free(GameState::board);
   return 0;
 }
 

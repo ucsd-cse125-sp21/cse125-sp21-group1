@@ -15,5 +15,6 @@
 
 #include "GameState.h"
 #include "Window.h"
+#include "ModelMatrix.h"
 
 #endif

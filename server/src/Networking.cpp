@@ -76,7 +76,7 @@ void Session::send(char* msg, int len) {
   auto self(shared_from_this());
   socket_.async_write_some(
       asio::buffer(msg, len),
-      [this, self](asio::error_code ec, std::size_t /*length*/) {
+      [this, self](asio::error_code ec, std::size_t length) {
         if (!ec) {
         } else {
           std::cerr << "Error: " << ec.message() << std::endl;

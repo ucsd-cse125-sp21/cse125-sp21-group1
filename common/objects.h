@@ -1,3 +1,8 @@
+#ifndef __objects__
+#define __objects__
+
+#include <glm/glm.hpp>
+
 #define NOTHING 0
 #define NOT_DESTROYABLE_CUBE 1
 #define DONUT 2
@@ -18,3 +23,11 @@
 #define SHIELD 17
 #define SHOES 18
 #define BOMB 19
+
+struct Obj4graphics {
+  char id;
+  glm::mat4 gen = glm::mat4(1.0f);  // 4 * 4 float matrix used for graphics
+};
+typedef struct Obj4graphics Obj4graphics;
+
+#endif

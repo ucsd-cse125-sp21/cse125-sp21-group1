@@ -19,12 +19,13 @@ void Networking::send(std::string msg) {
 }
 
 // This will read synchronously.
-char* Networking::receive() {
+char* Networking::receive(size_t desiredLen) {
   asio::error_code error;
-  char buf[TCP_PAYLOAD_MAX_LEN];
-  memset(buf, 0, TCP_PAYLOAD_MAX_LEN);
+  char buf[desiredLen];
+  memset(buf, 0, desiredLen);
   // Sync read.
-  size_t len = socket.read_some(asio::buffer(buf), error);
+  size_t len = socket.read_some(asio::buffer(buf, desiredLen), error);
+  // std::cout << len << std::endl;
 
   if (error == asio::error::would_block) {
     // Closed by remote.
@@ -36,7 +37,7 @@ char* Networking::receive() {
     // Real error.
     throw asio::system_error(error);
   }
-  char* returnbuf = (char*)malloc(TCP_PAYLOAD_MAX_LEN);
-  memcpy(returnbuf, buf, TCP_PAYLOAD_MAX_LEN);
+  char* returnbuf = (char*)malloc(desiredLen);
+  memcpy(returnbuf, buf, desiredLen);
   return returnbuf;
 }
