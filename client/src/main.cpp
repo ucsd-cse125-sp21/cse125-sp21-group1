@@ -115,17 +115,17 @@ int main(int argc, char* argv[]) {
     if (msg != NULL) {
       memcpy(&s, msg, sizeof(GameState));
 
-      std::cout << (int)s.board_x << " " << (int)s.board_y << std::endl;
+      // std::cout << (int)s.board_x << " " << (int)s.board_y << std::endl;
       for (int i = 0; i < 1; i++) {
         moveSthBy(i, s.players[i].x, s.players[i].y, 0);
         std::cout << i << " " << (int)s.players[i].x << " "
                   << (int)s.players[i].y << std::endl;
-/* original main
-      for (int i = 0; i < NUM_PLAYERS; i++) {
-        moveSthBy(i, s.players[i].x - s.board.width / 2,
-                  s.players[i].y - s.board.height / 2, 0);
-        s.board[s.players[i].x][s.players[i].y] = 4 + i;
-*/
+        /* original main
+              for (int i = 0; i < NUM_PLAYERS; i++) {
+                moveSthBy(i, s.players[i].x - s.board.width / 2,
+                          s.players[i].y - s.board.height / 2, 0);
+                s.board[s.players[i].x][s.players[i].y] = 4 + i;
+        */
       }
       /****************************************************/
       objects.clear();
