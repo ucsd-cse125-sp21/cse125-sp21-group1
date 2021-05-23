@@ -119,6 +119,68 @@ int main(int argc, char* argv[]) {
                   s.players[i].y - s.board.height / 2, 0);
         s.board[s.players[i].x][s.players[i].y] = 4 + i;
       }
+      /****************************************************/
+      objects.clear();
+      // add object struct for gameboard grids
+      for (int i = 0; i < s.board.width; i++) {
+          for (int j = 0; j < s.board.height; j++) {
+              Obj4graphics o;
+              o.id = s.board[i][j];
+              //TODO update generation matrix of cubes
+              ModelMatrix mm = ModelMatrix();
+              mm.move_to(-i/2, -j/2, 0);
+              o.gen = mm.get_model();
+              objects.push_back(o);
+          }
+      }
+      // add object struct for player and their weapons
+      for (int i = 0; i < NUM_PLAYERS; i++) {
+          // player
+          if !(s.players[i].life_left) continue;
+          Obj4graphics o;
+          o.id = i + 4;
+          ModelMatrix mm = ModelMatrix();
+          switch(s.players[i].facing) {
+              case UPWARD:
+                mm.rotate(glm::radians(180.0f), 0, 0, 1);
+                break;
+              case LEFTWARD:
+                mm.rotate(glm::radians(270.0f), 0, 0, 1);
+                break;
+              case RIGHTWARD:
+                mm.rotate(glm::radians(90.0f), 0, 0, 1);
+                break;
+              default:
+                break;
+          }
+          mm.move_to(s.players[i].x/2, s.players[i].y/2, 0);
+          o.gen = mm.get_model();
+          objects.push_back(o);
+
+          // weapon
+          if(s.players[i].weapon != BOMB) {
+              Obj4graphics ow;
+              ow.id = s.players[i].weapon;
+              ModelMatrix mmw = ModelMatrix();
+              switch(s.players[i].facing) {
+                  case UPWARD:
+                    mmw.rotate(glm::radians(180.0f), 0, 0, 1);
+                    break;
+                  case LEFTWARD:
+                    mmw.rotate(glm::radians(270.0f), 0, 0, 1);
+                    break;
+                  case RIGHTWARD:
+                    mmw.rotate(glm::radians(90.0f), 0, 0, 1);
+                    break;
+                  default:
+                    break;
+              }
+              mmw.move_to(s.players[i].x/2, s.players[i].y/2, 5);
+              ow.gen = mm.get_model();
+              objects.push_back(ow);
+          }
+      }
+      /****************************************************/
 
       free(msg);
 
