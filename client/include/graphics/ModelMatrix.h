@@ -20,15 +20,15 @@
 #include <glm/gtx/transform.hpp>
 
 class ModelMatrix {
-    
+
     // Opengl coordinate system
     // up:                +y  down:            -y
     // right:             +x  left:            -x
     // out of the scren : +z  into the screen: -z
-    
+
    public:
     glm::mat4 model;
-    
+
     /* ctor, de-ctor */
     ModelMatrix() : model(glm::mat4(1.0f)) {}      // default ctor
     ModelMatrix(glm::mat4 model) : model(model) {} // init with a matrix
@@ -37,23 +37,25 @@ class ModelMatrix {
         model[3][0] = x; model[3][1] = y; model[3][2] = z;
     }
     ~Transform() {}
-    
-    
+
+    glm::mat4 get_model() {return model;}
+
+
     /* translate to a relative loaction */
     void translate(GLfloat dx, GLfloat dy, GLfloat dz)
         { model = glm::translate(model, glm::vec3(dx, dy, dz)); }
     void translate(glm::vec3 d) { model = glm::translate(model, d);}
-    
+
     /* scale */
     void scale(GLfloat dx) //scaling
         { model = glm::scale(model, glm::vec3(dx, dx, dx));}
     void scale(GLfloat dx, GLfloat dy, GLfloat dz) //scaling
     { model = glm::scale(model, glm::vec3(dx, dy, dz));}
-    
+
     /* absolute transfotmations */
     void move_to(GLfloat x, GLfloat y, GLfloat z) {model[3][0] = x; model[3][1] = y; model[3][2] = z;}
     void move_to(glm::vec3 c) {model[3][0] = c[0]; model[3][1] = c[1]; model[3][2] = c[2];}
-    
+
     /* Note all rotations are counterclockwise, angle is in radian */
     /* Use to convert glm::radians(90.0f) to convert from degree (90 in this case) to radians */
     /* rotate around the vector that starts from the origin */
@@ -71,7 +73,7 @@ class ModelMatrix {
 //        auto r = l; l[3][0] = -x; r[3][1] = -y; r[3][2] = -z;
 //        model = glm::rotate(l, angle, glm::vec3(vx, vy, vz)) * r * model;
     }
-    
+
     /* value access */
     glm::vec3 cord() {return glm::vec3(model[3][0], model[3][1], model[3][2]);}
     /* TODO return where the model is facing */
