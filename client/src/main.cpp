@@ -128,7 +128,7 @@ int main(int argc, char* argv[]) {
               o.id = s.board[i][j];
               //TODO update generation matrix of cubes
               ModelMatrix mm = ModelMatrix();
-              mm.move_to(-i/2, -j/2, 0);
+              mm.move_to(i - s.board.width/2, j - s.board.height/2, 0);
               o.gen = mm.get_model();
               objects.push_back(o);
           }
@@ -153,7 +153,8 @@ int main(int argc, char* argv[]) {
               default:
                 break;
           }
-          mm.move_to(s.players[i].x/2, s.players[i].y/2, 0);
+          mm.move_to(s.players[i].x - s.board.width/2,
+              s.players[i].y - s.board.height/2, 0);
           o.gen = mm.get_model();
           objects.push_back(o);
 
@@ -175,7 +176,8 @@ int main(int argc, char* argv[]) {
                   default:
                     break;
               }
-              mmw.move_to(s.players[i].x/2, s.players[i].y/2, 5);
+              mmw.move_to(s.players[i].x - s.board.width/2,
+                  s.players[i].y - s.board.height/2, 5);
               ow.gen = mm.get_model();
               objects.push_back(ow);
           }
