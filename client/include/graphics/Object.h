@@ -23,8 +23,8 @@ class Object {
 
   void setModel(glm::mat4 m) { model = m; }
 
-  virtual void draw() = 0;
-  virtual void update() = 0;
+  // virtual void draw() = 0;
+  // virtual void update() = 0;
 
   void translate(GLfloat dx, GLfloat dy, GLfloat dz) {
     model = glm::translate(glm::mat4(1), glm::vec3(dx, dy, dz)) * model;
@@ -47,13 +47,13 @@ class Object {
     model = glm::scale(getModel(), glm::vec3(dx, dx, dx));
   }
 
-  struct Material {
-    glm::vec3 color;
-    glm::vec3 ambient;
-    glm::vec3 diffuse;
-    glm::vec3 specular;
-    float shininess;
-  } mat;
+  // struct Material {
+  //   glm::vec3 color;
+  //   glm::vec3 ambient;
+  //   glm::vec3 diffuse;
+  //   glm::vec3 specular;
+  //   float shininess;
+  // } mat;
 };
 
 #endif
