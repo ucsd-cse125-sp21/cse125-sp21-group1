@@ -24,7 +24,7 @@
 
 struct Obj4graphics {
   char id;
-  float gen[4][4];  // 4 * 4 float matrix used for graphics
+  glm::mat4 gen( 1.0f );  // 4 * 4 float matrix used for graphics
 };
 typedef struct Obj4graphics Obj4graphics;
 
