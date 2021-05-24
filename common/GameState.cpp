@@ -10,7 +10,7 @@ GameState::GameState() {
 void GameState::initialize_players() {
   for (int i = 0; i < NUM_PLAYERS; i++) {
     Player p;
-    p.id = i + 1;
+    p.id = i;
     p.max_bomb = 1;
     p.weapon_left = p.max_bomb;
     p.weapon = BOMB;
@@ -102,6 +102,7 @@ void GameState::initialize_board() {
 
 /* playerI ranges from 0 - 3 */
 void GameState::updateWithAction(int playerI, char action) {
+  std::cout << "player: " << playerI << "action: " << action << std ::endl;
   if (players[playerI].life_left < 0) {
     return;
   }

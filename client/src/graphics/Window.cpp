@@ -30,7 +30,7 @@ Model* shoe;
 std::vector<Model*> geometrys;
 std::map<int, Model*> models;
 
-glm::vec3 eye(0, 0, 30);    // Camera position.
+glm::vec3 eye(0, 0, 50);    // Camera position.
 glm::vec3 center(0, 0, 0);  // The point we are looking at.
 glm::vec3 up(0, 1, 0);      // The up direction of the camera.
 float fovy = 60;
@@ -41,18 +41,6 @@ glm::mat4 view = glm::lookAt(
 glm::mat4 projection;  // Projection matrix.
 
 Shader* shader;  // The shader.
-// GLuint projectionLoc;  // Location of projection in shader.
-// GLuint viewLoc;        // Location of view in shader.
-// GLuint modelLoc;       // Location of model in shader.
-
-// GLuint colorLoc;
-// GLuint ambientLoc;
-// GLuint diffuseLoc;
-// GLuint specularLoc;
-// GLuint shininessLoc;
-
-// bool enablePhongColoring = 0;
-// bool enableDirectionalLight = 0;
 
 bool isMouseClicked[3] = {0, 0, 0};
 double lastXpos, lastYpos;
@@ -79,44 +67,40 @@ bool Window::initializeObjects() {
   // ItemObj itemObjs[]
   // etc.
 
-  // cake = new Model("source/obstacle_cake/cake_without_plate.obj", 0.1);  //
-  // black choco_cake =
-  //     new Model("source/obstacle_cake2_texture/cake_obj/Chocolate Cake.obj",
-  //     0.2);
-  // // coffee = new Model("source/obstacle_coffee_texture/Cup _ Saucer.obj");
-  // gingerbreadHouse =
-  //     new Model("source/obstacle_GingerbreadHouse/GingerbreadHouse.obj");
+  // cake = new Model("source/obstacle_cake/cake_without_plate.obj", 0.1);
+  choco_cake = new Model(
+      "source/obstacle_cake2_texture/cake_obj/Chocolate Cake.obj", 0.2);
+  gingerbreadHouse =
+      new Model("source/obstacle_GingerbreadHouse/GingerbreadHouse.obj", 6);
   bomb = new Model("source/weapon_bomb_texture/Bomb.obj", 4);
-  // glove = new Model("source/weapon_gloves/gloves.obj");
-  // gun = new Model("source/weapon_gun/gun.obj");
-  medicine = new Model("source/weapon_medicine/medicine.obj", 0.05);
-  // motarshell = new Model("source/weapon_mortarshell/weapon_mortarshell.obj");
+  glove = new Model("source/weapon_gloves/gloves.obj", 0.3);
+  gun = new Model("source/weapon_gun/gun.obj", 0.7);
+  medicine = new Model("source/weapon_medicine/medicine.obj", 0.03);
+  motarshell =
+      new Model("source/weapon_mortarshell/weapon_mortarshell.obj", 0.1);
   sheild = new Model("source/weapon_shiled_texture/shiled.obj", 1);
-  // shoe = new Model("source/weapon_shoe/shoe.obj");
+  shoe = new Model("source/weapon_shoe/shoe.obj", 10);
 
-  // TODO: add scale to model's constructor
-  // cake->scale(0.1);
-  // choco_cake->scale(0.2);
-  // coffee->scale(1);
-  // gingerbreadHouse->scale(6);
-  // bomb->scale(4);
-  // glove->scale(0.3);
-  // gun->scale(0.7);
-  // medicine->scale(0.05);
-  // motarshell->scale(0.1);
-  // sheild->scale(1);
-  // shoe->scale(1);
+  models.insert(pair<int, Model*>(NOT_DESTROYABLE_CUBE, gingerbreadHouse));
+  models.insert(pair<int, Model*>(DONUT, shoe));
+  models.insert(pair<int, Model*>(BOMB, bomb));
+  models.insert(pair<int, Model*>(BALL, medicine));
+  models.insert(pair<int, Model*>(SHIELD, sheild));
+  models.insert(pair<int, Model*>(PLAYER_1, gun));
+  models.insert(pair<int, Model*>(PLAYER_2, gun));
+  models.insert(pair<int, Model*>(PLAYER_3, gun));
+  models.insert(pair<int, Model*>(PLAYER_4, gun));
 
   // geometrys.push_back(cake);
   // geometrys.push_back(choco_cake);
   // geometrys.push_back(coffee);
   // geometrys.push_back(gingerbreadHouse);
-  geometrys.push_back(bomb);
+  // geometrys.push_back(bomb);
   // geometrys.push_back(glove);
   // geometrys.push_back(gun);
-  geometrys.push_back(medicine);
+  // geometrys.push_back(medicine);
   // geometrys.push_back(motarshell);
-  geometrys.push_back(sheild);
+  // geometrys.push_back(sheild);
   // geometrys.push_back(shoe);
 
   // bind other values
@@ -237,27 +221,28 @@ void Window::displayCallback(GLFWwindow* window,
   shader->setMat4("view", view);
 
   // TESTING: different locations
-  glm::vec3 locations[] = {
-      glm::vec3(0.0f, 0.0f, 0.0f),   glm::vec3(1.0f, 1.f, 0.0f),
-      glm::vec3(-1.f, -1.0f, 0.0f),  glm::vec3(-3.0f, 1.1f, 0.0f),
-      glm::vec3(2.0f, 3.f, 0.0f),    glm::vec3(1.f, -2.5f, 0.0f),
-      glm::vec3(-3.0f, -1.3f, 0.0f), glm::vec3(-3.0f, 3.f, 0.0f),
-      glm::vec3(-3.f, -3.0f, 0.0f),
+  // glm::vec3 locations[] = {
+  //     glm::vec3(0.0f, 0.0f, 0.0f),   glm::vec3(1.0f, 1.f, 0.0f),
+  //     glm::vec3(-1.f, -1.0f, 0.0f),  glm::vec3(-3.0f, 1.1f, 0.0f),
+  //     glm::vec3(2.0f, 3.f, 0.0f),    glm::vec3(1.f, -2.5f, 0.0f),
+  //     glm::vec3(-3.0f, -1.3f, 0.0f), glm::vec3(-3.0f, 3.f, 0.0f),
+  //     glm::vec3(-3.f, -3.0f, 0.0f),
 
-      glm::vec3(6.0f, 0.0f, 0.0f)};
+  //     glm::vec3(6.0f, 0.0f, 0.0f)};
 
   // rendering
   /* for each input data of client
    * data contains object number and location
    */
-  for (int i = 0; i < geometrys.size(); i++) {
-    Model* currentObj = geometrys[i];
+  // std::cout << "objects size" << objects.size() << std::endl;
+  for (int i = 0; i < objects.size(); i++) {
+    Model* currentObj = models.find(objects[i].id)->second;
     // mat
-    glm::mat4 curr_model = currentObj->getModel();
+    glm::mat4 curr_model = objects[i].gen;
 
     glm::mat4 transform = glm::mat4(
         1.0f);  // make sure to initialize matrix to identity matrix first
-    transform = glm::translate(transform, locations[i]);
+    // transform = glm::translate(transform, locations[i]);
     transform = glm::scale(transform, glm::vec3(currentObj->scale_factor));
     curr_model = curr_model * transform;
 
