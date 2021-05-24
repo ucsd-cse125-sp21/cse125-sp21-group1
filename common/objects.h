@@ -5,7 +5,7 @@
 
 #define NOTHING 0
 #define NOT_DESTROYABLE_CUBE 1
-#define DONUT 2
+#define DONUT 2  // destroyable cube
 // TODO second type of destroyable cube
 #define PLAYER_1 4
 #define PLAYER_2 5
@@ -25,7 +25,7 @@
 #define BOMB 19
 
 struct Obj4graphics {
-  char id;
+  int id;
   glm::mat4 gen = glm::mat4(1.0f);  // 4 * 4 float matrix used for graphics
 };
 typedef struct Obj4graphics Obj4graphics;
