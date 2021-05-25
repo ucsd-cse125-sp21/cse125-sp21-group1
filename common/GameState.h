@@ -17,17 +17,17 @@
 // TODO (decide actual number)
 // Moved outside GameState to minimize bytes needed for transmission, and they
 // are also constants.
-#define num_laser 20
-#define num_grenade 20
-#define num_rocket 20
-#define num_landmine 20
+#define num_laser 0     // 20
+#define num_grenade 0   // 20
+#define num_rocket 0    // 20
+#define num_landmine 0  // 20
 #define num_fire 0
 #define num_frozen 0
 #define num_glove 20
-#define num_elixir 30
-#define num_ball 30
-#define num_shield 20
-#define num_shoes 20
+#define num_elixir 0    // 30
+#define num_ball 100    // 30
+#define num_shield 100  // 20
+#define num_shoes 0     // 20
 #define num_destroyables 230
 
 class GameState {
