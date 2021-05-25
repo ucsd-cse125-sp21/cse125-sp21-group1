@@ -10,7 +10,7 @@
                 "${workspaceFolder}/client/lib/GLFW/include",
                 "${workspaceFolder}/client/lib/glm",
                 "${workspaceFolder}/client/include",
-                "${workspaceFolder}/client/include/graphics",
+                "${workspaceFolder}/client/include/graphics"
                 // "${workspaceFolder}/server/include", 
                 // "${workspaceFolder}/server/lib/asio-1.18.1/include"
             ],

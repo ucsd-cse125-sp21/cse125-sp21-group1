@@ -57,6 +57,7 @@
                 "server/lib/asio-1.18.1/include",
                 "-Icommon",
                 "-Iserver/include",
+                "-Iclient/lib/glm",
                 "-g",
                 "${workspaceFolder}/server/src/Networking.cpp",
                 "-g",
