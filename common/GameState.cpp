@@ -109,11 +109,11 @@ void GameState::updateWithAction(int playerI, char action) {
   switch (action) {
     case 'W':
       players[playerI].facing = UPWARD;
-      if (players[playerI].y > 0) {
-        char nextStepBoard = board[players[playerI].x][players[playerI].y - 1];
+      if (players[playerI].y < board.height) {
+        char nextStepBoard = board[players[playerI].x][players[playerI].y + 1];
         if (nextStepBoard != NOT_DESTROYABLE_CUBE && nextStepBoard != DONUT &&
             nextStepBoard != BOMB) {
-          players[playerI].y--;
+          players[playerI].y++;
         }
         check_bubble(playerI);
       }
@@ -131,11 +131,11 @@ void GameState::updateWithAction(int playerI, char action) {
       break;
     case 'S':
       players[playerI].facing = DOWNWARD;
-      if (players[playerI].y < board.height) {
-        char nextStepBoard = board[players[playerI].x][players[playerI].y + 1];
+      if (players[playerI].y > 0) {
+        char nextStepBoard = board[players[playerI].x][players[playerI].y - 1];
         if (nextStepBoard != NOT_DESTROYABLE_CUBE && nextStepBoard != DONUT &&
             nextStepBoard != BOMB) {
-          players[playerI].y++;
+          players[playerI].y--;
         }
         check_bubble(playerI);
       }
