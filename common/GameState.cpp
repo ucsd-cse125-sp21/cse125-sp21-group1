@@ -109,7 +109,7 @@ void GameState::updateWithAction(int playerI, char action) {
   switch (action) {
     case 'W':
       players[playerI].facing = UPWARD;
-      if (players[playerI].y < board.height) {  //
+      if (players[playerI].y < board.height) {
         char nextStepBoard = board[players[playerI].x][players[playerI].y + 1];
         if (nextStepBoard != NOT_DESTROYABLE_CUBE && nextStepBoard != DONUT &&
             nextStepBoard != BOMB) {
