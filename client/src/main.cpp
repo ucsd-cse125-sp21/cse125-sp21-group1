@@ -120,7 +120,9 @@ int main(int argc, char* argv[]) {
     char* msg = Networking::receive(sizeof(GameState));
     // GameState* s = (GameState*)malloc(sizeof(GameState));
     // std::cout << std::string(msg) << std::endl;
+    // std::cout << "in while loop" << std::endl;
     if (msg != NULL) {
+      // std::cout << "in if statement" << std::endl;
       memcpy(&s, msg, sizeof(GameState));
       // std::cout << s.toString() << std::endl;
 
@@ -154,9 +156,10 @@ int main(int argc, char* argv[]) {
         }
       }
       // add object struct for player and their weapons
+      // std::cout << "num player: " << NUM_PLAYERS << std::endl;
       for (int i = 0; i < NUM_PLAYERS; i++) {
         // player
-        if (~s.players[i].life_left) continue;
+        if (s.players[i].life_left == 0) continue;
         Obj4graphics o;
         o.id = i + 4;
         ModelMatrix mm = ModelMatrix();
@@ -176,6 +179,7 @@ int main(int argc, char* argv[]) {
 
         mm.move_to(2 * (s.players[i].x - s.board.width / 2),
                    2 * (s.players[i].y - s.board.height / 2), 0);
+
         o.gen = mm.get_model();
         objects.push_back(o);
 
@@ -209,7 +213,7 @@ int main(int argc, char* argv[]) {
       free(msg);
 
       // Print GameState board.
-      std::system("CLS");
+      // std::system("CLS");
       std::ostringstream os;
       // for (int i = 0; i <= s.board.height; i++) {
       //   for (int j = 0; j <= s.board.width; j++) {
