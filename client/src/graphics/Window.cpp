@@ -30,7 +30,7 @@ Model* shoe;
 std::vector<Model*> geometrys;
 std::map<int, Model*> models;
 
-glm::vec3 eye(0, 0, 50);    // Camera position.
+glm::vec3 eye(0, 0, 55);    // Camera position.
 glm::vec3 center(0, 0, 0);  // The point we are looking at.
 glm::vec3 up(0, 1, 0);      // The up direction of the camera.
 float fovy = 60;
@@ -220,16 +220,6 @@ void Window::displayCallback(GLFWwindow* window,
   shader->setMat4("projection", projection);
   shader->setMat4("view", view);
 
-  // TESTING: different locations
-  // glm::vec3 locations[] = {
-  //     glm::vec3(0.0f, 0.0f, 0.0f),   glm::vec3(1.0f, 1.f, 0.0f),
-  //     glm::vec3(-1.f, -1.0f, 0.0f),  glm::vec3(-3.0f, 1.1f, 0.0f),
-  //     glm::vec3(2.0f, 3.f, 0.0f),    glm::vec3(1.f, -2.5f, 0.0f),
-  //     glm::vec3(-3.0f, -1.3f, 0.0f), glm::vec3(-3.0f, 3.f, 0.0f),
-  //     glm::vec3(-3.f, -3.0f, 0.0f),
-
-  //     glm::vec3(6.0f, 0.0f, 0.0f)};
-
   // rendering
   /* for each input data of client
    * data contains object number and location
@@ -245,7 +235,6 @@ void Window::displayCallback(GLFWwindow* window,
     // transform = glm::translate(transform, locations[i]);
     transform = glm::scale(transform, glm::vec3(currentObj->scale_factor));
     curr_model = curr_model * transform;
-
     shader->setMat4("model", curr_model);
 
     // std::cout << glm::to_string(curr_model) << std::endl;
