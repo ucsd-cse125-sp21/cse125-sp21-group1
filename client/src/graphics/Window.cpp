@@ -30,7 +30,7 @@ Model* shoe;
 std::vector<Model*> geometrys;
 std::map<int, Model*> models;
 
-glm::vec3 eye(0, 0, 50);    // Camera position.
+glm::vec3 eye(0, 0, 55);    // Camera position.
 glm::vec3 center(0, 0, 0);  // The point we are looking at.
 glm::vec3 up(0, 1, 0);      // The up direction of the camera.
 float fovy = 60;
