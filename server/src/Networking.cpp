@@ -46,10 +46,20 @@ Session::Session(tcp::socket socket, NetworkMessages* dataPtr)
       sessionId(getNextSessionId()) {
   asio::ip::tcp::no_delay option(true);
   socket_.set_option(option);
+
   Networking::allSessions[this->sessionId] = this;
 }
 
-void Session::start() { read(); }
+void Session::start() {
+  char sessionIdResponse[2];
+  sessionIdResponse[0] = ((char)(this->sessionId + '0'));
+  sessionIdResponse[1] = '\0';
+  this->send(sessionIdResponse, 1);
+  std::cout << (int)(sessionIdResponse[0]) << std::endl;
+  this->ready = true;
+
+  read();
+}
 
 void Session::read() {
   auto self(shared_from_this());

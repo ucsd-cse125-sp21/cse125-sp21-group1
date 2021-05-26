@@ -53,6 +53,7 @@ void printVersions() {
 }
 
 int main(int argc, char* argv[]) {
+  /*
   std::cout << "start loading with Assimp" << std::endl;
 
   // Create an instance of the Importer class
@@ -75,7 +76,7 @@ int main(int argc, char* argv[]) {
   std::cout << "loading success. " << std::endl;
   std::cout << "num meshes: " << scene->mNumMeshes << std::endl;
   std::cout << "num materials: " << scene->mNumMaterials << std::endl;
-
+  */
   if (argc != 3) {
     std::cerr << "Usage: client <host> <port>" << std::endl;
     return 1;
@@ -97,6 +98,7 @@ int main(int argc, char* argv[]) {
   if (!Window::initializeObjects()) exit(EXIT_FAILURE);
 
   Networking::initClientNetworking(argv[1], argv[2]);
+  std::cout << "sessionId: " << Networking::sessionId << std::endl;
 
   GameState s;
   std::vector<Obj4graphics> objects;
@@ -113,7 +115,8 @@ int main(int argc, char* argv[]) {
 
     // TODO
     // third parameter represents playerI = sessionId + 4 (follow object.h)
-    Window::displayCallback(window, objects, 0);
+    // Networking::sessionId is [0, 3].
+    Window::displayCallback(window, objects, Networking::sessionId + PLAYER_1);
 
     // Idle callback. Updating objects, etc. can be done here.
     Window::idleCallback();
