@@ -10,9 +10,10 @@
  */
 namespace {
 int width, height;
-std::string windowTitle("GLFW Starter Project");
+std::string windowTitle("Group 1 Game");
 
 Model* cake;
+Model* donut;
 Model* choco_cake;
 Model* coffee;
 Model* gingerbreadHouse;
@@ -68,11 +69,11 @@ bool Window::initializeObjects() {
   // etc.
 
   // cake = new Model("source/obstacle_cake/cake_without_plate.obj", 0.1);
-  choco_cake = new Model(
-      "source/obstacle_cake2_texture/cake_obj/Chocolate Cake.obj", 0.2);
+  cake = new Model("source/cake/Cake.fbx", 1);
+  donut = new Model("source/donut1.fbx", 0.5);
   gingerbreadHouse =
       new Model("source/obstacle_GingerbreadHouse/GingerbreadHouse.obj", 6);
-  bomb = new Model("source/weapon_bomb_texture/Bomb.obj", 4);
+  bomb = new Model("source/bomb/Bomb.fbx", 4);
   glove = new Model("source/weapon_gloves/gloves.obj", 0.3);
   gun = new Model("source/weapon_gun/gun.obj", 0.7);
   medicine = new Model("source/weapon_medicine/medicine.obj", 0.03);
@@ -81,8 +82,8 @@ bool Window::initializeObjects() {
   sheild = new Model("source/weapon_shiled_texture/shiled.obj", 1);
   shoe = new Model("source/weapon_shoe/shoe.obj", 10);
 
-  models.insert(pair<int, Model*>(NOT_DESTROYABLE_CUBE, gingerbreadHouse));
-  models.insert(pair<int, Model*>(DONUT, shoe));
+  models.insert(pair<int, Model*>(NOT_DESTROYABLE_CUBE, cake));
+  models.insert(pair<int, Model*>(DONUT, donut));
   models.insert(pair<int, Model*>(BOMB, bomb));
   models.insert(pair<int, Model*>(BALL, medicine));
   models.insert(pair<int, Model*>(SHIELD, sheild));
@@ -90,18 +91,6 @@ bool Window::initializeObjects() {
   models.insert(pair<int, Model*>(PLAYER_2, gun));
   models.insert(pair<int, Model*>(PLAYER_3, gun));
   models.insert(pair<int, Model*>(PLAYER_4, gun));
-
-  // geometrys.push_back(cake);
-  // geometrys.push_back(choco_cake);
-  // geometrys.push_back(coffee);
-  // geometrys.push_back(gingerbreadHouse);
-  // geometrys.push_back(bomb);
-  // geometrys.push_back(glove);
-  // geometrys.push_back(gun);
-  // geometrys.push_back(medicine);
-  // geometrys.push_back(motarshell);
-  // geometrys.push_back(sheild);
-  // geometrys.push_back(shoe);
 
   // bind other values
   // glUniform3fv(glGetUniformLocation(program, "eyePos"), 1,
@@ -175,7 +164,7 @@ GLFWwindow* Window::createWindow(int width, int height) {
 
   // tell stb_image.h to flip loaded texture's on the y-axis (before loading
   // model).
-  stbi_set_flip_vertically_on_load(true);
+  stbi_set_flip_vertically_on_load(false);
   // Set swap interval to 1.
   glfwSwapInterval(0);
   // glEnable(GL_DEPTH_TEST);
