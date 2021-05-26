@@ -111,7 +111,9 @@ int main(int argc, char* argv[]) {
   while (!glfwWindowShouldClose(window)) {
     // Main render display callback. Rendering of objects is done here.
 
-    Window::displayCallback(window, objects);
+    // TODO
+    // third parameter represents playerI = sessionId + 4 (follow object.h)
+    Window::displayCallback(window, objects, 0);
 
     // Idle callback. Updating objects, etc. can be done here.
     Window::idleCallback();

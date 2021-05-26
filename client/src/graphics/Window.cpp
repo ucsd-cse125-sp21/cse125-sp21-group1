@@ -197,7 +197,7 @@ void Window::idleCallback() {
 }
 
 void Window::displayCallback(GLFWwindow* window,
-                             std::vector<Obj4graphics> objects) {
+                             std::vector<Obj4graphics> objects, int playerI) {
   shader->use();
   // Switch back to using OpenGL's rasterizer
   // glUseProgram(program);
