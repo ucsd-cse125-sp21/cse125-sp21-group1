@@ -14,7 +14,8 @@
 #include <stdlib.h>
 
 #include "GameState.h"
-#include "Window.h"
 #include "ModelMatrix.h"
+#include "Networking.h"
+#include "Window.h"
 
 #endif

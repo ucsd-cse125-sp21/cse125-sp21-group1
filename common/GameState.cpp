@@ -268,12 +268,13 @@ int GameState::check_bomb_effect(int x, int y) {
   // encounter player
   for (int i = 0; i < NUM_PLAYERS; i++) {
     if (x == players[i].x && y == players[i].y) {
-      if (!players[i].life_left) {
+      players[i].life_left--;
+      if (players[i].life_left <= 0) {
         // TODO - send message to client side notifying the death
         //      - erase player from player list
+        players[i].life_left = 0;
         board[x][y] = NOTHING;
       }
-      players[i].life_left--;
       return 1;
     }
   }

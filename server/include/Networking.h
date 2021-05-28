@@ -31,6 +31,7 @@ class Session : public std::enable_shared_from_this<Session> {
   void start();
   // Write to the client.
   void send(char*, int);
+  bool ready = false;
 
  private:
   // Keeps reading messages. The lambda function it creates will call do_read to

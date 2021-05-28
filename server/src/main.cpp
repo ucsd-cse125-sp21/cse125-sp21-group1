@@ -45,7 +45,8 @@ int main(int argc, char* argv[]) {
     // Send message.
     char* writeBuf = state.toString();
     for (int i = 0; i < 4; i++) {
-      if (Networking::allSessions[i] != NULL) {
+      if (Networking::allSessions[i] != NULL &&
+          Networking::allSessions[i]->ready) {
         Networking::allSessions[i]->send(writeBuf, sizeof(GameState));
       }
     }
