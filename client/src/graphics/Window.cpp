@@ -14,9 +14,6 @@ std::string windowTitle("Group 1 Game");
 
 Model* cake;
 Model* donut;
-Model* choco_cake;
-Model* coffee;
-Model* gingerbreadHouse;
 Model* bomb;
 Model* glove;
 Model* gun;
@@ -71,8 +68,6 @@ bool Window::initializeObjects() {
   // cake = new Model("source/obstacle_cake/cake_without_plate.obj", 0.1);
   cake = new Model("source/cake/Cake.fbx", 1);
   donut = new Model("source/donut1.fbx", 0.5);
-  gingerbreadHouse =
-      new Model("source/obstacle_GingerbreadHouse/GingerbreadHouse.obj", 6);
   bomb = new Model("source/bomb/Bomb.fbx", 4);
   glove = new Model("source/weapon_gloves/gloves.obj", 0.3);
   gun = new Model("source/weapon_gun/gun.obj", 0.7);
