@@ -28,7 +28,7 @@ Model* shoe;
 std::vector<Model*> geometrys;
 std::map<int, Model*> models;
 
-glm::vec3 eye(0, 0, 55);    // Camera position.
+glm::vec3 eye(0, 0, 30);    // Camera position.
 glm::vec3 center(0, 0, 0);  // The point we are looking at.
 glm::vec3 up(0, 1, 0);      // The up direction of the camera.
 float fovy = 60;
@@ -213,6 +213,16 @@ void Window::displayCallback(GLFWwindow* window,
     Model* currentObj = models.find(objects[i].id)->second;
     // mat
     glm::mat4 curr_model = objects[i].gen;
+
+    if (objects[i].id == playerI) {
+      float x = curr_model[3][0];
+      float y = curr_model[3][1];
+      float z = curr_model[3][2];
+      eye = glm::vec3(x, y, 30);
+      center = glm::vec3(x, y, z);
+      view = glm::lookAt(eye, center, up);
+      shader->setMat4("view", view);
+    }
 
     glm::mat4 transform = glm::mat4(
         1.0f);  // make sure to initialize matrix to identity matrix first
