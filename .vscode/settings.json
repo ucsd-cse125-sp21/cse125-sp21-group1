@@ -93,7 +93,8 @@
     "hash_set": "cpp",
     "forward_list": "cpp",
     "unordered_set": "cpp",
-    "regex": "cpp"
+    "regex": "cpp",
+    "filesystem": "cpp"
   },
   "editor.tabSize": 2,
   "editor.formatOnSave": true,
