@@ -153,6 +153,7 @@ int main(int argc, char* argv[]) {
           Obj4graphics o;
           o.id = s.board[i][j];
           // TODO update generation matrix of cubes
+          // TODO remove landmine from board
           ModelMatrix mm = ModelMatrix();
           mm.move_to(2 * (i - s.board.width / 2), 2 * (j - s.board.height / 2),
                      0);
