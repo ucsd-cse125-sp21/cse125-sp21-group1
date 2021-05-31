@@ -39,7 +39,8 @@
                 "${workspaceFolder}/client/client",
                 "-lws2_32",
                 "-lassimp",
-                "-lglew32s",
+                //"-lglew32s",
+                "-lGLEW",
                 "-lglfw3",
                 "-lgdi32",
                 "-lopengl32"
