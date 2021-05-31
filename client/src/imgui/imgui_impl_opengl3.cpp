@@ -161,7 +161,6 @@ using namespace gl;
 #include <glbinding/glbinding.h>  // Needs to be initialized with glbinding::initialize() in user's code.
 using namespace gl;
 #else
-#include IMGUI_IMPL_OPENGL_LOADER_CUSTOM
 #endif
 #endif
 
