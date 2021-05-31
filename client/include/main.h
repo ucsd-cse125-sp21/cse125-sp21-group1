@@ -39,7 +39,6 @@ using namespace gl;
 #include <glbinding/glbinding.h>  // Initialize with glbinding::initialize()
 using namespace gl;
 #else
-#include IMGUI_IMPL_OPENGL_LOADER_CUSTOM
 #endif
 
 #include <GLFW/glfw3.h>
