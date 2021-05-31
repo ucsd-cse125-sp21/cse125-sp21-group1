@@ -42,7 +42,10 @@
                 "-lglew32s",
                 "-lglfw3",
                 "-lgdi32",
-                "-lopengl32"
+                "-lopengl32",
+                "-loleaut32",
+                "-limm32",
+                "-lversion"
             ],
             "problemMatcher": [],
             "group": {
