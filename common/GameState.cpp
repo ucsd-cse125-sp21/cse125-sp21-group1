@@ -116,6 +116,7 @@ void GameState::updateWithAction(int playerI, char action) {
           players[playerI].y++;
         }
         check_bubble(playerI);
+        check_landmine(playerI, players[playerI].x, players[playerI].y);
       }
       break;
     case 'A':
@@ -127,6 +128,7 @@ void GameState::updateWithAction(int playerI, char action) {
           players[playerI].x--;
         }
         check_bubble(playerI);
+        check_landmine(playerI, players[playerI].x, players[playerI].y);
       }
       break;
     case 'S':
@@ -138,6 +140,7 @@ void GameState::updateWithAction(int playerI, char action) {
           players[playerI].y--;
         }
         check_bubble(playerI);
+        check_landmine(playerI, players[playerI].x, players[playerI].y);
       }
       break;
     case 'D':
@@ -149,6 +152,7 @@ void GameState::updateWithAction(int playerI, char action) {
           players[playerI].x++;
         }
         check_bubble(playerI);
+        check_bomb_effect(players[playerI].x, players[playerI].y);
       }
       break;
     case ' ':
@@ -238,6 +242,9 @@ void GameState::attack(int playerI, int x, int y) {
         case ROCKET:
           break;
         case LANDMINE:
+          board[x][y] = LANDMINE;
+          players[playerI].weapon = BOMB;
+          players[playerI].weapon_left = players[playerI].max_bomb;
           break;
         case FIRE:
           break;
