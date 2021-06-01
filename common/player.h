@@ -9,8 +9,8 @@ struct Player {
   char id;
   int x;
   int y;
-  char max_bomb;     // how many bombs can the player place at most
-  char weapon_left;  // how many weapons shots (including bomb) can the player still place
+  int max_bomb;     // how many bombs can the player place at most
+  int weapon_left;  // how many weapons shots (including bomb) can the player still place
   char weapon;       // use index of object array
   int life_left;     // number of remaining lives, dead being negative.
   float speed;
