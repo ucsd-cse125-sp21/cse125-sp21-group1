@@ -57,144 +57,6 @@ void printVersions() {
 #endif
 }
 
-int setupLoader() {
-#if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
-  bool err = gl3wInit() != 0;
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
-  bool err = glewInit() != GLEW_OK;
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
-  bool err = gladLoadGL() == 0;
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD2)
-  bool err = gladLoadGL(glfwGetProcAddress) ==
-             0;  // glad2 recommend using the windowing library loader instead
-                 // of the (optionally) bundled one.
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLBINDING2)
-  bool err = false;
-  glbinding::Binding::initialize();
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLBINDING3)
-  bool err = false;
-  glbinding::initialize([](const char* name) {
-    return (glbinding::ProcAddress)glfwGetProcAddress(name);
-  });
-#else
-  bool err = false;  // If you use IMGUI_IMPL_OPENGL_LOADER_CUSTOM, your loader
-                     // is likely to requires some form of initialization.
-#endif
-  if (err) {
-    fprintf(stderr, "Failed to initialize OpenGL loader!\n");
-    return 1;
-  }
-  return 0;
-}
-
-void setupImGui(GLFWwindow* window) {
-  // Setup Dear ImGui context
-  IMGUI_CHECKVERSION();
-  ImGui::CreateContext();
-  ImGuiIO& io = ImGui::GetIO();
-  (void)io;
-  // io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable
-  // Keyboard Controls io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; //
-  // Enable Gamepad Controls
-
-  // Setup Dear ImGui style
-  ImGui::StyleColorsDark();
-  // ImGui::StyleColorsClassic();
-
-  // Setup Platform/Renderer backends
-  ImGui_ImplGlfw_InitForOpenGL(window, true);
-  const char* glsl_version = "#version 330";
-  ImGui_ImplOpenGL3_Init(glsl_version);
-
-  // Load Fonts
-  // - If no fonts are loaded, dear imgui will use the default font.
-}
-
-void startImGuiFrame(GLFWwindow* window, bool show_demo, bool show_another,
-                     ImVec4 clear_color) {
-  // Poll and handle events (inputs, window resize, etc.)
-  // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell
-  // if dear imgui wants to use your inputs.
-  // - When io.WantCaptureMouse is true, do not dispatch mouse input data to
-  // your main application.
-  // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data
-  // to your main application. Generally you may always pass all inputs to dear
-  // imgui, and hide them from your application based on those two flags.
-  glfwPollEvents();
-
-  // Start the Dear ImGui frame
-  ImGui_ImplOpenGL3_NewFrame();
-  ImGui_ImplGlfw_NewFrame();
-  ImGui::NewFrame();
-
-  // 1. Show the big demo window (Most of the sample code is in
-  // ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear
-  // ImGui!).
-  if (show_demo) ImGui::ShowDemoWindow(&show_demo);
-
-  // 2. Show a simple window that we create ourselves. We use a Begin/End pair
-  // to created a named window.
-  {
-    static float f = 0.0f;
-    static int counter = 0;
-
-    ImGui::Begin("Hello, world!");  // Create a window called "Hello, world!"
-                                    // and append into it.
-
-    ImGui::Text("This is some useful text.");  // Display some text (you can use
-                                               // a format strings too)
-    ImGui::Checkbox(
-        "Demo Window",
-        &show_demo);  // Edit bools storing our window open/close state
-    ImGui::Checkbox("Another Window", &show_another);
-
-    ImGui::SliderFloat("float", &f, 0.0f,
-                       1.0f);  // Edit 1 float using a slider from 0.0f to 1.0f
-    ImGui::ColorEdit3(
-        "clear color",
-        (float*)&clear_color);  // Edit 3 floats representing a color
-
-    if (ImGui::Button("Button"))  // Buttons return true when clicked (most
-                                  // widgets return true when edited/activated)
-      counter++;
-    ImGui::SameLine();
-    ImGui::Text("counter = %d", counter);
-
-    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
-                1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-    ImGui::End();
-  }
-
-  // 3. Show another simple window.
-  if (show_another) {
-    ImGui::Begin("Another Window",
-                 &show_another);  // Pass a pointer to our bool variable (the
-                                  // window will have a closing button that will
-                                  // clear the bool when clicked)
-    ImGui::Text("Hello from another window!");
-    if (ImGui::Button("Close Me")) show_another = false;
-    ImGui::End();
-  }
-
-  // Rendering
-  ImGui::Render();
-  int display_w, display_h;
-  glfwGetFramebufferSize(window, &display_w, &display_h);
-  glViewport(0, 0, display_w, display_h);
-  glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w,
-               clear_color.z * clear_color.w, clear_color.w);
-  glClear(GL_COLOR_BUFFER_BIT);
-  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-  glfwSwapBuffers(window);
-}
-
-void cleanupImGui() {
-  ImGui_ImplOpenGL3_Shutdown();
-  ImGui_ImplGlfw_Shutdown();
-  ImGui::DestroyContext();
-}
-
 int main(int argc, char* argv[]) {
   /*
   std::cout << "start loading with Assimp" << std::endl;
@@ -230,9 +92,7 @@ int main(int argc, char* argv[]) {
   if (!window) exit(EXIT_FAILURE);
 
   // Initialize OpenGL loader
-  if (setupLoader()) {
-    return 1;
-  }
+  ImGuiRunner::setupLoader();
 
   // Print OpenGL and GLSL versions.
   printVersions();
@@ -246,11 +106,7 @@ int main(int argc, char* argv[]) {
   if (!Window::initializeObjects()) exit(EXIT_FAILURE);
 
   // Setup ImGui Context
-  setupImGui(window);
-  // Our state
-  bool show_demo_window = true;
-  bool show_another_window = false;
-  ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+  ImGuiRunner::setupImGui(window);
 
   Networking::initClientNetworking(argv[1], argv[2]);
   std::cout << "sessionId: " << Networking::sessionId << std::endl;
@@ -269,7 +125,7 @@ int main(int argc, char* argv[]) {
     // Main render display callback. Rendering of objects is done here.
 
     // display ImGui
-    startImGuiFrame(window, show_demo_window, show_another_window, clear_color);
+    ImGuiRunner::startImGuiFrame();
 
     // TODO
     // third parameter represents playerI = sessionId + 4 (follow object.h)
@@ -469,7 +325,7 @@ int main(int argc, char* argv[]) {
   }
 
   // Cleanup ImGui
-  cleanupImGui();
+  ImGuiRunner::cleanupImGui();
 
   Window::cleanUp();
   // Destroy the window.
