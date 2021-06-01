@@ -116,19 +116,32 @@ void GameState::updateWithAction(int playerI, char action) {
           players[playerI].y++;
         }
         check_bubble(playerI);
-        check_landmine(playerI, players[playerI].x, players[playerI].y);
+        if (board[players[playerI].x][players[playerI].y] == LANDMINE) {
+          check_bomb_effect(players[playerI].x, players[playerI].y);
+        }
       }
       break;
     case 'A':
+      // printf("1\n");
       players[playerI].facing = LEFTWARD;
+      // printf("2\n");
       if (players[playerI].x > 0) {
+        // printf("inside if\n");
         char nextStepBoard = board[players[playerI].x - 1][players[playerI].y];
+        // printf("ini 2\n");
         if (nextStepBoard != NOT_DESTROYABLE_CUBE && nextStepBoard != DONUT &&
             nextStepBoard != BOMB) {
+          // printf("nested if\n");
           players[playerI].x--;
+          // printf("x--\n");
         }
+        // printf("before check bubble\n");
         check_bubble(playerI);
-        check_landmine(playerI, players[playerI].x, players[playerI].y);
+        // printf("after\n");
+        if (board[players[playerI].x][players[playerI].y] == LANDMINE) {
+          // printf("another\n");
+          check_bomb_effect(players[playerI].x, players[playerI].y);
+        }
       }
       break;
     case 'S':
@@ -140,7 +153,9 @@ void GameState::updateWithAction(int playerI, char action) {
           players[playerI].y--;
         }
         check_bubble(playerI);
-        check_landmine(playerI, players[playerI].x, players[playerI].y);
+        if (board[players[playerI].x][players[playerI].y] == LANDMINE) {
+          check_bomb_effect(players[playerI].x, players[playerI].y);
+        }
       }
       break;
     case 'D':
@@ -152,7 +167,9 @@ void GameState::updateWithAction(int playerI, char action) {
           players[playerI].x++;
         }
         check_bubble(playerI);
-        check_bomb_effect(players[playerI].x, players[playerI].y);
+        if (board[players[playerI].x][players[playerI].y] == LANDMINE) {
+          check_bomb_effect(players[playerI].x, players[playerI].y);
+        }
       }
       break;
     case ' ':
@@ -265,7 +282,10 @@ void GameState::attack(int playerI, int x, int y) {
 int GameState::check_bomb_effect(int x, int y) {
   char obj = board[x][y];
   if (obj == NOT_DESTROYABLE_CUBE) return 1;
-  if (obj == LANDMINE) return 1;
+  if (obj == LANDMINE) {
+    board[x][y] = NOTHING;
+    return 1;
+  }
   if (obj == DONUT) {
     int ind = rand() % weapon_list.size();
     board[x][y] = weapon_list[ind];  // update corresponding object in board

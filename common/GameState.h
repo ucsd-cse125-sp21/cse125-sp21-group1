@@ -20,7 +20,7 @@
 #define num_laser 0     // 20
 #define num_grenade 0   // 20
 #define num_rocket 0    // 20
-#define num_landmine 0  // 20
+#define num_landmine 0  // 100  // 20
 #define num_fire 0
 #define num_frozen 0
 #define num_glove 20

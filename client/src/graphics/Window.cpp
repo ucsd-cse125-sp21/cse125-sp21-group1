@@ -86,6 +86,7 @@ bool Window::initializeObjects() {
   models.insert(pair<int, Model*>(PLAYER_2, gun));
   models.insert(pair<int, Model*>(PLAYER_3, gun));
   models.insert(pair<int, Model*>(PLAYER_4, gun));
+  models.insert(pair<int, Model*>(LANDMINE, glove));
 
   // bind other values
   // glUniform3fv(glGetUniformLocation(program, "eyePos"), 1,

@@ -147,7 +147,7 @@ int main(int argc, char* argv[]) {
       // add object struct for gameboard grids
       for (int i = 0; i < s.board.width; i++) {
         for (int j = 0; j < s.board.height; j++) {
-          if (s.board[i][j] == NOTHING) {
+          if ((s.board[i][j] == NOTHING) || (s.board[i][j] == LANDMINE)) {
             continue;
           }
           Obj4graphics o;
@@ -209,7 +209,7 @@ int main(int argc, char* argv[]) {
           }
           mmw.move_to(s.players[i].x - s.board.width / 2,
                       s.players[i].y - s.board.height / 2, 5);
-
+          // mmw.scale(0.5);
           ow.gen = mm.get_model();
           objects.push_back(ow);
         }
