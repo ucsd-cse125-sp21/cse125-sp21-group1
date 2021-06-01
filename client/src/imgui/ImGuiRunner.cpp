@@ -7,14 +7,14 @@
 
 #include "Networking.h"
 
-static bool isLoaderSetup;
-static bool isWindowSetup;
-static bool isImGuiFrameSetup;
-static GLFWwindow* window;
+bool ImGuiRunner::isLoaderSetup;
+bool ImGuiRunner::isWindowSetup;
+bool ImGuiRunner::isImGuiFrameSetup;
+GLFWwindow* ImGuiRunner::window;
 // states
-static bool show1 = true;
-static bool show2 = false;
-static ImVec4 color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+bool ImGuiRunner::show1 = true;
+bool ImGuiRunner::show2 = false;
+ImVec4 ImGuiRunner::color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 void ImGuiRunner::setupLoader() {
 #if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
