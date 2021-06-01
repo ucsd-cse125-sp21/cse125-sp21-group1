@@ -265,6 +265,7 @@ void GameState::attack(int playerI, int x, int y) {
 int GameState::check_bomb_effect(int x, int y) {
   char obj = board[x][y];
   if (obj == NOT_DESTROYABLE_CUBE) return 1;
+  if (obj == LANDMINE) return 1;
   if (obj == DONUT) {
     int ind = rand() % weapon_list.size();
     board[x][y] = weapon_list[ind];  // update corresponding object in board
