@@ -69,9 +69,9 @@ bool Window::initializeObjects() {
   cake = new Model("source/cake/Cake.fbx", 1);
   donut = new Model("source/donut1.fbx", 0.5);
   bomb = new Model("source/bomb/Bomb.fbx", 4);
-  glove = new Model("source/weapon_gloves/gloves.obj", 0.3);
+  glove = new Model("source/weapon_gloves/gloves.obj", 1);
   gun = new Model("source/weapon_gun/gun.obj", 0.7);
-  medicine = new Model("source/weapon_medicine/medicine.obj", 0.03);
+  medicine = new Model("source/weapon_medicine/medicine.obj", 1);
   motarshell =
       new Model("source/weapon_mortarshell/weapon_mortarshell.obj", 0.1);
   sheild = new Model("source/weapon_shiled_texture/shiled.obj", 1);
@@ -80,8 +80,9 @@ bool Window::initializeObjects() {
   models.insert(pair<int, Model*>(NOT_DESTROYABLE_CUBE, cake));
   models.insert(pair<int, Model*>(DONUT, donut));
   models.insert(pair<int, Model*>(BOMB, bomb));
-  models.insert(pair<int, Model*>(BALL, medicine));
+  models.insert(pair<int, Model*>(BALL, glove));
   models.insert(pair<int, Model*>(SHIELD, sheild));
+  models.insert(pair<int, Model*>(ELIXIR, medicine));
   models.insert(pair<int, Model*>(PLAYER_1, gun));
   models.insert(pair<int, Model*>(PLAYER_2, gun));
   models.insert(pair<int, Model*>(PLAYER_3, gun));

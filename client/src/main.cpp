@@ -154,8 +154,29 @@ int main(int argc, char* argv[]) {
           o.id = s.board[i][j];
           // TODO update generation matrix of cubes
           ModelMatrix mm = ModelMatrix();
-          mm.move_to(2 * (i - s.board.width / 2), 2 * (j - s.board.height / 2),
-                     0);
+          if (o.id == SHIELD) {
+            mm.move_to(2 * (i - s.board.width / 2 + 1),
+                       2 * (j - s.board.height / 2), 0);
+          } else {
+            mm.move_to(2 * (i - s.board.width / 2),
+                       2 * (j - s.board.height / 2), 0);
+          }
+          switch (o.id) {
+            case SHIELD:
+              mm.scale(0.5);
+              break;
+
+            case ELIXIR:
+              mm.scale(0.03);
+              break;
+
+            case BALL:
+              mm.scale(0.3);
+              break;
+
+            default:
+              break;
+          }
           o.gen = mm.get_model();
           objects.push_back(o);
         }
