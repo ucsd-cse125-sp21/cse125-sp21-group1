@@ -221,7 +221,7 @@ void Window::displayCallback(GLFWwindow* window,
       float x = curr_model[3][0];
       float y = curr_model[3][1];
       float z = curr_model[3][2];
-      eye = glm::vec3(x, y - 10, 30);
+      eye = glm::vec3(x, y - 10, 20);
       center = glm::vec3(x, y, z);
       view = glm::lookAt(eye, center, up);
       shader->setMat4("view", view);
