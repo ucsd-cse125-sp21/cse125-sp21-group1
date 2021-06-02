@@ -5,12 +5,22 @@ using asio::ip::tcp;
 asio::io_context Networking::io_context;
 tcp::resolver Networking::resolver(io_context);
 tcp::socket Networking::socket(io_context);
+int Networking::sessionId;
+
 void Networking::initClientNetworking(std::string host, std::string port) {
   tcp::resolver::results_type endpoints = resolver.resolve(host, port);
   asio::connect(socket, endpoints);
   asio::ip::tcp::no_delay option(true);
   socket.set_option(option);
   socket.non_blocking(true);
+
+  char* sessionIdStr = Networking::receive(1);
+  while (sessionIdStr == NULL) {
+    std::cout << "Session Id not received, retry" << std::endl;
+    sessionIdStr = Networking::receive(1);
+  }
+  Networking::sessionId = sessionIdStr[0] - '0';
+  free(sessionIdStr);
 }
 
 // This will send synchronously.
@@ -28,7 +38,7 @@ char* Networking::receive(size_t desiredLen) {
   // std::cout << len << std::endl;
 
   if (error == asio::error::would_block) {
-    // Closed by remote.
+    // Nothing received, can try again.
     return NULL;
   } else if (error == asio::error::eof) {
     // Closed by remote.

@@ -10,12 +10,10 @@
  */
 namespace {
 int width, height;
-std::string windowTitle("GLFW Starter Project");
+std::string windowTitle("Group 1 Game");
 
 Model* cake;
-Model* choco_cake;
-Model* coffee;
-Model* gingerbreadHouse;
+Model* donut;
 Model* bomb;
 Model* glove;
 Model* gun;
@@ -30,7 +28,7 @@ Model* shoe;
 std::vector<Model*> geometrys;
 std::map<int, Model*> models;
 
-glm::vec3 eye(0, 0, 50);    // Camera position.
+glm::vec3 eye(0, 0, 30);    // Camera position.
 glm::vec3 center(0, 0, 0);  // The point we are looking at.
 glm::vec3 up(0, 1, 0);      // The up direction of the camera.
 float fovy = 60;
@@ -68,11 +66,9 @@ bool Window::initializeObjects() {
   // etc.
 
   // cake = new Model("source/obstacle_cake/cake_without_plate.obj", 0.1);
-  choco_cake = new Model(
-      "source/obstacle_cake2_texture/cake_obj/Chocolate Cake.obj", 0.2);
-  gingerbreadHouse =
-      new Model("source/obstacle_GingerbreadHouse/GingerbreadHouse.obj", 6);
-  bomb = new Model("source/weapon_bomb_texture/Bomb.obj", 4);
+  cake = new Model("source/cake/Cake.fbx", 1);
+  donut = new Model("source/donut1.fbx", 0.5);
+  bomb = new Model("source/bomb/Bomb.fbx", 4);
   glove = new Model("source/weapon_gloves/gloves.obj", 0.3);
   gun = new Model("source/weapon_gun/gun.obj", 0.7);
   medicine = new Model("source/weapon_medicine/medicine.obj", 0.03);
@@ -81,8 +77,8 @@ bool Window::initializeObjects() {
   sheild = new Model("source/weapon_shiled_texture/shiled.obj", 1);
   shoe = new Model("source/weapon_shoe/shoe.obj", 10);
 
-  models.insert(pair<int, Model*>(NOT_DESTROYABLE_CUBE, gingerbreadHouse));
-  models.insert(pair<int, Model*>(DONUT, shoe));
+  models.insert(pair<int, Model*>(NOT_DESTROYABLE_CUBE, cake));
+  models.insert(pair<int, Model*>(DONUT, donut));
   models.insert(pair<int, Model*>(BOMB, bomb));
   models.insert(pair<int, Model*>(BALL, medicine));
   models.insert(pair<int, Model*>(SHIELD, sheild));
@@ -90,18 +86,6 @@ bool Window::initializeObjects() {
   models.insert(pair<int, Model*>(PLAYER_2, gun));
   models.insert(pair<int, Model*>(PLAYER_3, gun));
   models.insert(pair<int, Model*>(PLAYER_4, gun));
-
-  // geometrys.push_back(cake);
-  // geometrys.push_back(choco_cake);
-  // geometrys.push_back(coffee);
-  // geometrys.push_back(gingerbreadHouse);
-  // geometrys.push_back(bomb);
-  // geometrys.push_back(glove);
-  // geometrys.push_back(gun);
-  // geometrys.push_back(medicine);
-  // geometrys.push_back(motarshell);
-  // geometrys.push_back(sheild);
-  // geometrys.push_back(shoe);
 
   // bind other values
   // glUniform3fv(glGetUniformLocation(program, "eyePos"), 1,
@@ -175,7 +159,7 @@ GLFWwindow* Window::createWindow(int width, int height) {
 
   // tell stb_image.h to flip loaded texture's on the y-axis (before loading
   // model).
-  stbi_set_flip_vertically_on_load(true);
+  stbi_set_flip_vertically_on_load(false);
   // Set swap interval to 1.
   glfwSwapInterval(0);
   // glEnable(GL_DEPTH_TEST);
@@ -208,7 +192,7 @@ void Window::idleCallback() {
 }
 
 void Window::displayCallback(GLFWwindow* window,
-                             std::vector<Obj4graphics> objects) {
+                             std::vector<Obj4graphics> objects, int playerI) {
   shader->use();
   // Switch back to using OpenGL's rasterizer
   // glUseProgram(program);
@@ -220,16 +204,6 @@ void Window::displayCallback(GLFWwindow* window,
   shader->setMat4("projection", projection);
   shader->setMat4("view", view);
 
-  // TESTING: different locations
-  // glm::vec3 locations[] = {
-  //     glm::vec3(0.0f, 0.0f, 0.0f),   glm::vec3(1.0f, 1.f, 0.0f),
-  //     glm::vec3(-1.f, -1.0f, 0.0f),  glm::vec3(-3.0f, 1.1f, 0.0f),
-  //     glm::vec3(2.0f, 3.f, 0.0f),    glm::vec3(1.f, -2.5f, 0.0f),
-  //     glm::vec3(-3.0f, -1.3f, 0.0f), glm::vec3(-3.0f, 3.f, 0.0f),
-  //     glm::vec3(-3.f, -3.0f, 0.0f),
-
-  //     glm::vec3(6.0f, 0.0f, 0.0f)};
-
   // rendering
   /* for each input data of client
    * data contains object number and location
@@ -240,12 +214,21 @@ void Window::displayCallback(GLFWwindow* window,
     // mat
     glm::mat4 curr_model = objects[i].gen;
 
+    if (objects[i].id == playerI) {
+      float x = curr_model[3][0];
+      float y = curr_model[3][1];
+      float z = curr_model[3][2];
+      eye = glm::vec3(x, y, 30);
+      center = glm::vec3(x, y, z);
+      view = glm::lookAt(eye, center, up);
+      shader->setMat4("view", view);
+    }
+
     glm::mat4 transform = glm::mat4(
         1.0f);  // make sure to initialize matrix to identity matrix first
     // transform = glm::translate(transform, locations[i]);
     transform = glm::scale(transform, glm::vec3(currentObj->scale_factor));
     curr_model = curr_model * transform;
-
     shader->setMat4("model", curr_model);
 
     // std::cout << glm::to_string(curr_model) << std::endl;

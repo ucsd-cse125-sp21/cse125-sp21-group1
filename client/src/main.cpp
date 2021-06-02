@@ -53,6 +53,7 @@ void printVersions() {
 }
 
 int main(int argc, char* argv[]) {
+  /*
   std::cout << "start loading with Assimp" << std::endl;
 
   // Create an instance of the Importer class
@@ -75,7 +76,7 @@ int main(int argc, char* argv[]) {
   std::cout << "loading success. " << std::endl;
   std::cout << "num meshes: " << scene->mNumMeshes << std::endl;
   std::cout << "num materials: " << scene->mNumMaterials << std::endl;
-
+  */
   if (argc != 3) {
     std::cerr << "Usage: client <host> <port>" << std::endl;
     return 1;
@@ -97,6 +98,7 @@ int main(int argc, char* argv[]) {
   if (!Window::initializeObjects()) exit(EXIT_FAILURE);
 
   Networking::initClientNetworking(argv[1], argv[2]);
+  std::cout << "sessionId: " << Networking::sessionId << std::endl;
 
   GameState s;
   std::vector<Obj4graphics> objects;
@@ -111,7 +113,10 @@ int main(int argc, char* argv[]) {
   while (!glfwWindowShouldClose(window)) {
     // Main render display callback. Rendering of objects is done here.
 
-    Window::displayCallback(window, objects);
+    // TODO
+    // third parameter represents playerI = sessionId + 4 (follow object.h)
+    // Networking::sessionId is [0, 3].
+    Window::displayCallback(window, objects, Networking::sessionId + PLAYER_1);
 
     // Idle callback. Updating objects, etc. can be done here.
     Window::idleCallback();
@@ -120,7 +125,9 @@ int main(int argc, char* argv[]) {
     char* msg = Networking::receive(sizeof(GameState));
     // GameState* s = (GameState*)malloc(sizeof(GameState));
     // std::cout << std::string(msg) << std::endl;
+    // std::cout << "in while loop" << std::endl;
     if (msg != NULL) {
+      // std::cout << "in if statement" << std::endl;
       memcpy(&s, msg, sizeof(GameState));
       // std::cout << s.toString() << std::endl;
 
@@ -154,9 +161,10 @@ int main(int argc, char* argv[]) {
         }
       }
       // add object struct for player and their weapons
+      // std::cout << "num player: " << NUM_PLAYERS << std::endl;
       for (int i = 0; i < NUM_PLAYERS; i++) {
         // player
-        if (~s.players[i].life_left) continue;
+        if (s.players[i].life_left == 0) continue;
         Obj4graphics o;
         o.id = i + 4;
         ModelMatrix mm = ModelMatrix();
@@ -176,6 +184,7 @@ int main(int argc, char* argv[]) {
 
         mm.move_to(2 * (s.players[i].x - s.board.width / 2),
                    2 * (s.players[i].y - s.board.height / 2), 0);
+
         o.gen = mm.get_model();
         objects.push_back(o);
 
@@ -209,7 +218,7 @@ int main(int argc, char* argv[]) {
       free(msg);
 
       // Print GameState board.
-      std::system("CLS");
+      // std::system("CLS");
       std::ostringstream os;
       // for (int i = 0; i <= s.board.height; i++) {
       //   for (int j = 0; j <= s.board.width; j++) {

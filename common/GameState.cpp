@@ -109,11 +109,11 @@ void GameState::updateWithAction(int playerI, char action) {
   switch (action) {
     case 'W':
       players[playerI].facing = UPWARD;
-      if (players[playerI].y > 0) {
-        char nextStepBoard = board[players[playerI].x][players[playerI].y - 1];
+      if (players[playerI].y < board.height) {
+        char nextStepBoard = board[players[playerI].x][players[playerI].y + 1];
         if (nextStepBoard != NOT_DESTROYABLE_CUBE && nextStepBoard != DONUT &&
             nextStepBoard != BOMB) {
-          players[playerI].y--;
+          players[playerI].y++;
         }
         check_bubble(playerI);
       }
@@ -131,11 +131,11 @@ void GameState::updateWithAction(int playerI, char action) {
       break;
     case 'S':
       players[playerI].facing = DOWNWARD;
-      if (players[playerI].y < board.height) {
-        char nextStepBoard = board[players[playerI].x][players[playerI].y + 1];
+      if (players[playerI].y > 0) {
+        char nextStepBoard = board[players[playerI].x][players[playerI].y - 1];
         if (nextStepBoard != NOT_DESTROYABLE_CUBE && nextStepBoard != DONUT &&
             nextStepBoard != BOMB) {
-          players[playerI].y++;
+          players[playerI].y--;
         }
         check_bubble(playerI);
       }
@@ -268,12 +268,13 @@ int GameState::check_bomb_effect(int x, int y) {
   // encounter player
   for (int i = 0; i < NUM_PLAYERS; i++) {
     if (x == players[i].x && y == players[i].y) {
-      if (!players[i].life_left) {
+      players[i].life_left--;
+      if (players[i].life_left <= 0) {
         // TODO - send message to client side notifying the death
         //      - erase player from player list
+        players[i].life_left = 0;
         board[x][y] = NOTHING;
       }
-      players[i].life_left--;
       return 1;
     }
   }

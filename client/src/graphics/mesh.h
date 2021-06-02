@@ -114,6 +114,9 @@ class Mesh {
 
     // always good practice to set everything back to defaults once configured.
     glActiveTexture(GL_TEXTURE0);
+
+    // unbind texture
+    glBindTexture(GL_TEXTURE_2D, 0);
   }
 
  private:
