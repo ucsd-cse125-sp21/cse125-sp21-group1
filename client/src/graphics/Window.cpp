@@ -21,6 +21,7 @@ Model* medicine;
 Model* motarshell;
 Model* sheild;
 Model* shoe;
+Model* fox;
 
 // PointCloud* plsPoints;  // point light sphere
 
@@ -76,6 +77,7 @@ bool Window::initializeObjects() {
       new Model("source/weapon_mortarshell/weapon_mortarshell.obj", 0.1);
   sheild = new Model("source/weapon_shiled_texture/shiled.obj", 1);
   shoe = new Model("source/weapon_shoe/shoe.obj", 10);
+  fox = new Model("source/fox/Low Poly Fox.fbx", 0.4);
 
   models.insert(pair<int, Model*>(NOT_DESTROYABLE_CUBE, cake));
   models.insert(pair<int, Model*>(DONUT, donut));
@@ -83,10 +85,10 @@ bool Window::initializeObjects() {
   models.insert(pair<int, Model*>(BALL, glove));
   models.insert(pair<int, Model*>(SHIELD, sheild));
   models.insert(pair<int, Model*>(ELIXIR, medicine));
-  models.insert(pair<int, Model*>(PLAYER_1, gun));
-  models.insert(pair<int, Model*>(PLAYER_2, gun));
-  models.insert(pair<int, Model*>(PLAYER_3, gun));
-  models.insert(pair<int, Model*>(PLAYER_4, gun));
+  models.insert(pair<int, Model*>(PLAYER_1, fox));
+  models.insert(pair<int, Model*>(PLAYER_2, fox));
+  models.insert(pair<int, Model*>(PLAYER_3, fox));
+  models.insert(pair<int, Model*>(PLAYER_4, fox));
 
   // bind other values
   // glUniform3fv(glGetUniformLocation(program, "eyePos"), 1,
@@ -219,7 +221,7 @@ void Window::displayCallback(GLFWwindow* window,
       float x = curr_model[3][0];
       float y = curr_model[3][1];
       float z = curr_model[3][2];
-      eye = glm::vec3(x, y, 30);
+      eye = glm::vec3(x, y - 10, 30);
       center = glm::vec3(x, y, z);
       view = glm::lookAt(eye, center, up);
       shader->setMat4("view", view);
