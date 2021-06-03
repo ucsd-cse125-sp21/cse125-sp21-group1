@@ -67,9 +67,9 @@ bool Window::initializeObjects() {
   // etc.
 
   // cake = new Model("source/obstacle_cake/cake_without_plate.obj", 0.1);
-  cake = new Model("source/cake/Cake.fbx", 1);
-  donut = new Model("source/donut1.fbx", 0.5);
-  bomb = new Model("source/bomb/Bomb.fbx", 4);
+  cake = new Model("source/cake/Cake.obj", 1);
+  donut = new Model("source/donut/donut.obj", 0.5);
+  bomb = new Model("source/weapon_bomb_texture/Bomb.obj", 4);
   glove = new Model("source/weapon_gloves/gloves.obj", 1);
   gun = new Model("source/weapon_gun/gun.obj", 0.7);
   medicine = new Model("source/weapon_medicine/medicine.obj", 1);
@@ -230,7 +230,12 @@ void Window::displayCallback(GLFWwindow* window,
     glm::mat4 transform = glm::mat4(
         1.0f);  // make sure to initialize matrix to identity matrix first
     // transform = glm::translate(transform, locations[i]);
-    transform = glm::scale(transform, glm::vec3(currentObj->scale_factor));
+
+    // ADDED ROTATION, //TODO
+    transform =
+        glm::rotate(glm::scale(transform, glm::vec3(currentObj->scale_factor)),
+                    glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
     curr_model = curr_model * transform;
     shader->setMat4("model", curr_model);
 
