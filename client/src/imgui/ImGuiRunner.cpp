@@ -112,7 +112,8 @@ void ImGuiRunner::showStarterPage() {
                                  // widgets return true when edited/activated)
   {
     counter++;
-    cleanupImGui();
+    ImGui::End();
+    ImGui::EndFrame();
   }
   ImGui::SameLine();
   ImGui::Text("counter = %d", counter);
@@ -150,7 +151,7 @@ void ImGuiRunner::cleanupImGui() {
   isLoaderSetup = false;
   isWindowSetup = false;
   isImGuiFrameSetup = false;
-  window = nullptr;
+  // window = nullptr;
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplGlfw_Shutdown();
   ImGui::DestroyContext();
