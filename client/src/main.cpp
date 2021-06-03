@@ -126,6 +126,7 @@ int main(int argc, char* argv[]) {
 
     // display ImGui
     ImGuiRunner::startImGuiFrame();
+    ImGuiRunner::showStarterPage();
 
     // TODO
     // third parameter represents playerI = sessionId + 4 (follow object.h)
@@ -144,18 +145,6 @@ int main(int argc, char* argv[]) {
       // std::cout << "in if statement" << std::endl;
       memcpy(&s, msg, sizeof(GameState));
       // std::cout << s.toString() << std::endl;
-
-      // std::cout << (int)s.board_x << " " << (int)s.board_y << std::endl;
-      /*for (int i = 0; i < NUM_PLAYERS; i++) {
-        moveSthBy(i, s.players[i].x, s.players[i].y, 0);
-        std::cout << i << " " << (int)s.players[i].x << " "
-                  << (int)s.players[i].y << std::endl;
-       original main*/
-      /*for (int i = 0; i < NUM_PLAYERS; i++) {
-        moveSthBy(i, s.players[i].x - s.board.width / 2,
-                  s.players[i].y - s.board.height / 2, 0);
-        s.board[s.players[i].x][s.players[i].y] = 4 + i;
-      }*/
       /****************************************************/
       objects.clear();
       // add object struct for gameboard grids
@@ -251,94 +240,6 @@ int main(int argc, char* argv[]) {
       /****************************************************/
 
       free(msg);
-
-      // Print GameState board.
-      // std::system("CLS");
-      std::ostringstream os;
-      // for (int i = 0; i <= s.board.height; i++) {
-      //   for (int j = 0; j <= s.board.width; j++) {
-      //     switch (s.board[j][i]) {
-      //       case NOTHING:
-      //         os << "  ";
-      //         break;
-      //       case NOT_DESTROYABLE_CUBE:
-      //         os << "\033[1;40m  \033[0m";
-      //         break;
-      //       case DONUT:
-      //         os << "\033[1;42m  \033[0m";
-      //         break;
-      //       case PLAYER_1:
-      //         if (s.players[0].life_left > 0) {
-      //           os << "\033[1;37m11\033[0m";
-      //         } else {
-      //           os << "\033[1;37m  \033[0m";
-      //         }
-      //         break;
-      //       case PLAYER_2:
-      //         if (s.players[1].life_left > 0) {
-      //           os << "\033[1;37m22\033[0m";
-      //         } else {
-      //           os << "\033[1;37m  \033[0m";
-      //         }
-      //         break;
-      //       case PLAYER_3:
-      //         if (s.players[2].life_left > 0) {
-      //           os << "\033[1;37m33\033[0m";
-      //         } else {
-      //           os << "\033[1;37m  \033[0m";
-      //         }
-      //         break;
-      //       case PLAYER_4:
-      //         if (s.players[3].life_left > 0) {
-      //           os << "\033[1;37m44\033[0m";
-      //         } else {
-      //           os << "\033[1;37m  \033[0m";
-      //         }
-      //         break;
-      //       case LASER:
-      //         os << "\033[1;31mLL\033[0m";
-      //         break;
-      //       case GRENADE:
-      //         os << "\033[1;31mGG\033[0m";
-      //         break;
-      //       case ROCKET:
-      //         os << "\033[1;31mRR\033[0m";
-      //         break;
-      //       case LANDMINE:
-      //         os << "\033[1;31mLL\033[0m";
-      //         break;
-      //       case FIRE:
-      //         os << "\033[1;31mFF\033[0m";
-      //         break;
-      //       case FROZEN:
-      //         os << "\033[1;31mZZ\033[0m";
-      //         break;
-      //       case GLOVE:
-      //         os << "\033[1;31mGG\033[0m";
-      //         break;
-      //       case ELIXIR:
-      //         os << "\033[1;31mEE\033[0m";
-      //         break;
-      //       case BALL:
-      //         os << "\033[1;31mBB\033[0m";
-      //         break;
-      //       case SHIELD:
-      //         os << "\033[1;31mSS\033[0m";
-      //         break;
-      //       case SHOES:
-      //         os << "\033[1;31mMM\033[0m";
-      //         break;
-      //       case BOMB:
-      //         os << "\033[1;33mOO\033[0m";
-      //         break;
-
-      //       default:
-      //         break;
-      //     }
-      //   }
-      //   os << "\n";
-      // }
-      // std::cout << os.str() << std::endl;
 
       // Sleep for 1000 nanosecs.
       std::this_thread::sleep_for(std::chrono::nanoseconds(1000));

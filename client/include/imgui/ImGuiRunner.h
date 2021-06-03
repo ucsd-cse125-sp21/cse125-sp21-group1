@@ -38,6 +38,9 @@ class ImGuiRunner {
   static void setupImGui(GLFWwindow* _window);
   static void updateStates(bool _show1, bool _show2, ImVec4 _color);
   static void startImGuiFrame();
+  static void showStarterPage();
+  static void showLobbyPage();
+  static void showEndPage();
   static void cleanupImGui();
 };
 
