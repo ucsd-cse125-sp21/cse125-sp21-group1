@@ -77,7 +77,7 @@ bool Window::initializeObjects() {
       new Model("source/weapon_mortarshell/weapon_mortarshell.obj", 0.1);
   sheild = new Model("source/weapon_shiled_texture/shiled.obj", 1);
   shoe = new Model("source/weapon_shoe/shoe.obj", 10);
-  fox = new Model("source/fox/Low Poly Fox.fbx", 0.4);
+  fox = new Model("source/fox/Low Poly Fox.fbx", 0.3);
 
   models.insert(pair<int, Model*>(NOT_DESTROYABLE_CUBE, cake));
   models.insert(pair<int, Model*>(DONUT, donut));

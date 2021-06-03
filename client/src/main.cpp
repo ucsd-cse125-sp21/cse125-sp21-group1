@@ -215,14 +215,14 @@ int main(int argc, char* argv[]) {
           ow.id = s.players[i].weapon;
           ModelMatrix mmw = ModelMatrix();
           switch (s.players[i].facing) {
-            case UPWARD:
+            case DOWNWARD:
               mmw.rotate(glm::radians(180.0f), 0, 0, 1);
               break;
             case LEFTWARD:
-              mmw.rotate(glm::radians(270.0f), 0, 0, 1);
+              mmw.rotate(glm::radians(90.0f), 0, 0, 1);
               break;
             case RIGHTWARD:
-              mmw.rotate(glm::radians(90.0f), 0, 0, 1);
+              mmw.rotate(glm::radians(270.0f), 0, 0, 1);
               break;
             default:
               break;
