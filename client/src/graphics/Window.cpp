@@ -21,6 +21,7 @@ Model* medicine;
 Model* motarshell;
 Model* sheild;
 Model* shoe;
+Model* fox;
 
 // PointCloud* plsPoints;  // point light sphere
 
@@ -28,7 +29,7 @@ Model* shoe;
 std::vector<Model*> geometrys;
 std::map<int, Model*> models;
 
-glm::vec3 eye(0, 0, 30);    // Camera position.
+glm::vec3 eye(0, 15, 35);   // Camera position.
 glm::vec3 center(0, 0, 0);  // The point we are looking at.
 glm::vec3 up(0, 1, 0);      // The up direction of the camera.
 float fovy = 60;
@@ -66,26 +67,28 @@ bool Window::initializeObjects() {
   // etc.
 
   // cake = new Model("source/obstacle_cake/cake_without_plate.obj", 0.1);
-  cake = new Model("source/cake/Cake.fbx", 1);
-  donut = new Model("source/donut1.fbx", 0.5);
-  bomb = new Model("source/bomb/Bomb.fbx", 4);
-  glove = new Model("source/weapon_gloves/gloves.obj", 0.3);
+  cake = new Model("source/cake/Cake.obj", 1);
+  donut = new Model("source/donut/donut.obj", 0.4);
+  bomb = new Model("source/weapon_bomb_texture/Bomb.obj", 4);
+  glove = new Model("source/weapon_gloves/gloves.obj", 1);
   gun = new Model("source/weapon_gun/gun.obj", 0.7);
-  medicine = new Model("source/weapon_medicine/medicine.obj", 0.03);
+  medicine = new Model("source/weapon_medicine/medicine.obj", 1);
   motarshell =
       new Model("source/weapon_mortarshell/weapon_mortarshell.obj", 0.1);
   sheild = new Model("source/weapon_shiled_texture/shiled.obj", 1);
   shoe = new Model("source/weapon_shoe/shoe.obj", 10);
+  fox = new Model("source/fox/Low Poly Fox.fbx", 0.3);
 
   models.insert(pair<int, Model*>(NOT_DESTROYABLE_CUBE, cake));
   models.insert(pair<int, Model*>(DONUT, donut));
   models.insert(pair<int, Model*>(BOMB, bomb));
-  models.insert(pair<int, Model*>(BALL, medicine));
+  models.insert(pair<int, Model*>(BALL, glove));
   models.insert(pair<int, Model*>(SHIELD, sheild));
-  models.insert(pair<int, Model*>(PLAYER_1, gun));
-  models.insert(pair<int, Model*>(PLAYER_2, gun));
-  models.insert(pair<int, Model*>(PLAYER_3, gun));
-  models.insert(pair<int, Model*>(PLAYER_4, gun));
+  models.insert(pair<int, Model*>(ELIXIR, medicine));
+  models.insert(pair<int, Model*>(PLAYER_1, fox));
+  models.insert(pair<int, Model*>(PLAYER_2, fox));
+  models.insert(pair<int, Model*>(PLAYER_3, fox));
+  models.insert(pair<int, Model*>(PLAYER_4, fox));
 
   // bind other values
   // glUniform3fv(glGetUniformLocation(program, "eyePos"), 1,
@@ -218,7 +221,7 @@ void Window::displayCallback(GLFWwindow* window,
       float x = curr_model[3][0];
       float y = curr_model[3][1];
       float z = curr_model[3][2];
-      eye = glm::vec3(x, y, 30);
+      eye = glm::vec3(x, y - 10, 20);
       center = glm::vec3(x, y, z);
       view = glm::lookAt(eye, center, up);
       shader->setMat4("view", view);
@@ -226,8 +229,23 @@ void Window::displayCallback(GLFWwindow* window,
 
     glm::mat4 transform = glm::mat4(
         1.0f);  // make sure to initialize matrix to identity matrix first
-    // transform = glm::translate(transform, locations[i]);
-    transform = glm::scale(transform, glm::vec3(currentObj->scale_factor));
+
+    // rotate around the horizontal axis only for donut (destroyables) and cake
+    // (not-destroyables)
+    if (objects[i].id == NOT_DESTROYABLE_CUBE || objects[i].id == DONUT) {
+      transform = glm::rotate(
+          glm::scale(transform, glm::vec3(currentObj->scale_factor)),
+          glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    }
+    // rotate around the z axis only for players
+    else if (objects[i].id >= PLAYER_1 && objects[i].id <= PLAYER_4) {
+      transform = glm::rotate(
+          glm::scale(transform, glm::vec3(currentObj->scale_factor)),
+          glm::radians(270.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+    } else {
+      transform = glm::scale(transform, glm::vec3(currentObj->scale_factor));
+    }
+
     curr_model = curr_model * transform;
     shader->setMat4("model", curr_model);
 

@@ -10,6 +10,11 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
+map_Bump Normal.png
+map_Kd Albedo.png
+map_Ks Rough.png
+map_Ns Rough.png
+map_d Albedo.png
 
 newmtl Metal
 Ns 225.000000
@@ -20,3 +25,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
+map_Bump Normal.png
+map_Kd Albedo.png
+map_Ks Rough.png
+map_Ns Rough.png
+map_d Albedo.png

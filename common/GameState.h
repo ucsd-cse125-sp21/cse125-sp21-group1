@@ -23,10 +23,10 @@
 #define num_landmine 0  // 20
 #define num_fire 0
 #define num_frozen 0
-#define num_glove 20
-#define num_elixir 0    // 30
-#define num_ball 100    // 30
-#define num_shield 100  // 20
+#define num_glove 0     // 20
+#define num_elixir 100  // 30
+#define num_ball 50     // 30
+#define num_shield 50   // 20
 #define num_shoes 0     // 20
 #define num_destroyables 230
 

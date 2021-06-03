@@ -168,8 +168,29 @@ int main(int argc, char* argv[]) {
           o.id = s.board[i][j];
           // TODO update generation matrix of cubes
           ModelMatrix mm = ModelMatrix();
-          mm.move_to(2 * (i - s.board.width / 2), 2 * (j - s.board.height / 2),
-                     0);
+          if (o.id == SHIELD) {
+            mm.move_to(2 * (i - s.board.width / 2 + 1),
+                       2 * (j - s.board.height / 2), 0);
+          } else {
+            mm.move_to(2 * (i - s.board.width / 2),
+                       2 * (j - s.board.height / 2), 0);
+          }
+          switch (o.id) {
+            case SHIELD:
+              mm.scale(0.5);
+              break;
+
+            case ELIXIR:
+              mm.scale(0.03);
+              break;
+
+            case BALL:
+              mm.scale(0.3);
+              break;
+
+            default:
+              break;
+          }
           o.gen = mm.get_model();
           objects.push_back(o);
         }
@@ -208,14 +229,14 @@ int main(int argc, char* argv[]) {
           ow.id = s.players[i].weapon;
           ModelMatrix mmw = ModelMatrix();
           switch (s.players[i].facing) {
-            case UPWARD:
-              mmw.rotate(glm::radians(180.0f), 0, 0, 1);
+            case DOWNWARD:
+              mmw.rotate(glm::radians(90.0f), 0, 0, 1);
               break;
             case LEFTWARD:
-              mmw.rotate(glm::radians(270.0f), 0, 0, 1);
+              mmw.rotate(glm::radians(180.0f), 0, 0, 1);
               break;
-            case RIGHTWARD:
-              mmw.rotate(glm::radians(90.0f), 0, 0, 1);
+            case UPWARD:
+              mmw.rotate(glm::radians(270.0f), 0, 0, 1);
               break;
             default:
               break;
