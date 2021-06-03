@@ -34,6 +34,7 @@ class ImGuiRunner {
   static ImVec4 color;
 
  public:
+  static int numPlayers;
   static void setupLoader();
   static void setupImGui(GLFWwindow* _window);
   static void updateStates(bool _show1, bool _show2, ImVec4 _color);

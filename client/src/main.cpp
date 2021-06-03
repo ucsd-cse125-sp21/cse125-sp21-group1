@@ -120,13 +120,16 @@ int main(int argc, char* argv[]) {
   mm.move_to(0, 0, 0);
   o.gen = mm.get_model();
   objects.push_back(o);
+
+  // display ImGui
+  ImGuiRunner::startImGuiFrame();
+  while (ImGuiRunner::numPlayers < 4) {
+    ImGuiRunner::showStarterPage();
+  }
+
   // Loop while GLFW window should stay open.
   while (!glfwWindowShouldClose(window)) {
     // Main render display callback. Rendering of objects is done here.
-
-    // display ImGui
-    ImGuiRunner::startImGuiFrame();
-    ImGuiRunner::showStarterPage();
 
     // TODO
     // third parameter represents playerI = sessionId + 4 (follow object.h)

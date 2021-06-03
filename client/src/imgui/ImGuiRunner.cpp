@@ -15,6 +15,8 @@ GLFWwindow* ImGuiRunner::window;
 bool ImGuiRunner::show1 = true;
 bool ImGuiRunner::show2 = false;
 ImVec4 ImGuiRunner::color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+// num players
+int ImGuiRunner::numPlayers = 0;
 
 void ImGuiRunner::setupLoader() {
 #if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
@@ -104,19 +106,15 @@ void ImGuiRunner::startImGuiFrame() {
 }
 
 void ImGuiRunner::showStarterPage() {
-  static int counter = 0;
-
   ImGui::Begin("GROUP 1 GAME");  // Create a window called "Hello, world!"
                                  // and append into it.
   if (ImGui::Button("START"))    // Buttons return true when clicked (most
                                  // widgets return true when edited/activated)
   {
-    counter++;
-    ImGui::End();
-    ImGui::EndFrame();
+    numPlayers++;
   }
   ImGui::SameLine();
-  ImGui::Text("counter = %d", counter);
+  ImGui::Text("PLAYERS: %d/4", numPlayers);
   ImGui::End();
 
   // // 3. Show another simple window.
