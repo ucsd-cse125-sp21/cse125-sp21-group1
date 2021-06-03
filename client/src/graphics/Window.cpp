@@ -241,7 +241,7 @@ void Window::displayCallback(GLFWwindow* window,
     else if (objects[i].id >= PLAYER_1 && objects[i].id <= PLAYER_4) {
       transform = glm::rotate(
           glm::scale(transform, glm::vec3(currentObj->scale_factor)),
-          glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+          glm::radians(270.0f), glm::vec3(0.0f, 0.0f, 1.0f));
     } else {
       transform = glm::scale(transform, glm::vec3(currentObj->scale_factor));
     }
