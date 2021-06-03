@@ -29,7 +29,7 @@ Model* fox;
 std::vector<Model*> geometrys;
 std::map<int, Model*> models;
 
-glm::vec3 eye(0, 10, 30);   // Camera position.
+glm::vec3 eye(0, 15, 35);   // Camera position.
 glm::vec3 center(0, 0, 0);  // The point we are looking at.
 glm::vec3 up(0, 1, 0);      // The up direction of the camera.
 float fovy = 60;
@@ -230,11 +230,18 @@ void Window::displayCallback(GLFWwindow* window,
     glm::mat4 transform = glm::mat4(
         1.0f);  // make sure to initialize matrix to identity matrix first
 
-    // rotate only for donut (destroyables) and cake (not-destroyables)
+    // rotate around the horizontal axis only for donut (destroyables) and cake
+    // (not-destroyables)
     if (objects[i].id == NOT_DESTROYABLE_CUBE || objects[i].id == DONUT) {
       transform = glm::rotate(
           glm::scale(transform, glm::vec3(currentObj->scale_factor)),
           glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    }
+    // rotate around the z axis only for players
+    else if (objects[i].id >= PLAYER_1 && objects[i].id <= PLAYER_4) {
+      transform = glm::rotate(
+          glm::scale(transform, glm::vec3(currentObj->scale_factor)),
+          glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
     } else {
       transform = glm::scale(transform, glm::vec3(currentObj->scale_factor));
     }

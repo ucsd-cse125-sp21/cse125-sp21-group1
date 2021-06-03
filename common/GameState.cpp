@@ -17,8 +17,8 @@ void GameState::initialize_players() {
     p.life_left = 1;
     p.bomb_power = 1;
     p.speed = 1;
-    p.facing = DOWNWARD;
-    /*p.gen;*/  // no idea
+    p.facing = UPWARD;  // fix facing direction for FOX model: default UPWARD
+    /*p.gen;*/          // no idea
     players[i] = p;
   }
 }
