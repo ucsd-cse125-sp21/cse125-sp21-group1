@@ -1,7 +1,7 @@
 
-// compile this at client/:
-// gcc src/sound/sound_test.h  -Ilib/fmod/inc -Llib/fmod/lib -lfmod -lfmodL -out
-
+/* compile this at client/:
+   gcc src/sound/sound_test.cpp -Ilib/fmod/inc -Llib/fmod/lib -lfmod -lfmodL
+*/
 #include "sound.h"
 
 #include <stdio.h>

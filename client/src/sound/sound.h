@@ -27,7 +27,7 @@ int playsound(int sound_id);
 /*******************************************************/
 /** implementation details; no need to read this part **/
 static std::map<int, FMOD_SOUND*> sounds;
-FMOD_SYSTEM* system;
+FMOD_SYSTEM* fmod_system;
 FMOD_CHANNEL* channel = 0;
 FMOD_RESULT result;
 int init() {
@@ -36,8 +36,8 @@ int init() {
   called = 1;
 
   unsigned int version;
-  FMOD_System_Create(&system);
-  FMOD_System_GetVersion(system, &version);
+  FMOD_System_Create(&fmod_system);
+  FMOD_System_GetVersion(fmod_system, &version);
 
   if (version < FMOD_VERSION) {
     fprintf(stderr,
@@ -47,12 +47,12 @@ int init() {
     return -1;
   }
 
-  FMOD_System_Init(system, SND_NUM_CHANNELS, FMOD_INIT_NORMAL, NULL);
+  FMOD_System_Init(fmod_system, SND_NUM_CHANNELS, FMOD_INIT_NORMAL, NULL);
 }
 // load sound at given path into specific sound_id
 int load_sound(char* path, int sound_id) {
   FMOD_SOUND* sound;
-  result = FMOD_System_CreateSound(system, path, 0, 0, &sound);
+  result = FMOD_System_CreateSound(fmod_system, path, 0, 0, &sound);
   sounds.insert({sound_id, sound});
   return 0;
 }
@@ -76,7 +76,8 @@ int load_all_sound() {
 }
 
 int playsound(int sound_id) {
-  result = FMOD_System_PlaySound(system, sounds[sound_id], NULL, 0, &channel);
+  result =
+      FMOD_System_PlaySound(fmod_system, sounds[sound_id], NULL, 0, &channel);
   return 0;
 }
 
