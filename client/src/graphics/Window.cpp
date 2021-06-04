@@ -194,14 +194,26 @@ void Window::idleCallback() {
   //    std::cout << cos(directLight->degree / 10.0) <<'\n';
 }
 
-void Window::starterPageDisplay(GLFWwindow* window) {
-  // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  // glColor3f(1.0f, 0.0f, 0.0f, 1.0f);
-}
+// void Window::starterPageDisplay(GLFWwindow* window) {
+//   // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//   // glColor3f(1.0f, 0.0f, 0.0f, 1.0f);
+// }
 
 void Window::displayCallback(GLFWwindow* window,
                              std::vector<Obj4graphics> objects, int playerI) {
   shader->use();
+
+  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+  glClear(GL_COLOR_BUFFER_BIT);
+  glColor3f(1.0f, 0.0f, 0.0f);
+  glBegin(GL_POLYGON);
+  glVertex2f(-0.5f, 0.0f);
+  glVertex2f(-0.5f, -0.5f);
+  glVertex2f(0.0f, -0.5f);
+  glVertex2f(0.0f, 0.0f);
+  glEnd();
+  glFlush();
+
   // Switch back to using OpenGL's rasterizer
   // glUseProgram(program);
   // Clear the color and depth buffers.
