@@ -125,7 +125,7 @@ int main(int argc, char* argv[]) {
   objects.push_back(o);
   // Loop while GLFW window should stay open.
   while (!glfwWindowShouldClose(window)) {
-    auto startTime = clock();
+    // auto startTime = clock();
     // Main render display callback. Rendering of objects is done here.
 
     // TODO
@@ -341,7 +341,7 @@ int main(int argc, char* argv[]) {
       // Sleep for 1000 nanosecs.
       // std::this_thread::sleep_for(std::chrono::nanoseconds(1000));
     }
-    std::cout << (double)(clock() - startTime) / CLOCKS_PER_SEC << std::endl;
+    // std::cout << (double)(clock() - startTime) / CLOCKS_PER_SEC << std::endl;
   }
 
   Window::cleanUp();

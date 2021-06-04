@@ -71,7 +71,7 @@ bool Window::initializeObjects() {
   donut = new Model("source/donut/donut.obj", 0.4);
   bomb = new Model("source/weapon_bomb_texture/Bomb.obj", 4);
   glove = new Model("source/weapon_gloves/gloves.obj", 1);
-  gun = new Model("source/weapon_gun/gun.obj", 0.7);
+  gun = new Model("source/weapon_gun/gun.obj", 1.5);
   medicine = new Model("source/weapon_medicine/medicine.obj", 1);
   motarshell =
       new Model("source/weapon_mortarshell/weapon_mortarshell.obj", 0.1);
