@@ -59,6 +59,26 @@ void printVersions() {
 #endif
 }
 
+void starterDisplay() {
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glColor3f(1, 0, 0);
+  glRasterPos3f(-0.8, 1.5, 0);
+  char msg[] = "Press X to start the game";
+  for (int i = 0; i < strlen(msg); i++) {
+    glutBitmapCharacter(GLUT_BITMAP_9_BY_15, msg[i]);
+  }
+  glutSwapBuffers();
+}
+
+void normalDisplay() {}
+
+void handleKeys(unsigned char key, int x, int y) {
+  if (key == 'x') {
+    glutDisplayFunc(normalDisplay);
+  }
+  glutPostRedisplay();
+}
+
 int main(int argc, char* argv[]) {
   /*
   std::cout << "start loading with Assimp" << std::endl;
@@ -108,7 +128,7 @@ int main(int argc, char* argv[]) {
   if (!Window::initializeObjects()) exit(EXIT_FAILURE);
 
   // Setup ImGui Context
-  ImGuiRunner::setupImGui(window);
+  // ImGuiRunner::setupImGui(window);
 
   Networking::initClientNetworking(argv[1], argv[2]);
   std::cout << "sessionId: " << Networking::sessionId << std::endl;
@@ -140,6 +160,8 @@ int main(int argc, char* argv[]) {
   // while (ImGuiRunner::numPlayers < 4) {
   //   ImGuiRunner::showStarterPage();
   // }
+  glutDisplayFunc(starterDisplay);
+  glutKeyboardFunc(handleKeys);
 
   // Loop while GLFW window should stay open.
   while (!glfwWindowShouldClose(window)) {

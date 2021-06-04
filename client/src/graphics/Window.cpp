@@ -29,7 +29,7 @@ Model* fox;
 std::vector<Model*> geometrys;
 std::map<int, Model*> models;
 
-glm::vec3 eye(0, 15, 90);   // Camera position.
+glm::vec3 eye(0, 15, 35);   // Camera position.
 glm::vec3 center(0, 0, 0);  // The point we are looking at.
 glm::vec3 up(0, 1, 0);      // The up direction of the camera.
 float fovy = 60;
@@ -194,11 +194,6 @@ void Window::idleCallback() {
   //    std::cout << cos(directLight->degree / 10.0) <<'\n';
 }
 
-// void Window::starterPageDisplay(GLFWwindow* window) {
-//   // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//   // glColor3f(1.0f, 0.0f, 0.0f, 1.0f);
-// }
-
 void Window::displayCallback(GLFWwindow* window,
                              std::vector<Obj4graphics> objects, int playerI) {
   shader->use();
@@ -248,9 +243,9 @@ void Window::displayCallback(GLFWwindow* window,
         1.0f);  // make sure to initialize matrix to identity matrix first
 
     // rotate around the horizontal axis only for donut (destroyables) and cake
-    // (not-destroyables)
+    // (not-destroyables) and elixir and shield
     if (objects[i].id == NOT_DESTROYABLE_CUBE || objects[i].id == DONUT ||
-        objects[i].id == ELIXIR) {
+        objects[i].id == ELIXIR || objects[i].id == SHIELD) {
       transform = glm::rotate(
           glm::scale(transform, glm::vec3(currentObj->scale_factor)),
           glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
