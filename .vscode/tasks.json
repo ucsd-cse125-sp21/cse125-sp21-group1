@@ -22,10 +22,10 @@
                 "-Iclient/lib/glm",
                 "-Iclient/lib/GLFW/include",
                 "-Iclient/lib/GLEW/include",
+                "-Iclient/lib/GLUT/include",
                 "-Lclient/lib/GLFW/lib-mingw-w64",
                 "-Lclient/lib/GLEW/lib/Release/x64",
                 "-Lclient/lib/assimp-master/lib",
-                "-Lclient/lib/GLUT/include",
                 "-Lclient/lib/GLUT/lib/Release",
                 "-g",
                 "${workspaceFolder}/common/*.cpp",
@@ -48,7 +48,9 @@
                 "-loleaut32",
                 "-limm32",
                 "-lversion",
-                "-lclient/lib/GLUT/lib/Release/glut32.lib"
+                "-mwindows",
+                "${workspaceFolder}/client/lib/GLUT/lib/Release/glut32.lib",
+                "-lglu32"
             ],
             "problemMatcher": [],
             "group": {
