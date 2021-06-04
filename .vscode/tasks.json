@@ -22,7 +22,6 @@
                 "-Iclient/lib/glm",
                 "-Iclient/lib/GLFW/include",
                 "-Iclient/lib/GLEW/include",
-                "-Iclient/lib/GLUT",
                 "-Lclient/lib/GLFW/lib-mingw-w64",
                 "-Lclient/lib/GLEW/lib/Release/x64",
                 "-Lclient/lib/assimp-master/lib",
@@ -46,8 +45,7 @@
                 "-lopengl32",
                 "-loleaut32",
                 "-limm32",
-                "-lversion",
-                "-lglu32"
+                "-lversion"
             ],
             "problemMatcher": [],
             "group": {
