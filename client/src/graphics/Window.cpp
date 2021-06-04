@@ -194,6 +194,11 @@ void Window::idleCallback() {
   //    std::cout << cos(directLight->degree / 10.0) <<'\n';
 }
 
+void Window::starterPageDisplay(GLFWwindow* window) {
+  // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  // glColor3f(1.0f, 0.0f, 0.0f, 1.0f);
+}
+
 void Window::displayCallback(GLFWwindow* window,
                              std::vector<Obj4graphics> objects, int playerI) {
   shader->use();
