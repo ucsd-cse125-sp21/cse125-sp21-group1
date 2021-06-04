@@ -10,7 +10,7 @@
  */
 namespace {
 int width, height;
-std::string windowTitle("Group 1 Game");
+std::string windowTitle("4399 小游戏");
 
 Model* cake;
 Model* donut;
@@ -71,7 +71,7 @@ bool Window::initializeObjects() {
   donut = new Model("source/donut/donut.obj", 0.4);
   bomb = new Model("source/weapon_bomb_texture/Bomb.obj", 4);
   glove = new Model("source/weapon_gloves/gloves.obj", 1);
-  gun = new Model("source/weapon_gun/gun.obj", 0.7);
+  gun = new Model("source/weapon_gun/gun.obj", 1.5);
   medicine = new Model("source/weapon_medicine/medicine.obj", 1);
   motarshell =
       new Model("source/weapon_mortarshell/weapon_mortarshell.obj", 0.1);
@@ -82,7 +82,7 @@ bool Window::initializeObjects() {
   models.insert(pair<int, Model*>(NOT_DESTROYABLE_CUBE, cake));
   models.insert(pair<int, Model*>(DONUT, donut));
   models.insert(pair<int, Model*>(BOMB, bomb));
-  models.insert(pair<int, Model*>(BALL, glove));
+  models.insert(pair<int, Model*>(BALL, gun));
   models.insert(pair<int, Model*>(SHIELD, sheild));
   models.insert(pair<int, Model*>(ELIXIR, medicine));
   models.insert(pair<int, Model*>(PLAYER_1, fox));
@@ -232,7 +232,8 @@ void Window::displayCallback(GLFWwindow* window,
 
     // rotate around the horizontal axis only for donut (destroyables) and cake
     // (not-destroyables)
-    if (objects[i].id == NOT_DESTROYABLE_CUBE || objects[i].id == DONUT) {
+    if (objects[i].id == NOT_DESTROYABLE_CUBE || objects[i].id == DONUT ||
+        objects[i].id == ELIXIR || objects[i].id == SHIELD) {
       transform = glm::rotate(
           glm::scale(transform, glm::vec3(currentObj->scale_factor)),
           glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
