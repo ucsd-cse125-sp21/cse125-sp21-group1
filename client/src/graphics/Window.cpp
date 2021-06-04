@@ -82,7 +82,7 @@ bool Window::initializeObjects() {
   models.insert(pair<int, Model*>(NOT_DESTROYABLE_CUBE, cake));
   models.insert(pair<int, Model*>(DONUT, donut));
   models.insert(pair<int, Model*>(BOMB, bomb));
-  models.insert(pair<int, Model*>(BALL, glove));
+  models.insert(pair<int, Model*>(BALL, gun));
   models.insert(pair<int, Model*>(SHIELD, sheild));
   models.insert(pair<int, Model*>(ELIXIR, medicine));
   models.insert(pair<int, Model*>(PLAYER_1, fox));
