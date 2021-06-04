@@ -1,5 +1,7 @@
 #include "main.h"
 
+#include <time.h>
+
 #include <asio.hpp>
 #include <iostream>
 #include <thread>
@@ -112,6 +114,18 @@ int main(int argc, char* argv[]) {
   std::cout << "sessionId: " << Networking::sessionId << std::endl;
 
   GameState s;
+  auto recvFunc = [](GameState* gameStatePtr) {
+    while (true) {
+      char* msg = Networking::receive(sizeof(GameState));
+      if (msg != NULL) {
+        memcpy(gameStatePtr, msg, sizeof(GameState));
+        free(msg);
+      }
+      std::this_thread::sleep_for(std::chrono::nanoseconds(500));
+    }
+  };
+  std::thread networkingRecvThread = std::thread(recvFunc, &s);
+
   std::vector<Obj4graphics> objects;
   Obj4graphics o;
   o.id = PLAYER_1;
@@ -129,6 +143,7 @@ int main(int argc, char* argv[]) {
 
   // Loop while GLFW window should stay open.
   while (!glfwWindowShouldClose(window)) {
+    // auto startTime = clock();
     // Main render display callback. Rendering of objects is done here.
 
     // TODO
@@ -140,13 +155,12 @@ int main(int argc, char* argv[]) {
     Window::idleCallback();
 
     // Networking::send("Message from client. ");
-    char* msg = Networking::receive(sizeof(GameState));
+    // msg = Networking::receive(sizeof(GameState));
     // GameState* s = (GameState*)malloc(sizeof(GameState));
     // std::cout << std::string(msg) << std::endl;
     // std::cout << "in while loop" << std::endl;
-    if (msg != NULL) {
+    if (true) {
       // std::cout << "in if statement" << std::endl;
-      memcpy(&s, msg, sizeof(GameState));
       // std::cout << s.toString() << std::endl;
       /****************************************************/
       objects.clear();
@@ -241,12 +255,8 @@ int main(int argc, char* argv[]) {
         }
       }
       /****************************************************/
-
-      free(msg);
-
-      // Sleep for 1000 nanosecs.
-      std::this_thread::sleep_for(std::chrono::nanoseconds(1000));
     }
+    // std::cout << (double)(clock() - startTime) / CLOCKS_PER_SEC << std::endl;
   }
 
   // Cleanup ImGui
