@@ -15,7 +15,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #define GL_SILENCE_DEPRECATION
 
-#include <GLUT/glut.h>
+#include "glut.h"
 //#include <windows.h>
 
 #include <iostream>

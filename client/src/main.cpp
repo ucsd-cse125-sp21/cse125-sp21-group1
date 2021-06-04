@@ -1,6 +1,5 @@
 #include "main.h"
 
-#include <GLUT/glut.h>
 #include <time.h>
 
 #include <asio.hpp>

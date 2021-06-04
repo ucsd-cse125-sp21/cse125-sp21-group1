@@ -8,7 +8,7 @@
                 "${workspaceFolder}/client/lib/asio-1.18.1/include",
                 "${workspaceFolder}/client/lib/GLEW/include",
                 "${workspaceFolder}/client/lib/GLFW/include",
-                "${workspaceFolder}/client/lib/GLUT/include",
+                "${workspaceFolder}/client/lib/GLUT/include/GL",
                 "${workspaceFolder}/client/lib/glm",
                 "${workspaceFolder}/client/include",
                 "${workspaceFolder}/client/include/graphics",
