@@ -10,7 +10,7 @@
  */
 namespace {
 int width, height;
-std::string windowTitle("Group 1 Game");
+std::string windowTitle("4399小游戏");
 
 Model* cake;
 Model* donut;
@@ -29,7 +29,7 @@ Model* fox;
 std::vector<Model*> geometrys;
 std::map<int, Model*> models;
 
-glm::vec3 eye(0, 15, 35);   // Camera position.
+glm::vec3 eye(0, 15, 50);   // Camera position.
 glm::vec3 center(0, 0, 0);  // The point we are looking at.
 glm::vec3 up(0, 1, 0);      // The up direction of the camera.
 float fovy = 60;
@@ -207,9 +207,9 @@ void Window::displayCallback(GLFWwindow* window,
   glClear(GL_COLOR_BUFFER_BIT);
   glColor3f(1.0f, 0.0f, 0.0f);
   glBegin(GL_POLYGON);
-  glVertex2f(-0.5f, 0.0f);
-  glVertex2f(-0.5f, -0.5f);
-  glVertex2f(0.0f, -0.5f);
+  glVertex2f(-30.0f, 0.0f);
+  glVertex2f(-30.0f, -30.0f);
+  glVertex2f(0.0f, -30.0f);
   glVertex2f(0.0f, 0.0f);
   glEnd();
   glFlush();
