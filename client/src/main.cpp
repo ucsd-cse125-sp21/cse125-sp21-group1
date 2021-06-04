@@ -94,7 +94,7 @@ int main(int argc, char* argv[]) {
   if (!window) exit(EXIT_FAILURE);
 
   // Initialize OpenGL loader
-  ImGuiRunner::setupLoader();
+  // ImGuiRunner::setupLoader();
 
   // Print OpenGL and GLSL versions.
   printVersions();
@@ -136,10 +136,10 @@ int main(int argc, char* argv[]) {
   objects.push_back(o);
 
   // display ImGui
-  ImGuiRunner::startImGuiFrame();
-  while (ImGuiRunner::numPlayers < 4) {
-    ImGuiRunner::showStarterPage();
-  }
+  // ImGuiRunner::startImGuiFrame();
+  // while (ImGuiRunner::numPlayers < 4) {
+  //   ImGuiRunner::showStarterPage();
+  // }
 
   // Loop while GLFW window should stay open.
   while (!glfwWindowShouldClose(window)) {
@@ -260,7 +260,7 @@ int main(int argc, char* argv[]) {
   }
 
   // Cleanup ImGui
-  ImGuiRunner::cleanupImGui();
+  // ImGuiRunner::cleanupImGui();
 
   Window::cleanUp();
   // Destroy the window.
