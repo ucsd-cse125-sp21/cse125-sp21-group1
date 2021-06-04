@@ -1,6 +1,6 @@
 
 // compile this at client/:
-// gcc sound_test.h  -Ilib/fmod/inc -Llib/fmod/lib -lfmod -lfmodL -out
+// gcc src/sound/sound_test.h  -Ilib/fmod/inc -Llib/fmod/lib -lfmod -lfmodL -out
 
 #include "sound.h"
 
@@ -14,6 +14,16 @@ int main() {
   load_all_sound();
   playsound(SND_EXPLOAD);
 
+  sleep(10000);
+
+  playsound(SND_EXPLOAD);
+  sleep(100);
+  playsound(SND_EXPLOAD);
+  sleep(10000);
+
+  playsound(SND_EXPLOAD);
+  sleep(100);
+  playsound(SND_ITEM_PICKUP);
   sleep(10000);
 
   return 0;
