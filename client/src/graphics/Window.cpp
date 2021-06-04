@@ -10,7 +10,7 @@
  */
 namespace {
 int width, height;
-std::string windowTitle("Group 1 Game");
+std::string windowTitle("4399 小游戏");
 
 Model* cake;
 Model* donut;
@@ -232,7 +232,8 @@ void Window::displayCallback(GLFWwindow* window,
 
     // rotate around the horizontal axis only for donut (destroyables) and cake
     // (not-destroyables)
-    if (objects[i].id == NOT_DESTROYABLE_CUBE || objects[i].id == DONUT) {
+    if (objects[i].id == NOT_DESTROYABLE_CUBE || objects[i].id == DONUT ||
+        objects[i].id == ELIXIR || objects[i].id == SHIELD) {
       transform = glm::rotate(
           glm::scale(transform, glm::vec3(currentObj->scale_factor)),
           glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
